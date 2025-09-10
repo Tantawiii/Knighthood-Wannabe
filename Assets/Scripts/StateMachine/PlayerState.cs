@@ -22,6 +22,13 @@ public abstract class PlayerState : EntityState
         }
     }
 
+    public override void UpdateAnimationParameters()
+    {
+        base.UpdateAnimationParameters();
+
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
+    }
+
     private bool CanDash()
     {
         if(player.wallDetected || stateMachine.currentState == player.dashState)

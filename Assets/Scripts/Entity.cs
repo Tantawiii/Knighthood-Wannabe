@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
     [Header("Collision Detection")]
     [SerializeField, Tooltip("Layer mask for ground detection")] float groundCheckDistance = 0.1f;
     [SerializeField, Tooltip("Layer mask for wall detection")] float wallCheckDistance = 0.1f;
-    [SerializeField] LayerMask whatIsGround;
+    [SerializeField] protected LayerMask whatIsGround;
     [SerializeField] Transform groundCheck;
     [SerializeField] Transform primaryWallCheck;
     [SerializeField] Transform secondaryWallCheck;
@@ -35,16 +35,16 @@ public class Entity : MonoBehaviour
         
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         HandleCollisionDetection();
         stateMachine.UpdateActiveState();
     }
 
 
-    public void CallAnimationTrigger()
+    public void CurrentStateAnimationTrigger()
     {
-        stateMachine.currentState.CallAnimationTrigger();
+        stateMachine.currentState.AnimationTrigger();
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
@@ -53,7 +53,7 @@ public class Entity : MonoBehaviour
         HandleFlip(xVelocity);
     }
 
-    private void HandleFlip(float xVelocity)
+    public void HandleFlip(float xVelocity)
     {
         if (facingRight && xVelocity < 0)
             Flip();
