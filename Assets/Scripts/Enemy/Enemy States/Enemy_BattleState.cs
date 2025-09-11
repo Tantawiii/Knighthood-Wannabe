@@ -12,8 +12,14 @@ public class Enemy_BattleState : EnemyState
     {
         base.Enter();
 
-        if(player == null)
-            player = enemy.PlayerDetection().transform;
+        UpdateBattleTimer();
+
+        player ??= enemy.GetPlayerReference();
+        /*
+         * if (player == null)
+         *    enemy.GetPlayerReference();
+         * 
+         */
 
         if (ShouldRetreat())
         {
@@ -26,8 +32,8 @@ public class Enemy_BattleState : EnemyState
     {
         base.Update();
 
-        if (enemy.PlayerDetection())
-            UpdateBattleTimer();
+        //if (enemy.PlayerDetection())
+        //    UpdateBattleTimer();
 
         if (BattleTimeIsOver())
             stateMachine.ChangeState(enemy.idleState);
@@ -54,10 +60,17 @@ public class Enemy_BattleState : EnemyState
 
         return Mathf.Abs(player.position.x - enemy.transform.position.x);
     }
-  
-    private int DirectionToPlayer()
+
+    protected int DirectionToPlayer()
     {
-        if(player == null)
+        if (player == null)
+            return 0;
+
+        float verticalDistance = Mathf.Abs(player.position.y - enemy.transform.position.y);
+        float horizontalDistance = Mathf.Abs(player.position.x - enemy.transform.position.x);
+
+        // Ignore movement if player is too high and very close horizontally
+        if (verticalDistance > 1.5f && horizontalDistance < 1f)
             return 0;
 
         return player.position.x > enemy.transform.position.x ? 1 : -1;
