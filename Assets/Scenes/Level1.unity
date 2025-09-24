@@ -321,6 +321,7 @@ MonoBehaviour:
   critHitVFX: {fileID: 7304690092620296599, guid: d7c94a59bded52f42b0fefec82c3b647, type: 3}
   chillVFX: {r: 0.05490196, g: 0.39215687, b: 0.77254903, a: 1}
   burnVFX: {r: 0.8392157, g: 0.078431375, b: 0.078431375, a: 1}
+  electrifyVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   attackAlert: {fileID: 591868257}
 --- !u!114 &33339847
 MonoBehaviour:
@@ -383,6 +384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5117182c272f18a4da04a35636a59406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightningStrikeVFX: {fileID: 721357518952803657, guid: e9fac5dd87c45fa45b0c2548c8298ffa, type: 3}
+  currentCharge: 0
+  maxCharge: 1
 --- !u!1 &104224380
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +740,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 227ccde7205172840953c89dfc9cbc15, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -946,6 +950,7 @@ MonoBehaviour:
   critHitVFX: {fileID: 0}
   chillVFX: {r: 0, g: 1, b: 1, a: 1}
   burnVFX: {r: 1, g: 0, b: 0, a: 1}
+  electrifyVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &233131998
 GameObject:
   m_ObjectHideFlags: 0
@@ -33392,6 +33397,7 @@ MonoBehaviour:
   critHitVFX: {fileID: 7304690092620296599, guid: d7c94a59bded52f42b0fefec82c3b647, type: 3}
   chillVFX: {r: 0.055951044, g: 0.39126024, b: 0.7735849, a: 1}
   burnVFX: {r: 0.836478, g: 0.0762825, b: 0.0762825, a: 1}
+  electrifyVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!114 &8787814854938881940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33473,6 +33479,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5117182c272f18a4da04a35636a59406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightningStrikeVFX: {fileID: 721357518952803657, guid: e9fac5dd87c45fa45b0c2548c8298ffa, type: 3}
+  currentCharge: 0
+  maxCharge: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

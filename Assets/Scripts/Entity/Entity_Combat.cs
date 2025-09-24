@@ -50,7 +50,7 @@ public class Entity_Combat : MonoBehaviour
             return;
 
         if (element == ElementType.Ice && statusHandler.CanBeApplied(ElementType.Ice))
-            statusHandler.ApplyChilledEffect(defaultDuration, chillSlowMultiplier * scaleFactor);
+            statusHandler.ApplyChillEffect(defaultDuration, chillSlowMultiplier * scaleFactor);
 
         if (element == ElementType.Fire && statusHandler.CanBeApplied(ElementType.Fire))
         {
