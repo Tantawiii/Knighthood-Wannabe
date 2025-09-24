@@ -25,7 +25,9 @@ public class Entity_StatusHandler : MonoBehaviour
 
     public void ApplyElectrifyEffect(float duration, float electrifyDamage, float charge)
     {
-        currentCharge += charge;
+        float lightningResistance = entity_Stats.GetElementalResistance(ElementType.Lightning);
+        float finalcharge = charge * (1 - lightningResistance);
+        currentCharge += finalcharge;
 
         if(currentCharge >= maxCharge)
         {
