@@ -45,14 +45,14 @@ public class Entity_StatusHandler : MonoBehaviour
     public void StopElectrifyEffect()
     {
         currentEffect = ElementType.None;
-        currentEffect = 0;
+        currentCharge = 0;
         entity_VFX.StopAllVFX();
     }
 
     private void LightningStrike(float electrifyDamage)
     {
         Instantiate(lightningStrikeVFX, transform.position, Quaternion.identity);
-        entity_Health.ReduceHp(electrifyDamage);
+        entity_Health.ReduceHealth(electrifyDamage);
     }
 
     IEnumerator ElectrifyEffectCo(float duration)
@@ -85,7 +85,7 @@ public class Entity_StatusHandler : MonoBehaviour
 
         for (int i = 0; i < tickCount; i++)
         {
-            entity_Health.ReduceHp(damagePerTick);
+            entity_Health.ReduceHealth(damagePerTick);
             yield return new WaitForSeconds(tickInterval);
         }
 

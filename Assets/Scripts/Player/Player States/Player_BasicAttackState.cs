@@ -25,6 +25,8 @@ public class Player_BasicAttackState : PlayerState
 
         ResetComboIndexIfNeeded();
 
+        SyncAttackSpeed();
+
         // Define attack direction according to player input.
         attackDir = player.moveInput.x != 0 ? (int) player.moveInput.x : player.facingDir;
 
