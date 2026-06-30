@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_SkillToolTip : UI_ToolTip
 {
     private UI ui;
-    //private UI_SkillTree skillTree;
+    private UI_SkillTree skillTree;
 
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private TextMeshProUGUI skillDescription;
@@ -26,7 +25,7 @@ public class UI_SkillToolTip : UI_ToolTip
     {
         base.Awake();
         ui = GetComponentInParent<UI>();
-        //skillTree = ui.GetComponentInChildren<UI_SkillTree>(true);
+        skillTree = ui.GetComponentInChildren<UI_SkillTree>(true);
     }
 
     public override void ShowToolTip(bool show, RectTransform targetRect)
@@ -76,11 +75,11 @@ public class UI_SkillToolTip : UI_ToolTip
 
         sb.AppendLine("Requirements:");
 
-        //string costColor = skillTree.EnoughSkillPoints(skillCost) ? metConditionHex : notMetConditionHex;
+        string costColor = skillTree.EnoughSkillPoints(skillCost) ? metConditionHex : notMetConditionHex;
         string costText = $"- {skillCost} skill point(s)";
-        //string finalCostText = GetColoredText(costColor, costText);
+        string finalCostText = GetColoredText(costColor, costText);
 
-        //sb.AppendLine(finalCostText);
+        sb.AppendLine(finalCostText);
 
         foreach (var node in neededNodes)
         {

@@ -15,7 +15,7 @@ public class UI_ToolTip : MonoBehaviour
     {
         if (show == false)
         {
-            //rect.position = new Vector2(9999, 9999);
+            rect.position = new Vector2(9999, 9999);
             this.gameObject.SetActive(false);
             return;
         }

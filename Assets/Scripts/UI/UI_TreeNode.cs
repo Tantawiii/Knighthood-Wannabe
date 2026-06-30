@@ -6,8 +6,8 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     private UI ui;
     private RectTransform rect;
-    //private UI_SkillTree skillTree;
-    //private UI_TreeConnectHandler connectHandler;
+    private UI_SkillTree skillTree;
+    private UI_TreeConnectHandler connectHandler;
 
     [Header("Unlock details")]
     public UI_TreeNode[] neededNodes;
@@ -28,8 +28,8 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         ui = GetComponentInParent<UI>();
         rect = GetComponent<RectTransform>();
-        //skillTree = GetComponentInParent<UI_SkillTree>();
-        //connectHandler = GetComponent<UI_TreeConnectHandler>();
+        skillTree = GetComponentInParent<UI_SkillTree>();
+        connectHandler = GetComponent<UI_TreeConnectHandler>();
 
         UpdateIconColor(GetColorByHex(lockedColorHex));
     }
@@ -40,8 +40,8 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         isLocked = false;
         UpdateIconColor(GetColorByHex(lockedColorHex));
 
-        //skillTree.AddSkillPoints(skillData.cost);
-        //connectHandler.UnlockConnectionImage(false);
+        // skillTree.AddSkillPoints(skillData.cost);
+        // connectHandler.UnlockConnectionImage(false);
 
         //skill manager and reset skill
     }
@@ -51,7 +51,7 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         UpdateIconColor(Color.white);
         LockConflictNodes();
 
-        //skillTree.RemoveSkillPoints(skillData.cost);
+        skillTree.RemoveSkillPoints(skillData.cost);
         //connectHandler.UnlockConnectionImage(true);
 
         //Find Player_SkillManager
@@ -64,8 +64,8 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (isLocked || isUnlocked)
             return false;
 
-        //if (skillTree.EnoughSkillPoints(skillData.cost) == false)
-        //    return false;
+        if (skillTree.EnoughSkillPoints(skillData.cost) == false)
+           return false;
 
         foreach (var node in neededNodes)
         {
