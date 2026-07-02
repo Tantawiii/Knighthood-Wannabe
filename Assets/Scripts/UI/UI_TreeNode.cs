@@ -40,8 +40,8 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         isLocked = false;
         UpdateIconColor(GetColorByHex(lockedColorHex));
 
-        // skillTree.AddSkillPoints(skillData.cost);
-        // connectHandler.UnlockConnectionImage(false);
+        skillTree.AddSkillPoints(skillData.cost);
+        connectHandler.UnlockConnectionImage(false);
 
         //skill manager and reset skill
     }
@@ -52,7 +52,7 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         LockConflictNodes();
 
         skillTree.RemoveSkillPoints(skillData.cost);
-        //connectHandler.UnlockConnectionImage(true);
+        connectHandler.UnlockConnectionImage(true);
 
         //Find Player_SkillManager
         // Unlock skill on skill manager
@@ -109,7 +109,7 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         ui.skillToolTip.ShowToolTip(true, rect, this);
 
-        if (isUnlocked == false || isLocked == false)
+        if (isUnlocked == false && isLocked == false)
             ToggleNodeHighlight(true);
     }
 
@@ -117,7 +117,7 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         ui.skillToolTip.ShowToolTip(false, rect);
 
-        if (isUnlocked == false || isLocked == false)
+        if (isUnlocked == false && isLocked == false)
             ToggleNodeHighlight(false);
     }
 
@@ -139,10 +139,10 @@ public class UI_TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnDisable()
     {
-        if (isLocked)
+        if (!isUnlocked || isLocked) 
+        //isLocked not actually needed since it shouldn't highlight to begin with      
             UpdateIconColor(GetColorByHex(lockedColorHex));
-
-        if (isUnlocked)
+        else
             UpdateIconColor(Color.white);
     }
 

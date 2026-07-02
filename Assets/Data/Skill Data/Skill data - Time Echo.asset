@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
   cost: 1
   displayName: Time Echo
-  description: Time Echo
+  description: 'Create a time echo (clone) of yourself.
+
+    The echo distracts enemies.'
   icon: {fileID: 1349554883, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}

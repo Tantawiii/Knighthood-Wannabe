@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
   cost: 1
   displayName: Timeless Attack
-  description: The time echo can preform one attack
+  description: The echo can perform 1 attack.
   icon: {fileID: -1036905402, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}

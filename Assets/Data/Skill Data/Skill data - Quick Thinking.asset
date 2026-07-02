@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
-  m_Name: Skill data - Healing Wisp
+  m_Name: Skill data - Quick Thinking
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
-  cost: 1
-  displayName: Healing Wisp
-  description: When the echo dies from enemy attack, it releases a healing wisp that
-    moves toward you and heals on contact.
-  icon: {fileID: 718891953, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  cost: 3
+  displayName: Quick Thinking
+  description: The healing wisp reduces cooldowns of your other skills by 1 second.
+  icon: {fileID: -384639776, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}

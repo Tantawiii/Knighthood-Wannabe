@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInputSet",
     "maps": [
         {
@@ -45,6 +46,15 @@
                     "name": "CounterAttack",
                     "type": "Button",
                     "id": "4a8e0a18-afe3-4721-a2ba-45d44d27286a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillTree",
+                    "type": "Button",
+                    "id": "6ce7a4a1-87e9-4fca-98ec-19fc6e7ebcaa",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -148,6 +158,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CounterAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a5f2289-2296-47c8-bf30-27c1513c71e3",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "SkillTree",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
