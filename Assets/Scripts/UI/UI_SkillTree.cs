@@ -4,11 +4,17 @@ public class UI_SkillTree : MonoBehaviour
 {
     [SerializeField] private int skillPoints;
     [SerializeField] private UI_TreeConnectHandler[] parentNodes;
+    public Player_SkillManager skillManager { get; private set; }
 
     public bool EnoughSkillPoints(int cost) => skillPoints >= cost;
 
     public void RemoveSkillPoints(int cost) => skillPoints -= cost;
     public void AddSkillPoints(int amount) => skillPoints += amount;
+
+    private void Awake()
+    {
+        skillManager = FindFirstObjectByType<Player_SkillManager>();
+    }
 
     private void Start()
     {

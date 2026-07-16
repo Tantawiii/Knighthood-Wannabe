@@ -10,6 +10,9 @@ public class Player_DashState : PlayerState
     {
         base.Enter();
 
+        skillManager.dash.OnStartEffect();
+        player.VFX.DoImageEcho(player.dashDuration);
+
         stateTimer = player.dashDuration;
 
         dashDir = player.moveInput.x != 0 ? (int)player.moveInput.x : player.facingDir;
@@ -37,6 +40,9 @@ public class Player_DashState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        
+        skillManager.dash.OnEndEffect();
+
         rb.gravityScale = originalGravityScale;
         player.SetVelocity(0, 0);
     }
