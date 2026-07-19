@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
+  m_Name: Skill data - Time Shard
+  m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
+  cost: 0
+  unlockedByDefault: 1
+  skillType: 2
+  upgradeData:
+    upgradeType: 6
+    cooldown: 1
+  displayName: Time Shard
+  description: 'Create a time shard filled with elemental magic.
+
+    Time shard
+    explodes when touched by an enemy or when time goes up.'
+  icon: {fileID: 1022760282, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}

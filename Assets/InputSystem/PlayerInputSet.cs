@@ -145,6 +145,15 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell"",
+                    ""type"": ""Button"",
+                    ""id"": ""2002ba9e-b905-482c-9b4f-30d4b2a9c28d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -257,6 +266,17 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
                     ""action"": ""SkillTree"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""895e8310-c655-4cb4-81d1-8023b244e1a7"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard & Mouse"",
+                    ""action"": ""Spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -288,6 +308,7 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_CounterAttack = m_Player.FindAction("CounterAttack", throwIfNotFound: true);
         m_Player_SkillTree = m_Player.FindAction("SkillTree", throwIfNotFound: true);
+        m_Player_Spell = m_Player.FindAction("Spell", throwIfNotFound: true);
     }
 
     ~@PlayerInputSet()
@@ -374,6 +395,7 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_CounterAttack;
     private readonly InputAction m_Player_SkillTree;
+    private readonly InputAction m_Player_Spell;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -409,6 +431,10 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SkillTree".
         /// </summary>
         public InputAction @SkillTree => m_Wrapper.m_Player_SkillTree;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Spell".
+        /// </summary>
+        public InputAction @Spell => m_Wrapper.m_Player_Spell;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -453,6 +479,9 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
             @SkillTree.started += instance.OnSkillTree;
             @SkillTree.performed += instance.OnSkillTree;
             @SkillTree.canceled += instance.OnSkillTree;
+            @Spell.started += instance.OnSpell;
+            @Spell.performed += instance.OnSpell;
+            @Spell.canceled += instance.OnSpell;
         }
 
         /// <summary>
@@ -482,6 +511,9 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
             @SkillTree.started -= instance.OnSkillTree;
             @SkillTree.performed -= instance.OnSkillTree;
             @SkillTree.canceled -= instance.OnSkillTree;
+            @Spell.started -= instance.OnSpell;
+            @Spell.performed -= instance.OnSpell;
+            @Spell.canceled -= instance.OnSpell;
         }
 
         /// <summary>
@@ -577,5 +609,12 @@ public partial class @PlayerInputSet: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkillTree(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Spell" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpell(InputAction.CallbackContext context);
     }
 }
