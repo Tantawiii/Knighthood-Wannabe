@@ -20,7 +20,7 @@ public class Entity_VFX : MonoBehaviour
     [Header("ELement Colors")]
     [SerializeField] Color chillVFX = Color.cyan;
     [SerializeField] Color burnVFX = Color.red;
-    [SerializeField] Color electrifyVFX = Color.yellow;
+    [SerializeField] Color shockVFX = Color.yellow;
     Color originalHitVFXColor;
 
     private void Awake()
@@ -40,7 +40,7 @@ public class Entity_VFX : MonoBehaviour
             StartCoroutine(PlayStatusVfxCo(duration, burnVFX));
 
         if (element == ElementType.Lightning)
-            StartCoroutine(PlayStatusVfxCo(duration, electrifyVFX));
+            StartCoroutine(PlayStatusVfxCo(duration, shockVFX));
     }
 
     public void StopAllVFX()
@@ -72,12 +72,12 @@ public class Entity_VFX : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
 
-    public void CreateOnHitVFX(Transform target, bool isCrit)
+    public void CreateOnHitVFX(Transform target, bool isCrit, ElementType element)
     {
         GameObject hitPrefab = isCrit ? critHitVFX : hitVFX;
         GameObject vfx = Instantiate(hitPrefab, target.position, Quaternion.identity);
         
-        vfx.GetComponentInChildren<SpriteRenderer>().color = hitVFXColor;
+        // vfx.GetComponentInChildren<SpriteRenderer>().color = GetElementColor(element);
 
 
         if(entity.facingDir == -1 && isCrit)
@@ -86,12 +86,19 @@ public class Entity_VFX : MonoBehaviour
         }
     }
 
-    public void UpdateOnHitColor(ElementType element)
+    public Color GetElementColor(ElementType element)
     {
-        if (element == ElementType.Ice)
-            hitVFXColor = chillVFX;
-        if(element == ElementType.None)
-            hitVFXColor = originalHitVFXColor;
+        switch (element)
+        {
+            case ElementType.Ice:
+                return chillVFX;
+            case ElementType.Fire:
+                return burnVFX;
+            case ElementType.Lightning:
+                return shockVFX;
+            default:
+                return Color.white;
+        }
     }
 
     public void PlayOnDamageVFX()

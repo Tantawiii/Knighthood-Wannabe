@@ -2445,7 +2445,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 196.22217, y: -392.72217}
+  m_AnchoredPosition: {x: 196.22217, y: -393.7222}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &266597924
@@ -2673,10 +2673,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 156448974}
+  - {fileID: 138485014}
+  - {fileID: 62751271}
   - {fileID: 1152995368}
   - {fileID: 1169566644}
-  - {fileID: 62751271}
-  - {fileID: 138485014}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2863,10 +2863,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1073910544}
-  - {fileID: 1622413126}
-  - {fileID: 2077760733}
   - {fileID: 980696198}
   - {fileID: 352800245}
+  - {fileID: 1622413126}
+  - {fileID: 2077760733}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -36547,9 +36547,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_TreeNode
   neededNodes:
   - {fileID: 156448976}
+  - {fileID: 641565085}
   conflictNodes:
   - {fileID: 1169566646}
-  - {fileID: 138485016}
   isUnlocked: 0
   isLocked: 0
   skillData: {fileID: 11400000, guid: a03ee08333e38a84ab868ee434a3c5c5, type: 2}
@@ -37656,10 +37656,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 641565083}
+  - {fileID: 266597923}
   - {fileID: 916167575}
   - {fileID: 1480855596}
   - {fileID: 1945686214}
-  - {fileID: 266597923}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -41799,6 +41799,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d487974627b7874eaa29da789f4b787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  basicDamageScale:
+    physical: 1
+    elemental: 1
+    chillDuration: 3
+    chillSlowMultiplier: 0.2
+    burnDuration: 3
+    burnDamageMultiplier: 1
+    shockDuration: 3
+    shockDamageMultiplier: 1
+    shockChargeMultiplier: 0.4
   targetCheck: {fileID: 1153785618}
   targetCheckRadius: 1
   whatIsTarget:
