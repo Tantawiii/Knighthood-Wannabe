@@ -9,11 +9,11 @@ public class Entity_StatusHandler : MonoBehaviour
     Entity_Health entity_Health;
     ElementType currentEffect = ElementType.None;
 
-    [Header("Electrify Effect Details")]
+    [Header("Shock Effect Details")]
     [SerializeField] GameObject lightningStrikeVFX;
     [SerializeField] float currentCharge;
     [SerializeField] float maxCharge = 1;
-    Coroutine electrifyCo;
+    Coroutine shockCo;
 
     private void Awake()
     { 
@@ -23,7 +23,19 @@ public class Entity_StatusHandler : MonoBehaviour
         entity_Health = GetComponent<Entity_Health>();
     }
 
-    public void ApplyElectrifyEffect(float duration, float electrifyDamage, float charge)
+    public void ApplyStatusEffect(ElementType element, ElementalEffectData effectData)
+    {
+        if (element == ElementType.Ice && CanBeApplied(ElementType.Ice))
+            ApplyChillEffect(effectData.chillDuration, effectData.chillSlowMultiplier);
+
+        if (element == ElementType.Fire && CanBeApplied(ElementType.Fire))
+            ApplyBurnEffect(effectData.burnDuration, effectData.burnDamage);
+
+        if (element == ElementType.Lightning && CanBeApplied(ElementType.Lightning))
+            ApplyShockEffect(effectData.shockDuration, effectData.shockDamage, effectData.shockCharge);
+    }
+
+    public void ApplyShockEffect(float duration, float electrifyDamage, float charge)
     {
         float lightningResistance = entity_Stats.GetElementalResistance(ElementType.Lightning);
         float finalcharge = charge * (1 - lightningResistance);
@@ -32,17 +44,17 @@ public class Entity_StatusHandler : MonoBehaviour
         if(currentCharge >= maxCharge)
         {
             LightningStrike(electrifyDamage);
-            StopElectrifyEffect();
+            StopShockEffect();
             return;
         }
 
-        if(electrifyCo != null)
-            StopCoroutine(electrifyCo);
+        if(shockCo != null)
+            StopCoroutine(shockCo);
 
-        electrifyCo = StartCoroutine(ElectrifyEffectCo(duration));
+        shockCo = StartCoroutine(ShockEffectCo(duration));
     }
 
-    public void StopElectrifyEffect()
+    public void StopShockEffect()
     {
         currentEffect = ElementType.None;
         currentCharge = 0;
@@ -55,13 +67,13 @@ public class Entity_StatusHandler : MonoBehaviour
         entity_Health.ReduceHealth(electrifyDamage);
     }
 
-    IEnumerator ElectrifyEffectCo(float duration)
+    IEnumerator ShockEffectCo(float duration)
     {
         currentEffect = ElementType.Lightning;
         entity_VFX.PlayOnStatusVfx(duration, ElementType.Lightning);
 
         yield return new WaitForSeconds(duration);
-        StopElectrifyEffect();
+        StopShockEffect();
     }
 
     public void ApplyBurnEffect(float duration, float fireDamage)
