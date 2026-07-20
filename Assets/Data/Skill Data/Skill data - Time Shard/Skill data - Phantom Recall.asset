@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
-  m_Name: Skill data - Quick Dash
+  m_Name: Skill data - Phantom Recall
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
-  cost: 0
-  unlockedByDefault: 1
-  skillType: 0
+  cost: 2
+  unlockedByDefault: 0
+  skillType: 2
   upgradeData:
-    upgradeType: 1
+    upgradeType: 9
     cooldown: 3
-  displayName: Quick Dash
-  description: 'Dash to avoid attacks.
-
-    You cannot take damage while dashing.'
-  icon: {fileID: 43434669, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  displayName: Phantom Recall
+  description: Press skill button again to change places with last shard you created.
+  icon: {fileID: -384575218, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}

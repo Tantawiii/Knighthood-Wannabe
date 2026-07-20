@@ -16,5 +16,5 @@ public enum SkillUpgradeType
     Shard_MoveToEnemy, // Move to the nearest enemy when shard is created
     Shard_MultiCast, // Shards can have up to N charges, and can be cast multiple times in a row
     Shard_Teleport, // Teleport to the last shard created
-    Shard_TeleportAndHeal, // Teleport to the last shard created and heal back to your hp when you casted the shard
+    Shard_TeleportHpRewind, // Teleport to the last shard created and heal back to your hp when you casted the shard
 }
