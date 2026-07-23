@@ -2158,7 +2158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &243648182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2673,10 +2673,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 156448974}
-  - {fileID: 138485014}
   - {fileID: 62751271}
   - {fileID: 1152995368}
   - {fileID: 1169566644}
+  - {fileID: 138485014}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2863,10 +2863,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1073910544}
-  - {fileID: 980696198}
-  - {fileID: 352800245}
   - {fileID: 1622413126}
   - {fileID: 2077760733}
+  - {fileID: 980696198}
+  - {fileID: 352800245}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -37656,10 +37656,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 641565083}
-  - {fileID: 266597923}
   - {fileID: 916167575}
   - {fileID: 1480855596}
   - {fileID: 1945686214}
+  - {fileID: 266597923}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -41814,11 +41814,6 @@ MonoBehaviour:
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 128
-  defaultDuration: 3
-  chillSlowMultiplier: 0.4
-  electrifyChargeBuildUp: 0.4
-  fireScale: 0.8
-  lightningScale: 2.5
   counterRecovery: 0.25
 --- !u!114 &8787814854938881941
 MonoBehaviour:
@@ -41940,7 +41935,7 @@ MonoBehaviour:
   critHitVFX: {fileID: 7304690092620296599, guid: d7c94a59bded52f42b0fefec82c3b647, type: 3}
   chillVFX: {r: 0.05490196, g: 0.39215687, b: 0.77254903, a: 1}
   burnVFX: {r: 0.8392157, g: 0.078431375, b: 0.078431375, a: 1}
-  electrifyVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  shockVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   imageEchoInterval: 0.05
   imageEchoPrefab: {fileID: 8171699928726376076, guid: 9126d61ee82af87488f38ae791093455, type: 3}
 --- !u!1660057539 &9223372036854775807

@@ -9,6 +9,8 @@ public class Player : Entity
     public PlayerInputSet input { get; private set; }
     public Player_SkillManager skillManager { get; private set; }
     public Player_VFX VFX { get; private set; }
+    public Entity_Health health { get; private set; }
+    public Entity_StatusHandler statusHandler { get; private set; }
 
     #region Player States
     public Player_IdleState idleState { get; private set; }
@@ -22,6 +24,7 @@ public class Player : Entity
     public Player_JumpAttackState jumpAttackState { get; private set; }
     public Player_DeadState deadState { get; private set; }
     public Player_CounterAttackState counterAttackState { get; private set; }
+    public Player_SwordThrowState swordThrowState { get; private set; }
 
     #endregion
 
@@ -53,9 +56,12 @@ public class Player : Entity
         base.Awake();
 
         ui = FindAnyObjectByType<UI>();
-        input = new PlayerInputSet();
-        skillManager = GetComponent<Player_SkillManager>();
         VFX = GetComponent<Player_VFX>();
+        health = GetComponent<Entity_Health>();
+        skillManager = GetComponent<Player_SkillManager>();
+        statusHandler = GetComponent<Entity_StatusHandler>();
+        
+        input = new PlayerInputSet();
 
         #region State Initialization
 
@@ -70,6 +76,7 @@ public class Player : Entity
         jumpAttackState = new Player_JumpAttackState(this, stateMachine, "jumpAttack");
         deadState = new Player_DeadState(this, stateMachine, "dead");
         counterAttackState = new Player_CounterAttackState(this, stateMachine, "counterAttack");
+        swordThrowState = new Player_SwordThrowState(this, stateMachine, "swordThrow");
 
         #endregion
     }
