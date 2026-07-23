@@ -50,6 +50,7 @@ public class Player : Entity
     public float dashSpeed = 20f;
 
     public Vector2 moveInput { get; private set; }
+    public Vector2 mousePosition { get; private set; }
 
     protected override void Awake()
     {
@@ -152,6 +153,7 @@ public class Player : Entity
     {
         input.Enable();
 
+        input.Player.Mouse.performed += ctx => mousePosition = ctx.ReadValue<Vector2>();
 
         input.Player.Movement.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         input.Player.Movement.canceled += ctx => moveInput = Vector2.zero;
