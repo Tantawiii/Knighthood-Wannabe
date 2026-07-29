@@ -32,7 +32,7 @@ public class Skill_Base : MonoBehaviour
         damageScaleData = upgradeData.damageScaleData;
     }
 
-    public bool CanUseSkill()
+    public virtual bool CanUseSkill()
     {
         if(upgradeType == SkillUpgradeType.None)
         {

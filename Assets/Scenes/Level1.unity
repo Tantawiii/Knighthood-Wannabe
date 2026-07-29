@@ -610,7 +610,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -185.6156, y: -353.11554}
+  m_AnchoredPosition: {x: 550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62751272
@@ -1276,7 +1276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 68.41052, y: -399.47058}
+  m_AnchoredPosition: {x: 550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &138485015
@@ -2445,7 +2445,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 196.22217, y: -393.7222}
+  m_AnchoredPosition: {x: -550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &266597924
@@ -2673,9 +2673,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 156448974}
-  - {fileID: 62751271}
   - {fileID: 1152995368}
   - {fileID: 1169566644}
+  - {fileID: 62751271}
   - {fileID: 138485014}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2911,7 +2911,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -188.1413, y: -139.65356}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &352800246
@@ -34729,8 +34729,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Default Skill Requirements
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
-  m_sharedMaterial: {fileID: -5267274051750520707, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -35327,7 +35327,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -197.5}
+  m_AnchoredPosition: {x: -550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &916167576
@@ -35623,7 +35623,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 81.97351, y: -130.46118}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980696199
@@ -36506,7 +36506,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -185.6156, y: -185.61554}
+  m_AnchoredPosition: {x: 550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1152995369
@@ -36599,6 +36599,7 @@ GameObject:
   - component: {fileID: 1162638875}
   - component: {fileID: 1162638876}
   - component: {fileID: 1162638877}
+  - component: {fileID: 1162638878}
   m_Layer: 3
   m_Name: Skills_Holder
   m_TagString: Untagged
@@ -36659,6 +36660,26 @@ MonoBehaviour:
   isRecharging: 0
   shardExistDuration: 10
   healthRewindAmount: 0
+--- !u!114 &1162638878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162638874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfcf1acb440b62b4583497b09cbf0b8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Skill_SwordThrow
+  skillType: 3
+  upgradeType: 11
+  cooldown: 0
+  swordPrefab: {fileID: 2780320342906827243, guid: a255ac1b5a13c1d4883923fa7765b0e5, type: 3}
+  throwPower: 3
+  predictionDotPrefab: {fileID: 5417027774204449360, guid: db2c351c6bbcc164e9fe4164769277c2, type: 3}
+  predictionDotCount: 20
+  predictionDotSpacing: 0.05
 --- !u!1 &1169345301
 GameObject:
   m_ObjectHideFlags: 0
@@ -36773,7 +36794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 68.41055, y: -216.97058}
+  m_AnchoredPosition: {x: 550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1169566645
@@ -37549,8 +37570,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
-  m_sharedMaterial: {fileID: -5267274051750520707, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -38108,8 +38129,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Default Skill Description
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
-  m_sharedMaterial: {fileID: -5267274051750520707, guid: c3dc95217ca1c8d41bda7633ecc1781c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -38224,7 +38245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 196.22217, y: -196.22217}
+  m_AnchoredPosition: {x: -550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1480855597
@@ -38908,7 +38929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 188.14136, y: -325.998}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1622413127
@@ -40196,7 +40217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -410.00003}
+  m_AnchoredPosition: {x: -550, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1945686215
@@ -41028,7 +41049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.9641724, y: -335.2735}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2077760734
@@ -41640,9 +41661,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1030606241206853219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab41769260ce25348a4f128bc9cd24cd, type: 3}
+  m_Script: {fileID: 11500000, guid: bebb20eda0917b74899c3b2a2ea42261, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_AnimationTrigger
 --- !u!114 &6792569039879283798
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,6 +11,9 @@ public class Player_SwordThrowState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        skillManager.swordThrow.EnableDot(true);
+
         if(mainCamera != Camera.main)
             mainCamera = Camera.main;
     }
@@ -22,9 +25,15 @@ public class Player_SwordThrowState : PlayerState
 
         player.SetVelocity(0, rb.linearVelocity.y);
         player.HandleFlip(directionToMouse.x);
+        skillManager.swordThrow.PredictTrajectory(directionToMouse);
 
         if (input.Player.Attack.WasPressedThisFrame())
+        {
             animator.SetBool("swordThrowPerformed", true);
+
+            skillManager.swordThrow.EnableDot(false);
+            skillManager.swordThrow.SetConfirmedDirection(directionToMouse);
+        }
 
         if (input.Player.RangeAttack.WasReleasedThisFrame() || triggerCalled)
             stateMachine.ChangeState(player.idleState);
@@ -34,6 +43,7 @@ public class Player_SwordThrowState : PlayerState
     {
         base.Exit();
         animator.SetBool("swordThrowPerformed", false);
+        skillManager.swordThrow.EnableDot(false);
     }
 
     private Vector2 DirectionToMouse()
