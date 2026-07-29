@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
+  m_Name: Skill data - Chainsaw
+  m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
+  displayName: Chainsaw
+  description: The sword spins in the air like a raging chainsaw. Dealing damage
+    to nearby enemies fo N seconds.
+  icon: {fileID: -791806226, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  cost: 2
+  unlockedByDefault: 0
+  skillType: 3
+  upgradeData:
+    upgradeType: 12
+    cooldown: 7
+    damageScaleData:
+      physical: 0.2
+      elemental: 0.2
+      chillDuration: 3
+      chillSlowMultiplier: 0.2
+      burnDuration: 3
+      burnDamageMultiplier: 1
+      shockDuration: 3
+      shockDamageMultiplier: 0.4
+      shockChargeMultiplier: 0.4

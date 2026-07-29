@@ -6,8 +6,18 @@ public class Skill_SwordThrow : Skill_Base
 
     [Header("Regular Sword Upgrade")]
     [SerializeField] private GameObject swordPrefab;
-    [Range(0f, 10f)]
     [SerializeField] private float throwPower = 6f;
+
+    [Header("Pierce Sword Upgrade")]
+    [SerializeField] private GameObject pierceSwordPrefab;
+    public int pierceAmountOfEnemies = 2; // The number of enemies the sword can pierce through before returning to the player
+
+    [Header("Spin Sword Upgrade")]
+    [SerializeField] private GameObject spinSwordPrefab;
+    [Range(5, 10)]
+    public int maxDistance = 5; // The maximum distance the sword can travel from the player before stopping
+    public float attackPerSecond = 6f; // The number of attacks the sword can perform per second while spinning
+    public float maxSpinDuration = 2f; // The duration for which the sword will spin before returning to the player
 
     [Header("Trajectory Prediction")]
     [SerializeField] private GameObject predictionDotPrefab;
@@ -29,6 +39,7 @@ public class Skill_SwordThrow : Skill_Base
     {
         if(currentSword != null)
         {
+            currentSword.GetSwordBackToPlayer(); // If a sword is already thrown, call the method to bring it back to the player
             return false; // Cannot use the skill if a sword is already thrown and active
         }
         
@@ -37,10 +48,24 @@ public class Skill_SwordThrow : Skill_Base
 
     public void ThrowSword()
     {
+        swordPrefab = GetSwordPrefab(); // Get the appropriate sword prefab based on unlocked upgrades
         GameObject swordInstance = Instantiate(swordPrefab, predictionDots[1].position, Quaternion.identity);
 
         currentSword = swordInstance.GetComponent<SkillObject_Sword>();
         currentSword.SetupSword(this, GetThrowPower());
+    }
+
+    private GameObject GetSwordPrefab()
+    {
+        if (Unlocked(SkillUpgradeType.SwordThrow))
+            return swordPrefab;
+        else if (Unlocked(SkillUpgradeType.SwordThrow_Pierce))
+            return pierceSwordPrefab;   
+        else if (Unlocked(SkillUpgradeType.SwordThrow_Spin))
+            return spinSwordPrefab;
+
+        Debug.LogWarning("No sword upgrade is unlocked. Please unlock a sword upgrade to use the Sword Throw skill.");
+        return null; // Return null if no sword upgrade is unlocked
     }
 
     private Vector2 GetThrowPower() => confirmedDirection * (throwPower * 10); // Multiply by 10 to scale the throw power to a more suitable range for the game physics
