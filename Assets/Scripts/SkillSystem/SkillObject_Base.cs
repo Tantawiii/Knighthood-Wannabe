@@ -9,6 +9,7 @@ public class SkillObject_Base : MonoBehaviour
     [SerializeField] protected float targetCheckRadius = 1f;
 
     protected Animator anim;
+    protected Rigidbody2D rb;
     protected Entity_Stats playerStats;
     protected DamageScaleData damageScaleData;
     protected ElementType usedElementType;
@@ -17,6 +18,7 @@ public class SkillObject_Base : MonoBehaviour
     protected virtual void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected Collider2D[] EnemiesAround(Transform t, float radius)
