@@ -19,13 +19,14 @@ public class Enemy_BattleState : EnemyState
         /*
          * if (player == null)
          *    enemy.GetPlayerReference();
-         * 
+         *
          */
+
+        enemy.HandleFlip(DirectionToPlayer());
 
         if (ShouldRetreat())
         {
             rb.linearVelocity = new Vector2(enemy.retreatVelocity.x * -DirectionToPlayer(), enemy.retreatVelocity.y);
-            enemy.HandleFlip(DirectionToPlayer());
         }
     }
 

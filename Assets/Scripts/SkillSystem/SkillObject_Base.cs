@@ -11,6 +11,7 @@ public class SkillObject_Base : MonoBehaviour
     protected Animator anim;
     protected Rigidbody2D rb;
     protected Entity_Stats playerStats;
+    protected Transform ownerTransform;
     protected DamageScaleData damageScaleData;
     protected ElementType usedElementType;
     protected bool targetGotHit;
@@ -53,7 +54,7 @@ public class SkillObject_Base : MonoBehaviour
 
             ElementType elementType = attackData.elementType;
 
-            targetGotHit = damageable.TakeDamage(physicalDamage, elementalDamage, elementType, transform);
+            targetGotHit = damageable.TakeDamage(physicalDamage, elementalDamage, elementType, ownerTransform);
 
             if(elementType != ElementType.None)
             {

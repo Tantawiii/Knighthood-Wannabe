@@ -68,17 +68,18 @@ public class Enemy : Entity
 
     public void EnterBattleState(Transform player)
     {
+        this.player = player;
+        HandleFlip(player.position.x > transform.position.x ? 1 : -1);
+
         if (stateMachine.currentState == battleState || stateMachine.currentState == attackState)
             return;
 
-        this.player = player;
         stateMachine.ChangeState(battleState);
     }
 
     public Transform GetPlayerReference()
     {
-        if (player == null)
-            player = PlayerDetection().transform;
+        player = PlayerDetection().transform;
 
         return player;
     }

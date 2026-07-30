@@ -48,6 +48,7 @@ public class SkillObject_Shard : SkillObject_Base
     {
         this.shardManager = shardManager;
 
+        ownerTransform = shardManager.player.transform;
         playerStats = shardManager.player.entityStats;
         damageScaleData = shardManager.damageScaleData;
 
@@ -59,6 +60,7 @@ public class SkillObject_Shard : SkillObject_Base
     {
         this.shardManager = shardManager;
 
+        ownerTransform = shardManager.player.transform;
         playerStats = shardManager.player.entityStats;
         damageScaleData = shardManager.damageScaleData;
 
