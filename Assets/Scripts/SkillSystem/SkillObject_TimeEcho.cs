@@ -6,6 +6,8 @@ public class SkillObject_TimeEcho : SkillObject_Base
     [SerializeField] private LayerMask groundLayer;
     private Skill_TimeEcho echoManager;
 
+    public int maxAttacks { get; private set; }
+
     public void SetUpEcho(Skill_TimeEcho echoManager)
     {
         this.echoManager = echoManager;
@@ -17,6 +19,11 @@ public class SkillObject_TimeEcho : SkillObject_Base
     {
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
         StopHorizontalMovement();
+    }
+
+    public void PerformAttack()
+    {
+        DamageEnemiesInRadius(targetCheck, 1);
     }
 
     public void HandleDeath()
