@@ -23,4 +23,13 @@ public enum SkillUpgradeType
     SwordThrow_Spin, // Spin the sword when thrown, allowing it to hit multiple enemies static placement
     SwordThrow_Pierce, // Sword can pierce through enemies, allowing it to hit multiple enemies in a line
     SwordThrow_Bounce, // Sword can bounce off enemies, allowing it to hit multiple enemies in a single throw
+
+    // ----- Time Echo Tree -----
+    TimeEcho, // Create a time echo that mimics your actions for a short duration
+    TimeEcho_SingleAttack, // Time echo can perform a single attack when created
+    TimeEcho_MultiAttack, // Time echo can perform N attacks when created
+    TimeEcho_ChanceToMultiply, // Time echo has a chance to create multiple echoes when created
+    TimeEcho_HealWisp, // Time echo can create a healing wisp when created
+    TimeEcho_CleanseWisp, // Time echo can create a cleansing wisp when created, removes negative effects from the player when created
+    TimeEcho_CooldownWisp, // Time echo decreases the cooldown of all skills when created by N seconds.
 }

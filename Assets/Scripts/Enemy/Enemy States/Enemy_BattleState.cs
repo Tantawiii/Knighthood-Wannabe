@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy_BattleState : EnemyState
 {
     Transform player;
+    Transform lastTarget;
     float lastTimeWasInBattle;
     public Enemy_BattleState(Enemy enemy, StateMachine stateMachine, string animBoolName) : base(enemy, stateMachine, animBoolName)
     {
@@ -32,8 +33,11 @@ public class Enemy_BattleState : EnemyState
     {
         base.Update();
 
-        //if (enemy.PlayerDetection())
-        //    UpdateBattleTimer();
+        if (enemy.PlayerDetection())
+        {
+            UpdateTargetIfNeeded();
+            UpdateBattleTimer();
+        }
 
         if (BattleTimeIsOver())
             stateMachine.ChangeState(enemy.idleState);
@@ -43,6 +47,18 @@ public class Enemy_BattleState : EnemyState
         else
             enemy.SetVelocity(enemy.battleMoveSpeed * DirectionToPlayer(), rb.linearVelocity.y);
 
+    }
+
+    private void UpdateTargetIfNeeded()
+    {
+        if(enemy.PlayerDetection() == false)
+            return;
+        Transform newTarget = enemy.GetPlayerReference().transform;
+        if (newTarget != lastTarget)
+        {
+            lastTarget = newTarget;
+            player = newTarget;
+        }
     }
 
     private void UpdateBattleTimer() => lastTimeWasInBattle = Time.time;
