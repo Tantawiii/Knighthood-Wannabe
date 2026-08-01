@@ -2899,10 +2899,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 156448974}
-  - {fileID: 62751271}
-  - {fileID: 138485014}
   - {fileID: 1152995368}
   - {fileID: 1169566644}
+  - {fileID: 62751271}
+  - {fileID: 138485014}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -38010,7 +38010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skill_TimeEcho
   skillType: 1
-  upgradeType: 15
+  upgradeType: 0
   cooldown: 0
   timeEchoPrefab: {fileID: 2585991950541815220, guid: cf6504e47e8e1dc43861fde75aee96e2, type: 3}
   timeEchoDuration: 15
