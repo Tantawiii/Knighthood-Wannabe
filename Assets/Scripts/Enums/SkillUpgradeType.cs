@@ -28,7 +28,7 @@ public enum SkillUpgradeType
     TimeEcho, // Create a time echo that mimics your actions for a short duration
     TimeEcho_SingleAttack, // Time echo can perform a single attack when created
     TimeEcho_MultiAttack, // Time echo can perform N attacks when created
-    TimeEcho_ChanceToMultiply, // Time echo has a chance to create multiple echoes when created
+    TimeEcho_DuplicateChance, // Time echo has a chance to create multiple echoes when created
     TimeEcho_HealWisp, // Time echo can create a healing wisp when created
     TimeEcho_CleanseWisp, // Time echo can create a cleansing wisp when created, removes negative effects from the player when created
     TimeEcho_CooldownWisp, // Time echo decreases the cooldown of all skills when created by N seconds.

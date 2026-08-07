@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
-  m_Name: Skill data - Time Echo
+  m_Name: Skill data - Endless Possibility
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
-  displayName: Time Echo
-  description: 'Create a time echo (clone) of yourself.
-
-    The echo distracts enemies.'
-  icon: {fileID: 1349554883, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
-  cost: 1
+  displayName: Endless Possibility
+  description: 'The echo has 30% chance to duplicate itself. '
+  icon: {fileID: 1038199245, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  cost: 2
   unlockedByDefault: 0
   skillType: 1
   upgradeData:
-    upgradeType: 15
+    upgradeType: 18
     cooldown: 0
     damageScaleData:
       physical: 1

@@ -15,6 +15,7 @@ public class SkillObject_Base : MonoBehaviour
     protected DamageScaleData damageScaleData;
     protected ElementType usedElementType;
     protected bool targetGotHit;
+    protected Transform lastTarget;
 
     protected virtual void Awake()
     {
@@ -63,6 +64,7 @@ public class SkillObject_Base : MonoBehaviour
 
             if (targetGotHit && onHitVFX != null)
             {
+                lastTarget = target.transform;
                 Instantiate(onHitVFX, target.transform.position, Quaternion.identity);
             }
 
