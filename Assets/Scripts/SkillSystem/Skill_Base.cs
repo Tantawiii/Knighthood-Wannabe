@@ -11,6 +11,7 @@ public class Skill_Base : MonoBehaviour
     [SerializeField] private SkillType skillType;
     [SerializeField] protected SkillUpgradeType upgradeType;
     [SerializeField] protected float cooldown;
+    [SerializeField] private Skill_DataSO skillData;
     private float lastTimeUsed;
 
     protected virtual void Awake()
@@ -19,6 +20,9 @@ public class Skill_Base : MonoBehaviour
         player = GetComponentInParent<Player>();
         lastTimeUsed -= cooldown;
         damageScaleData = new DamageScaleData(); // Initialize with default values
+
+        if (skillData != null && skillData.unlockedByDefault)
+            SetSkillUpgrade(skillData.upgradeData);
     }
 
     public virtual void TryUseSkill()
