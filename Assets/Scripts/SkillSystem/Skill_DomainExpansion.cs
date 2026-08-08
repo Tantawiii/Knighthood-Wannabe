@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Skill_DomainExpansion : Skill_Base
 {
+    [SerializeField] private GameObject domainPrefab;
     public bool InstantDomain()
     {
         return upgradeType != SkillUpgradeType.Domain_EchoSpam 
@@ -9,6 +10,7 @@ public class Skill_DomainExpansion : Skill_Base
     }
     public void CreateDomain()
     {
-        Debug.Log("Domain Expansion Created");
+        GameObject domain = Instantiate(domainPrefab, transform.position, Quaternion.identity);
+        domain.GetComponent<SkillObject_DomainExpansion>().SetUpDomain(this);
     }
 }

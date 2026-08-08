@@ -4987,8 +4987,8 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1393631177
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -11783,9 +11783,9 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 364847637
-  m_SortingLayer: -5
-  m_SortingOrder: 2
+  m_SortingLayerID: -1393631177
+  m_SortingLayer: -4
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -38703,6 +38703,7 @@ MonoBehaviour:
   skillType: 4
   upgradeType: 0
   cooldown: 0
+  domainPrefab: {fileID: 1411173965281242039, guid: 394489cd85d9dbd489ff2d1d896bc44f, type: 3}
 --- !u!1 &1169345301
 GameObject:
   m_ObjectHideFlags: 0
