@@ -24,6 +24,20 @@ public abstract class PlayerState : EntityState
             skillManager.dash.SetSkillOnCooldown();
             stateMachine.ChangeState(player.dashState);
         }
+
+        if (input.Player.Ultimate.WasPressedThisFrame() && skillManager.domainExpansion.CanUseSkill())
+        {
+            if(skillManager.domainExpansion.InstantDomain())
+            {
+                skillManager.domainExpansion.CreateDomain();
+            }
+            else
+            {
+                stateMachine.ChangeState(player.domainExpansionState);
+            }
+            
+            skillManager.domainExpansion.SetSkillOnCooldown();
+        }
     }
 
     public override void UpdateAnimationParameters()

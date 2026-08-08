@@ -133,4 +133,6 @@ public class Entity : MonoBehaviour
         if (secondaryWallCheck != null)
             Gizmos.DrawLine(secondaryWallCheck.position, secondaryWallCheck.position + new Vector3(wallCheckDistance * facingDir, 0));
     }
+
+    public LayerMask GetWhatIsGround() => whatIsGround;
 }

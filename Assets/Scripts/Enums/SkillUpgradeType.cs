@@ -32,4 +32,9 @@ public enum SkillUpgradeType
     TimeEcho_HealWisp, // Time echo can create a healing wisp when created
     TimeEcho_CleanseWisp, // Time echo can create a cleansing wisp when created, removes negative effects from the player when created
     TimeEcho_CooldownWisp, // Time echo decreases the cooldown of all skills when created by N seconds.
+
+    // ----- Domain Expansion Tree -----
+    Domain_SlowingDown, // Create a domain expansion that allows the player to slow down time for a short duration
+    Domain_EchoSpam, // Create a domain expansion that allows the player to spam time echoes for a short duration
+    Domain_ShardSpam, // Create a domain expansion that allows the player to spam time shards for a short duration
 }

@@ -37186,7 +37186,7 @@ MonoBehaviour:
   skillData: {fileID: 11400000, guid: ac2d292f1320f124780f5c1d4354c87a, type: 2}
   skillName: Healing Wisp
   skillIcon: {fileID: 120113995}
-  skillCost: 1
+  skillCost: 2
   lockedColorHex: '#9F9797'
 --- !u!1 &981516299
 GameObject:
@@ -38574,6 +38574,7 @@ GameObject:
   - component: {fileID: 1162638877}
   - component: {fileID: 1162638878}
   - component: {fileID: 1162638879}
+  - component: {fileID: 1162638880}
   m_Layer: 3
   m_Name: Skills_Holder
   m_TagString: Untagged
@@ -38687,6 +38688,21 @@ MonoBehaviour:
   duplicateChance: 0.6
   damagePercentHealed: 0.3
   cooldownReduction: 0
+--- !u!114 &1162638880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162638874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffe801c542984044a0c327e46ef392b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Skill_DomainExpansion
+  skillType: 4
+  upgradeType: 0
+  cooldown: 0
 --- !u!1 &1169345301
 GameObject:
   m_ObjectHideFlags: 0
@@ -45698,6 +45714,8 @@ MonoBehaviour:
   jumpAttackVelocity: {x: 5, y: -6}
   attackVelocityDuration: 0.1
   comboResetTime: 1
+  riseSpeed: 25
+  riseMaxDistance: 3
   moveSpeed: 6
   jumpForce: 12
   wallJumpForce: {x: 5, y: 12}
