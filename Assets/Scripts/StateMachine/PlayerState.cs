@@ -52,7 +52,10 @@ public abstract class PlayerState : EntityState
         if(skillManager.dash.CanUseSkill() == false)
             return false;
 
-        if(player.wallDetected || stateMachine.currentState == player.dashState)
+        if(player.wallDetected)
+            return false;
+        
+        if(stateMachine.currentState == player.dashState || stateMachine.currentState == player.domainExpansionState)
             return false;
 
         return true;
