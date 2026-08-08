@@ -33,23 +33,28 @@ public class Enemy : Entity
     [SerializeField] Transform playerCheck;
     [SerializeField] float playerCheckDistance = 10f;
     public Transform player { get; private set; }
+    public float activeSlowMultipler { get; private set; } = 1f;
+
+    public float GetMoveSpeed() => moveSpeed * activeSlowMultipler;
+    public float GetBattleMoveSpeed() => battleMoveSpeed * activeSlowMultipler;
 
     protected override IEnumerator SlowDownEntityCo(float duration, float slowMultiplier)
     {
-        float originalMoveSpeed = moveSpeed;
-        float originalBattleSpeed = battleMoveSpeed;
-        float originalAnimSpeed = animator.speed;
 
-        float speedMultiplier = 1 - slowMultiplier;
-        moveSpeed *= speedMultiplier;
-        battleMoveSpeed *= speedMultiplier;
-        animator.speed *= speedMultiplier;
+        activeSlowMultipler = 1 - slowMultiplier;
+
+        animator.speed *= activeSlowMultipler;
 
         yield return new WaitForSeconds(duration);
 
-        moveSpeed = originalMoveSpeed;
-        battleMoveSpeed = originalBattleSpeed;
-        animator.speed = originalAnimSpeed;
+        StopSlowDown();
+    }
+
+    public override void StopSlowDown()
+    {
+        activeSlowMultipler = 1f;
+        animator.speed = 1f;
+        base.StopSlowDown();
     }
 
     public void EnableCounterWindow(bool enable) => canBeStunned = enable;

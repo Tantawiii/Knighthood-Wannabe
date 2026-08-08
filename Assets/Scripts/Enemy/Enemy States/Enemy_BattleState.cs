@@ -26,7 +26,7 @@ public class Enemy_BattleState : EnemyState
 
         if (ShouldRetreat())
         {
-            rb.linearVelocity = new Vector2(enemy.retreatVelocity.x * -DirectionToPlayer(), enemy.retreatVelocity.y);
+            rb.linearVelocity = new Vector2((enemy.retreatVelocity.x * enemy.activeSlowMultipler) * -DirectionToPlayer(), enemy.retreatVelocity.y);
         }
     }
 
@@ -46,7 +46,7 @@ public class Enemy_BattleState : EnemyState
         if (WithinAttackRange() && enemy.PlayerDetection())
             stateMachine.ChangeState(enemy.attackState);
         else
-            enemy.SetVelocity(enemy.battleMoveSpeed * DirectionToPlayer(), rb.linearVelocity.y);
+            enemy.SetVelocity(enemy.GetBattleMoveSpeed() * DirectionToPlayer(), rb.linearVelocity.y);
 
     }
 
