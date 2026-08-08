@@ -68,6 +68,8 @@ public class Skill_SwordThrow : Skill_Base
 
         currentSword = swordInstance.GetComponent<SkillObject_Sword>();
         currentSword.SetupSword(this, GetThrowPower());
+
+        SetSkillOnCooldown(); // Start the cooldown for the skill after throwing the sword
     }
 
     private GameObject GetSwordPrefab()
