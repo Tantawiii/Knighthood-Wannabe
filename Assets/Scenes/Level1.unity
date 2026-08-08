@@ -38685,6 +38685,8 @@ MonoBehaviour:
   timeEchoDuration: 15
   maxAttacks: 3
   duplicateChance: 0.6
+  damagePercentHealed: 0.3
+  cooldownReduction: 0
 --- !u!1 &1169345301
 GameObject:
   m_ObjectHideFlags: 0

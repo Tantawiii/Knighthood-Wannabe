@@ -9,6 +9,33 @@ public class Skill_TimeEcho : Skill_Base
     [SerializeField] private int maxAttacks = 3;
     [SerializeField] private float duplicateChance = 0.3f;
 
+    [Header("Heal Wisp Upgrades")]
+    [SerializeField] private float damagePercentHealed = .3f;
+    [SerializeField] private float cooldownReduction;
+
+    public float GetPercentOfDamageHealed()
+    {
+        if(ShouldBeWisp() == false)
+        {
+            return 0;
+        }
+        return damagePercentHealed;
+    }
+
+    public float GetCooldownReduction()
+    {
+        if(upgradeType != SkillUpgradeType.TimeEcho_CooldownWisp)
+        {
+            return 0;
+        }
+        return cooldownReduction;
+    }
+
+    public bool CanRemoveNegativeEffects()
+    {
+        return upgradeType == SkillUpgradeType.TimeEcho_CleanseWisp;
+    }
+
     public bool ShouldBeWisp()
     {
         return upgradeType == SkillUpgradeType.TimeEcho_HealWisp 

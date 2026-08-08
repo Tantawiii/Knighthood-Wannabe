@@ -23,6 +23,13 @@ public class Entity_StatusHandler : MonoBehaviour
         entity_Health = GetComponent<Entity_Health>();
     }
 
+    public void RemoveAllNegativeEffects()
+    {
+        StopAllCoroutines();
+        currentEffect = ElementType.None;
+        entity_VFX.StopAllVFX();
+    }
+
     public void ApplyStatusEffect(ElementType element, ElementalEffectData effectData)
     {
         if (element == ElementType.Ice && CanBeApplied(ElementType.Ice))
@@ -35,7 +42,7 @@ public class Entity_StatusHandler : MonoBehaviour
             ApplyShockEffect(effectData.shockDuration, effectData.shockDamage, effectData.shockCharge);
     }
 
-    public void ApplyShockEffect(float duration, float electrifyDamage, float charge)
+    private void ApplyShockEffect(float duration, float electrifyDamage, float charge)
     {
         float lightningResistance = entity_Stats.GetElementalResistance(ElementType.Lightning);
         float finalcharge = charge * (1 - lightningResistance);
@@ -54,7 +61,7 @@ public class Entity_StatusHandler : MonoBehaviour
         shockCo = StartCoroutine(ShockEffectCo(duration));
     }
 
-    public void StopShockEffect()
+    private void StopShockEffect()
     {
         currentEffect = ElementType.None;
         currentCharge = 0;
@@ -76,7 +83,7 @@ public class Entity_StatusHandler : MonoBehaviour
         StopShockEffect();
     }
 
-    public void ApplyBurnEffect(float duration, float fireDamage)
+    private void ApplyBurnEffect(float duration, float fireDamage)
     {
         float fireResistance = entity_Stats.GetElementalResistance(ElementType.Fire);
         float reducedDamage = fireDamage * (1 - fireResistance);
@@ -104,7 +111,7 @@ public class Entity_StatusHandler : MonoBehaviour
         currentEffect = ElementType.None;
     }
 
-    public void ApplyChillEffect(float duration, float slowMultiplier)
+    private void ApplyChillEffect(float duration, float slowMultiplier)
     {
         float iceResistance = entity_Stats.GetElementalResistance(ElementType.Ice);
         float reducedDuration = duration * (1 - iceResistance);

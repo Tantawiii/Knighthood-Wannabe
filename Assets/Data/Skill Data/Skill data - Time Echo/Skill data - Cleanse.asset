@@ -12,7 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b14c64bd89c4e45833e2e89c1d4a84, type: 3}
   m_Name: Skill data - Cleanse
   m_EditorClassIdentifier: Assembly-CSharp::Skill_DataSO
-  cost: 3
   displayName: Cleanse
-  description: The healing wisp reduces cooldowns of your other skills by 1 second.
+  description: Removes all negative debuffs.
   icon: {fileID: 1692916819, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  cost: 3
+  unlockedByDefault: 0
+  skillType: 1
+  upgradeData:
+    upgradeType: 20
+    cooldown: 0
+    damageScaleData:
+      physical: 1
+      elemental: 1
+      chillDuration: 3
+      chillSlowMultiplier: 0.2
+      burnDuration: 3
+      burnDamageMultiplier: 1
+      shockDuration: 3
+      shockDamageMultiplier: 1
+      shockChargeMultiplier: 0.4

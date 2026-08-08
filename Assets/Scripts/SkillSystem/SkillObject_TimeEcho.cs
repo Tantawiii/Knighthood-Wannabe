@@ -10,6 +10,10 @@ public class SkillObject_TimeEcho : SkillObject_Base
 
     private Skill_TimeEcho echoManager;
     private TrailRenderer wispTrail;
+    private Entity_Health playerHealth;
+    private SkillObject_Health echoHealth;
+    private Player_SkillManager skillManager;
+    private Entity_StatusHandler statusHandler;
 
     public int maxAttacks { get; private set; }
 
@@ -20,10 +24,14 @@ public class SkillObject_TimeEcho : SkillObject_Base
         ownerTransform = echoManager.player.transform.root;
         damageScaleData = echoManager.damageScaleData;
         maxAttacks = echoManager.GetMaxAttacks();
+        playerHealth = echoManager.player.health;
+        skillManager = echoManager.skillManager;
+        statusHandler = echoManager.player.statusHandler;
 
         Invoke(nameof(HandleDeath), echoManager.GetTimeEchoDuration());
         FlipToTarget();
         
+        echoHealth = GetComponent<SkillObject_Health>();
         wispTrail = GetComponentInChildren<TrailRenderer>();
         wispTrail.gameObject.SetActive(false);
 
@@ -43,6 +51,20 @@ public class SkillObject_TimeEcho : SkillObject_Base
         }
     }
 
+    private void HandlePlayerTouch()
+    {
+        float healthAmount = echoHealth.lastDamageTaken * echoManager.GetPercentOfDamageHealed();
+        playerHealth.IncreaseHealth(healthAmount);
+
+        float amountInSeconds = echoManager.GetCooldownReduction();
+        skillManager.ReduceAllSkillsCooldownBy(amountInSeconds);
+
+        if(echoManager.CanRemoveNegativeEffects())
+        {
+            statusHandler.RemoveAllNegativeEffects();
+        }
+    }
+
     private void HandleWispMovement()
     {
         transform.position = Vector2.MoveTowards(transform.position, ownerTransform.position, wispMoveSpeed * Time.deltaTime);
@@ -52,11 +74,6 @@ public class SkillObject_TimeEcho : SkillObject_Base
             HandlePlayerTouch();
             Destroy(gameObject);
         }
-    }
-
-    private void HandlePlayerTouch()
-    {
-        
     }
 
     private void FlipToTarget()
