@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Material Data - Hide
   m_EditorClassIdentifier: Assembly-CSharp::Item_DataSO
   itemName: Hide
-  itemIcon: {fileID: 1885811490, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
+  itemIcon: {fileID: -5205662494574892940, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
   itemType: 0
+  maxStackSize: 999
