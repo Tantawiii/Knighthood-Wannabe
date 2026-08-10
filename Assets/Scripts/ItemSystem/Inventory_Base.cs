@@ -9,6 +9,11 @@ public class Inventory_Base : MonoBehaviour
     public int maxInventorySize = 10;
     public List<Inventory_Item> inventoryItems = new List<Inventory_Item>();
 
+    protected virtual void Awake()
+    {
+
+    }
+
     public bool CanAddItem() => inventoryItems.Count < maxInventorySize;
 
     public void AddItem(Inventory_Item itemToAdd)
@@ -24,6 +29,13 @@ public class Inventory_Base : MonoBehaviour
             inventoryItems.Add(itemToAdd);
         }
         
+        OnInventoryChanged?.Invoke();
+    }
+
+    public void RemoveItem(Inventory_Item itemToRemove)
+    {
+        inventoryItems.Remove(FindItem(itemToRemove.itemData));
+
         OnInventoryChanged?.Invoke();
     }
 

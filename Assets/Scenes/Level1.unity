@@ -3702,8 +3702,8 @@ RectTransform:
   - {fileID: 156448974}
   - {fileID: 1152995368}
   - {fileID: 1169566644}
-  - {fileID: 62751271}
   - {fileID: 138485014}
+  - {fileID: 62751271}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3890,12 +3890,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1073910544}
-  - {fileID: 1111670051}
-  - {fileID: 1250504220}
-  - {fileID: 1622413126}
-  - {fileID: 2077760733}
   - {fileID: 980696198}
   - {fileID: 352800245}
+  - {fileID: 1622413126}
+  - {fileID: 2077760733}
+  - {fileID: 1111670051}
+  - {fileID: 1250504220}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -43602,10 +43602,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 641565083}
+  - {fileID: 266597923}
   - {fileID: 916167575}
   - {fileID: 1480855596}
   - {fileID: 1945686214}
-  - {fileID: 266597923}
   m_Father: {fileID: 939814874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -47344,7 +47344,7 @@ GameObject:
   - component: {fileID: 1681577379}
   - component: {fileID: 1681577380}
   m_Layer: 8
-  m_Name: Object_ItemPickup - Hide
+  m_Name: Object_ItemPickup - Wooden Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47377,7 +47377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ec40b477160e9409f83aabf02da1c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Object_ItemPickup
-  itemData: {fileID: 11400000, guid: d734517c21b5fd74f8ef781d2303968e, type: 2}
+  itemData: {fileID: 11400000, guid: 9e579e77cc20e444ebb49e61ed5130cc, type: 2}
 --- !u!212 &1681577379
 SpriteRenderer:
   serializedVersion: 2
@@ -47427,7 +47427,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5205662494574892940, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
+  m_Sprite: {fileID: 1811410998, guid: 07f02017edfe3bb40bb8cb0a864c1430, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -52055,11 +52055,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8787814854938881934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b55444c09656c4429bdf0db4a54b002, type: 3}
+  m_Script: {fileID: 11500000, guid: a5ace58f2f8e07146a7e15957084ef44, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Inventory_Base
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory_Player
   maxInventorySize: 10
   inventoryItems: []
+  equipmentList:
+  - slotType: 1
+    equippedItem:
+      itemData: {fileID: 0}
+      stackSize: 0
+  - slotType: 2
+    equippedItem:
+      itemData: {fileID: 0}
+      stackSize: 0
+  - slotType: 3
+    equippedItem:
+      itemData: {fileID: 0}
+      stackSize: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
