@@ -37,4 +37,24 @@ public class Inventory_Player : Inventory_Base
 
         RemoveItem(item);
     }
+
+    public void UnequipItemFromSlot(Inventory_Item unEquipItem)
+    {
+        if (!CanAddItem())
+        {
+            return;
+        }
+
+        foreach (var slot in equipmentList)
+        {
+            if (slot.equippedItem == unEquipItem)
+            {
+                slot.equippedItem.RemoveModifiers(playerStats);
+                slot.equippedItem = null;
+
+                AddItem(unEquipItem);
+                break;
+            }
+        }
+    }
 }
