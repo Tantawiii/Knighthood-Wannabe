@@ -28,6 +28,13 @@ public class Inventory_Player : Inventory_Base
                 return;
             }
         }
+
+        // Step 2: No empty slots ? Replace first one
+        var slotToReplace = matchingSlots[0];
+        var itemToUnequip = slotToReplace.equippedItem;
+
+        EquipItemToSlot(inventoryItem, slotToReplace);
+        UnequipItemFromSlot(itemToUnequip);
     }
 
     private void EquipItemToSlot(Inventory_Item item, Inventory_EquipmentSlot slot)
@@ -49,12 +56,12 @@ public class Inventory_Player : Inventory_Base
         {
             if (slot.equippedItem == unEquipItem)
             {
-                slot.equippedItem.RemoveModifiers(playerStats);
                 slot.equippedItem = null;
-
-                AddItem(unEquipItem);
                 break;
             }
         }
+
+        unEquipItem.RemoveModifiers(playerStats);
+        AddItem(unEquipItem);
     }
 }

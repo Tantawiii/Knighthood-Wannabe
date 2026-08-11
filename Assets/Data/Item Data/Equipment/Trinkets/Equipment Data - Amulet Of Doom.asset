@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d25df3df0ad08c429d40ab559c5712d, type: 3}
-  m_Name: Equipment Data - Wooden Sword
+  m_Name: Equipment Data - Amulet Of Doom
   m_EditorClassIdentifier: Assembly-CSharp::Equipment_DataSO
-  itemName: Wooden Sword
-  itemIcon: {fileID: 183573810413276680, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
-  itemType: 1
+  itemName: Amulet Of Doom
+  itemIcon: {fileID: -7324339567714289606, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
+  itemType: 3
   maxStackSize: 1
   modifiers:
-  - statType: 6
-    value: 1.5
-  - statType: 7
+  - statType: 2
+    value: 10
+  - statType: 4
     value: 4
-  - statType: 3
-    value: 2
+  - statType: 11
+    value: 15
+  - statType: 0
+    value: 40

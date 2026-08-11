@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d25df3df0ad08c429d40ab559c5712d, type: 3}
-  m_Name: Equipment Data - Wooden Sword
+  m_Name: Equipment Data - Ring Of Luck
   m_EditorClassIdentifier: Assembly-CSharp::Equipment_DataSO
-  itemName: Wooden Sword
-  itemIcon: {fileID: 183573810413276680, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
-  itemType: 1
+  itemName: Ring Of Luck
+  itemIcon: {fileID: -7911167414898439247, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
+  itemType: 3
   maxStackSize: 1
   modifiers:
-  - statType: 6
-    value: 1.5
-  - statType: 7
-    value: 4
-  - statType: 3
+  - statType: 15
+    value: 12
+  - statType: 8
+    value: 15
+  - statType: 1
     value: 2

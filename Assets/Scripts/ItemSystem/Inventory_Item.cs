@@ -3,6 +3,8 @@ using System;
 [Serializable]
 public class Inventory_Item
 {
+    private string itemId;
+
     public Item_DataSO itemData;
     public int stackSize = 1;
 
@@ -13,6 +15,8 @@ public class Inventory_Item
         this.itemData = itemData;
 
         modifiers = GetEquipmentData()?.modifiers;
+
+        itemId = itemData.itemName + " - " + Guid.NewGuid();
     }
 
     public void AddModifiers(Entity_Stats playerStats)
@@ -22,7 +26,7 @@ public class Inventory_Item
         foreach (var modifier in modifiers)
         {
             Stat stat = playerStats.GetStatByType(modifier.statType);
-            stat.AddModifier(modifier.value, itemData.itemName);
+            stat.AddModifier(modifier.value, itemId);
         }
     }
 
@@ -33,7 +37,7 @@ public class Inventory_Item
         foreach (var modifier in modifiers)
         {
             Stat stat = playerStats.GetStatByType(modifier.statType);
-            stat.RemoveModifier(itemData.itemName);
+            stat.RemoveModifier(itemId);
         }
     }
 
