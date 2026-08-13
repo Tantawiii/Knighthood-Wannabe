@@ -16,13 +16,29 @@ public class Inventory_Base : MonoBehaviour
 
     public bool CanAddItem() => inventoryItems.Count < maxInventorySize;
 
-    public void AddItem(Inventory_Item itemToAdd)
+    public Inventory_Item StackableItem(Inventory_Item itemToAdd)
     {
-        Inventory_Item existingItem = FindItem(itemToAdd.itemData);
+        List<Inventory_Item> stackableItems = inventoryItems.FindAll(item => item.itemData == itemToAdd.itemData);
 
-        if(existingItem != null  && existingItem.CanAddStack())
+        foreach (var stackableItem in stackableItems)
         {
-            existingItem.AddToStack();
+            if (stackableItem.CanAddStack())
+            {
+                return stackableItem;
+            }
+        }
+
+        return null;
+    }
+
+
+    public virtual void AddItem(Inventory_Item itemToAdd)
+    {
+        var existingStackable = StackableItem(itemToAdd);
+
+        if(existingStackable != null)
+        {
+            existingStackable.AddToStack();
         }
         else
         {
