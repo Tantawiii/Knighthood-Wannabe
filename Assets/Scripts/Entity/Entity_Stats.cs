@@ -82,33 +82,26 @@ public class Entity_Stats : MonoBehaviour
 
     public float GetPhysicalDamage(out bool isCrit, float scaleFactor = 1)
     {
-        float baseDamage = offenseGroup.damage.GetValue();
-        float bonusDamage = majorGroup.strength.GetValue();
-
-        float totalBaseDamage = baseDamage + bonusDamage;
-
-        float baseCritChance = offenseGroup.critChance.GetValue();
-        float bonusCritChance = majorGroup.agility.GetValue() * .3f;
-
-        float critChance = baseCritChance + bonusCritChance;
-
-        float baseCritPower = offenseGroup.critPower.GetValue();
-        float bonusCritPower = majorGroup.strength.GetValue() * .5f;
-
-        float critPower = (baseCritPower + bonusCritPower) / 100;
+        float baseDamage = GetBaseDamage();
+        float critChance = GetCritChance();
+        float critPower = GetCritPower() / 100;
 
         isCrit = Random.Range(0, 100) < critChance;
 
-        float finalDamage = isCrit ? totalBaseDamage * critPower : totalBaseDamage;
+        float finalDamage = isCrit ? baseDamage * critPower : baseDamage;
 
         return finalDamage * scaleFactor;
     }
 
+    // Additional methods for calculating stats can be added here, such as GetArmorMitigation, GetEvasion, etc.
+    // These methods can utilize the offenseGroup, defenseGroup, resourceGroup, and majorGroup to compute the final values based on the character's stats and any modifiers.
+    // Example:
+    public float GetBaseDamage() => offenseGroup.damage.GetValue() * majorGroup.strength.GetValue(); // Example calculation for base damage based on offense and strength
+    public float GetCritChance() => offenseGroup.critChance.GetValue() + (majorGroup.agility.GetValue() * .3f); // Example calculation for crit chance based on offense and agility
+    public float GetCritPower() => offenseGroup.critPower.GetValue() + (majorGroup.strength.GetValue() * .5f); // Example calculation for crit power based on offense and strength
     public float GetArmorMitigation(float armorReduction)
     {
-        float baseArmor = defenseGroup.armor.GetValue();
-        float bonusArmor = majorGroup.vitality.GetValue();
-        float totalArmor = baseArmor + bonusArmor;
+        float totalArmor = GetBaseArmor();
 
         float reductionMultiplier = Mathf.Clamp01(1 - armorReduction);
         float effectiveArmor = totalArmor * reductionMultiplier;
@@ -120,6 +113,8 @@ public class Entity_Stats : MonoBehaviour
 
         return finalMitigation;
     }
+
+    public float GetBaseArmor() => defenseGroup.armor.GetValue() + majorGroup.vitality.GetValue(); // Example calculation for base armor based on defense and vitality
 
     public float GetArmorReduction()
     {
