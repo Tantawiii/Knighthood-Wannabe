@@ -1,9 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UI_StatSlot : MonoBehaviour
+public class UI_StatSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Entity_Stats playerStats;
+    private Player_Stats playerStats;
     private RectTransform rect;
     private UI ui;
 
@@ -21,7 +22,17 @@ public class UI_StatSlot : MonoBehaviour
     {
         ui = GetComponentInParent<UI>();
         rect = GetComponent<RectTransform>();
-        playerStats = FindFirstObjectByType<Entity_Stats>();
+        playerStats = FindFirstObjectByType<Player_Stats>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ui.statToolTip.ShowToolTip(true, rect, statSlotType);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ui.statToolTip.ShowToolTip(false, null);
     }
 
     public void UpdateStatValue()
@@ -155,5 +166,4 @@ public class UI_StatSlot : MonoBehaviour
                 return false;
         }
     }
-
 }
