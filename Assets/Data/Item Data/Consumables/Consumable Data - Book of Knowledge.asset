@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44892bc421141a94ea404f1f5097725d, type: 3}
+  m_Name: Consumable Data - Book of Knowledge
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableItem_DataSO
+  itemName: Book of Knowledge
+  itemIcon: {fileID: -2490587925212428839, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
+  itemType: 4
+  maxStackSize: 100
+  itemEffect: {fileID: 11400000, guid: 410e99243c5e08145a4174cba4633586, type: 2}

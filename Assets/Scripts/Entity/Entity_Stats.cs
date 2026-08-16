@@ -9,6 +9,11 @@ public class Entity_Stats : MonoBehaviour
     public Stat_ResourceGroup resourceGroup;
     public Stat_MajorGroup majorGroup;
 
+    protected virtual void Awake()
+    {
+
+    }
+
     public AttackData GetAttackData(DamageScaleData damageScaleData)
     {
         return new AttackData(this, damageScaleData);
