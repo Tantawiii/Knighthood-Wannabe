@@ -101,7 +101,7 @@ public class Entity_Stats : MonoBehaviour
     // Additional methods for calculating stats can be added here, such as GetArmorMitigation, GetEvasion, etc.
     // These methods can utilize the offenseGroup, defenseGroup, resourceGroup, and majorGroup to compute the final values based on the character's stats and any modifiers.
     // Example:
-    public float GetBaseDamage() => offenseGroup.damage.GetValue() * majorGroup.strength.GetValue(); // Example calculation for base damage based on offense and strength
+    public float GetBaseDamage() => offenseGroup.damage.GetValue() + majorGroup.strength.GetValue(); // Example calculation for base damage based on offense and strength
     public float GetCritChance() => offenseGroup.critChance.GetValue() + (majorGroup.agility.GetValue() * .3f); // Example calculation for crit chance based on offense and agility
     public float GetCritPower() => offenseGroup.critPower.GetValue() + (majorGroup.strength.GetValue() * .5f); // Example calculation for crit power based on offense and strength
     public float GetArmorMitigation(float armorReduction)
