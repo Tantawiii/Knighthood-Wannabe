@@ -33,8 +33,8 @@ public class Inventory_Player : Inventory_Base
         var slotToReplace = matchingSlots[0];
         var itemToUnequip = slotToReplace.equippedItem;
 
+        UnequipItemFromSlot(itemToUnequip, slotToReplace != null);
         EquipItemToSlot(inventoryItem, slotToReplace);
-        UnequipItemFromSlot(itemToUnequip);
     }
 
     private void EquipItemToSlot(Inventory_Item item, Inventory_EquipmentSlot slot)
@@ -50,9 +50,9 @@ public class Inventory_Player : Inventory_Base
         RemoveItem(item);
     }
 
-    public void UnequipItemFromSlot(Inventory_Item unEquipItem)
+    public void UnequipItemFromSlot(Inventory_Item unEquipItem, bool replacingItem = false)
     {
-        if (!CanAddItem())
+        if (!CanAddItem() && !replacingItem)
         {
             return;
         }

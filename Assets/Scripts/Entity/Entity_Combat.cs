@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Entity_Combat : MonoBehaviour
 {
+    public event Action<float> OnDoingPhysicalDamage;
+
     Entity_Stats stats;
     Entity_VFX vfx;
 
@@ -41,6 +44,7 @@ public class Entity_Combat : MonoBehaviour
 
             if(targetGotHit)
             {
+                OnDoingPhysicalDamage?.Invoke(physicalDamage);
                 vfx.CreateOnHitVFX(target.transform, attackData.isCritical, element);
             }
         }
