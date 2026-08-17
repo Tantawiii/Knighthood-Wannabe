@@ -10,6 +10,11 @@ public class Player_VFX : Entity_VFX
     
     private Coroutine imageEchoCoroutine;
 
+    public void CreateEffectOf(GameObject vfxPrefab, Transform target)
+    {
+        Instantiate(vfxPrefab, target.position, Quaternion.identity);
+    }
+
     public void DoImageEcho(float duration)
     {
         if (imageEchoCoroutine != null)
