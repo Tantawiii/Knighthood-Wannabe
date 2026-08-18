@@ -52,7 +52,7 @@ public class Inventory_Player : Inventory_Base
 
     public void UnequipItemFromSlot(Inventory_Item unEquipItem, bool replacingItem = false)
     {
-        if (!CanAddItem() && !replacingItem)
+        if (!CanAddItem(unEquipItem) && !replacingItem)
         {
             return;
         }

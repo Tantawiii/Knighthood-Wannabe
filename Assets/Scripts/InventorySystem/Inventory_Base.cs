@@ -37,9 +37,13 @@ public class Inventory_Base : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    public bool CanAddItem() => inventoryItems.Count < maxInventorySize;
+    public bool CanAddItem(Inventory_Item itemToAdd)
+    {
+        bool hasStackable = FindStackableItem(itemToAdd) != null;
+        return inventoryItems.Count < maxInventorySize || hasStackable; 
+    }
 
-    public Inventory_Item StackableItem(Inventory_Item itemToAdd)
+    public Inventory_Item FindStackableItem(Inventory_Item itemToAdd)
     {
         List<Inventory_Item> stackableItems = inventoryItems.FindAll(item => item.itemData == itemToAdd.itemData);
 
@@ -57,7 +61,7 @@ public class Inventory_Base : MonoBehaviour
 
     public virtual void AddItem(Inventory_Item itemToAdd)
     {
-        var existingStackable = StackableItem(itemToAdd);
+        var existingStackable = FindStackableItem(itemToAdd);
 
         if(existingStackable != null)
         {
