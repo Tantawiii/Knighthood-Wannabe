@@ -1,0 +1,33 @@
+using System;
+using UnityEngine;
+
+public class UI_Storage : MonoBehaviour
+{
+    private Inventory_Storage storage;
+    private Inventory_Player playerInventory;
+
+    [SerializeField] private UI_ItemSlotParent inventorySlotParent;
+    [SerializeField] private UI_ItemSlotParent storageSlotParent;
+
+    public void SetUpStorage(Inventory_Storage storage, Inventory_Player playerInventory)
+    {
+        this.storage = storage;
+        this.playerInventory = playerInventory;
+
+        storage.OnInventoryChanged += UpdateUI;
+        UpdateUI();
+
+        UI_StorageSlot[] storageSlots = GetComponentsInChildren<UI_StorageSlot>();
+
+        foreach (var slot in storageSlots)
+        {
+            slot.SetStorage(storage);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        inventorySlotParent.UpdateSlots(playerInventory.inventoryItems);
+        storageSlotParent.UpdateSlots(storage.inventoryItems);
+    }
+}
