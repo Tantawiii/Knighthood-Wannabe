@@ -31,7 +31,7 @@ public class Inventory_Base : MonoBehaviour
         }
         else
         {
-            RemoveItem(consumable);
+            RemoveOneItem(consumable);
         }
 
         OnInventoryChanged?.Invoke();
@@ -75,9 +75,18 @@ public class Inventory_Base : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    public void RemoveItem(Inventory_Item itemToRemove)
+    public void RemoveOneItem(Inventory_Item itemToRemove)
     {
-        inventoryItems.Remove(itemToRemove);
+        Inventory_Item itemInInventory = inventoryItems.Find(item => item == itemToRemove);
+
+        if(itemInInventory.stackSize > 1)
+        {
+            itemInInventory.RemoveFromStack();
+        }
+        else
+        {
+            inventoryItems.Remove(itemInInventory);
+        }
 
         OnInventoryChanged?.Invoke();
     }
