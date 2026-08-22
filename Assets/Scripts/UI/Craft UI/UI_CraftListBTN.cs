@@ -21,7 +21,12 @@ public class UI_CraftListBTN : MonoBehaviour
             slot.gameObject.SetActive(false);
         }
 
-        for(int i = 0; i < craftData.itemList.Length; i++)
+        int slotCount = Mathf.Min(craftData.itemList.Length, craftSlots.Length);
+
+        if(craftData.itemList.Length > craftSlots.Length)
+            Debug.LogWarning($"{craftData.name} has {craftData.itemList.Length} items but only {craftSlots.Length} craft slots are available.");
+
+        for(int i = 0; i < slotCount; i++)
         {
             Item_DataSO itemData = craftData.itemList[i];
 

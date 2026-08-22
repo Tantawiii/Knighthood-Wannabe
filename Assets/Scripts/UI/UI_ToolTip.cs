@@ -13,12 +13,19 @@ public class UI_ToolTip : MonoBehaviour
 
     public virtual void ShowToolTip(bool show, RectTransform targetRect)
     {
+        if (rect == null)
+            return;
+
         if (show == false)
         {
             rect.position = new Vector2(9999, 9999);
             this.gameObject.SetActive(false);
             return;
         }
+
+        if (targetRect == null)
+            return;
+
         this.gameObject.SetActive(true);
         UpdatePosition(targetRect);
     }
