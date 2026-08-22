@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class ItemList_DataSO : MonoBehaviour
+[CreateAssetMenu(menuName = "RPG Setup/Item Data/Item List", fileName = "Item List - ")]
+public class ItemList_DataSO : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Item_DataSO[] itemList;
 }

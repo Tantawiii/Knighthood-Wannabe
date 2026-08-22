@@ -3,8 +3,39 @@ using UnityEngine;
 
 public class Inventory_Storage : Inventory_Base
 {
-    private Inventory_Player playerInventory;
+    public Inventory_Player playerInventory { get; private set; }
     public List<Inventory_Item> materialStorage;
+
+    public int GetAvailableAmountOf(Item_DataSO requiredItem)
+    {
+        int amount = 0;
+
+        foreach(var item in playerInventory.inventoryItems)
+        {
+            if(item.itemData == requiredItem)
+            {
+                amount += item.stackSize;
+            }
+        }
+
+        foreach(var item in inventoryItems)
+        {
+            if(item.itemData == requiredItem)
+            {
+                amount += item.stackSize;
+            }
+        }
+
+        foreach(var item in materialStorage)
+        {
+            if(item.itemData == requiredItem)
+            {
+                amount += item.stackSize;
+            }
+        }
+
+        return amount;
+    }
 
     public void AddMaterialToStorage(Inventory_Item itemToAdd)
     {
