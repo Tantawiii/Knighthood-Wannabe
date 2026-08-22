@@ -24,6 +24,9 @@ MonoBehaviour:
   - itemData: {fileID: 11400000, guid: 455d1fb028a2b2d458e8483af7454af5, type: 2}
     stackSize: 3
     itemEffect: {fileID: 0}
+  itemPrice: 10000
+  minStackSizeAtShop: 1
+  maxStackSizeAtShop: 1
   modifiers:
   - statType: 7
     value: 35

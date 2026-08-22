@@ -22,7 +22,7 @@ public class UI_Inventory : MonoBehaviour
 
     private void UpdateUI()
     {
-        inventorySlotParent.UpdateSlots(inventory.inventoryItems);
+        inventorySlotParent.UpdateSlots(inventory.itemList);
         UpdateEquipmentSlots();
     }
 

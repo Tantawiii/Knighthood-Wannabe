@@ -38,8 +38,8 @@ public class UI_Storage : MonoBehaviour
             return;
         }
         
-        inventorySlotParent.UpdateSlots(playerInventory.inventoryItems);
-        storageSlotParent.UpdateSlots(storage.inventoryItems);
+        inventorySlotParent.UpdateSlots(playerInventory.itemList);
+        storageSlotParent.UpdateSlots(storage.itemList);
         materialSlotParent.UpdateSlots(storage.materialStorage);
     }
 }

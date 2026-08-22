@@ -9,6 +9,7 @@ public class UI : MonoBehaviour
     public UI_Inventory inventoryUI { get; private set; }
     public UI_Storage storageUI { get; private set; }
     public UI_Craft craftUI { get; private set; }
+    public UI_Merchant merchantUI { get; private set; }
     private bool skillTreeEnabled;
     private bool inventoryEnabled;
 
@@ -22,6 +23,7 @@ public class UI : MonoBehaviour
         inventoryUI = GetComponentInChildren<UI_Inventory>(true); // This line is can find inventory if it is inactive
         storageUI = GetComponentInChildren<UI_Storage>(true); // This line is can find storage if it is inactive
         craftUI = GetComponentInChildren<UI_Craft>(true); // This line is can find craft if it is inactive
+        merchantUI = GetComponentInChildren<UI_Merchant>(true); // This line is can find merchant if it is inactive
 
         skillTreeEnabled = skillTreeUI.gameObject.activeSelf;
         inventoryEnabled = inventoryUI.gameObject.activeSelf;

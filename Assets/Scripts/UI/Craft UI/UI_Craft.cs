@@ -39,5 +39,5 @@ public class UI_Craft : MonoBehaviour
         }
     }
 
-    private void UpdateUI() => inventoryParent.UpdateSlots(inventory.inventoryItems);
+    private void UpdateUI() => inventoryParent.UpdateSlots(inventory.itemList);
 }

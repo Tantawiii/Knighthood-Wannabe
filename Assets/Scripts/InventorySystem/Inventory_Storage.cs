@@ -12,11 +12,11 @@ public class Inventory_Storage : Inventory_Base
         {
             int amountToConsume = requiredMaterial.stackSize;
 
-            amountToConsume -= ConsumedMaterialsAmount(playerInventory.inventoryItems, requiredMaterial);
+            amountToConsume -= ConsumedMaterialsAmount(playerInventory.itemList, requiredMaterial);
 
             if (amountToConsume > 0)
             {
-                amountToConsume -= ConsumedMaterialsAmount(inventoryItems, requiredMaterial);
+                amountToConsume -= ConsumedMaterialsAmount(itemList, requiredMaterial);
             }
 
             if (amountToConsume > 0)
@@ -74,7 +74,7 @@ public class Inventory_Storage : Inventory_Base
     {
         int amount = 0;
 
-        foreach(var item in playerInventory.inventoryItems)
+        foreach(var item in playerInventory.itemList)
         {
             if(item.itemData == requiredItem)
             {
@@ -82,7 +82,7 @@ public class Inventory_Storage : Inventory_Base
             }
         }
 
-        foreach(var item in inventoryItems)
+        foreach(var item in itemList)
         {
             if(item.itemData == requiredItem)
             {

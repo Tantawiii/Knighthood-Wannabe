@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using UnityEngine;
 
 [Serializable]
 public class Inventory_Item
@@ -12,6 +13,9 @@ public class Inventory_Item
     public ItemModifier[] modifiers {get; private set;}
     public ItemEffect_DataSO itemEffect;
 
+    public int buyPrice {get; private set;}
+    public int sellPrice {get; private set;}
+
     public Inventory_Item(Item_DataSO itemData)
     {
         this.itemData = itemData;
@@ -19,6 +23,9 @@ public class Inventory_Item
         modifiers = GetEquipmentData()?.modifiers;
 
         itemEffect = itemData.itemEffect;
+
+        buyPrice = itemData.itemPrice;
+        sellPrice = Mathf.RoundToInt(itemData.itemPrice * 0.25f);
 
         itemId = itemData.itemName + " - " + Guid.NewGuid();
     }
