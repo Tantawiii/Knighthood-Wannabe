@@ -26,8 +26,18 @@ public class UI_Storage : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
+        if(storage == null)
+        {
+            return;
+        }
+        
         inventorySlotParent.UpdateSlots(playerInventory.inventoryItems);
         storageSlotParent.UpdateSlots(storage.inventoryItems);
         materialSlotParent.UpdateSlots(storage.materialStorage);

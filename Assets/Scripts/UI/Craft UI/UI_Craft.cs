@@ -14,6 +14,8 @@ public class UI_Craft : MonoBehaviour
 
         inventory.OnInventoryChanged += UpdateUI;
 
+        UpdateUI();
+
         craftPreviewUI = GetComponentInChildren<UI_CraftPreview>();
 
         craftPreviewUI.SetUpCraftPreview(storage);

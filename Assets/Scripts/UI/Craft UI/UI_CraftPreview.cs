@@ -12,6 +12,7 @@ public class UI_CraftPreview : MonoBehaviour
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private TextMeshProUGUI btnText;
 
     public void SetUpCraftPreview(Inventory_Storage storage)
     {
@@ -25,6 +26,23 @@ public class UI_CraftPreview : MonoBehaviour
         }
     }
 
+    public void ConfirmCraft()
+    {
+        if(itemToCraft == null)
+        {
+            btnText.text = "Pick an item!";
+            return;
+        }
+
+        if(storage.HasEnoughMaterials(itemToCraft) && storage.playerInventory.CanAddItem(itemToCraft))
+        {
+            storage.ConsumeMaterials(itemToCraft);
+            storage.playerInventory.AddItem(itemToCraft);
+        }
+
+        UpdateCraftPreviewSlots();
+    }
+
     public void UpdateCraftPreview(Item_DataSO itemData)
     {
         itemToCraft = new Inventory_Item(itemData);
@@ -33,12 +51,17 @@ public class UI_CraftPreview : MonoBehaviour
         itemName.text = itemData.itemName;
         itemDescription.text = itemToCraft.GetItemInfo();
 
-        foreach(var slot in craftPreviewSlots)
+        UpdateCraftPreviewSlots();
+    }
+
+    private void UpdateCraftPreviewSlots()
+    {
+        foreach (var slot in craftPreviewSlots)
         {
             slot.gameObject.SetActive(false);
         }
 
-        for(int i = 0; i < itemToCraft.itemData.craftRecipe.Length; i++)
+        for (int i = 0; i < itemToCraft.itemData.craftRecipe.Length; i++)
         {
             Inventory_Item requiredItem = itemToCraft.itemData.craftRecipe[i];
 
