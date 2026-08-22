@@ -33,7 +33,7 @@ public class UI_Storage : MonoBehaviour
 
     private void UpdateUI()
     {
-        if(storage == null)
+        if (storage == null || playerInventory == null)
         {
             return;
         }

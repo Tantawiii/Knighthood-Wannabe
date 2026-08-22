@@ -16,11 +16,27 @@ public class Object_Blacksmith : Object_NPC, IInteractable
 
     public void Interact()
     {
+        if (!EnsurePlayerInventory()) return;
+
         ui.storageUI.SetUpStorageUI(storage);
         ui.craftUI.SetUpCraftUI(storage);
-        
+
         ui.storageUI.gameObject.SetActive(true);
         // ui.craftUI.gameObject.SetActive(true);
+    }
+
+    private bool EnsurePlayerInventory()
+    {
+        if (playerInventory == null)
+        {
+            Transform playerTransform = player != null ? player : FindFirstObjectByType<Player>()?.transform;
+            playerInventory = playerTransform != null ? playerTransform.GetComponent<Inventory_Player>() : null;
+
+            if (playerInventory != null)
+                storage.SetInventory(playerInventory);
+        }
+
+        return playerInventory != null;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -36,8 +52,14 @@ public class Object_Blacksmith : Object_NPC, IInteractable
     {
         base.OnTriggerExit2D(collision);
 
+        if (ui == null) return;
+
         ui.SwitchOffAllToolTips();
-        ui.storageUI.gameObject.SetActive(false);
-        ui.craftUI.gameObject.SetActive(false);
+
+        if (ui.storageUI != null)
+            ui.storageUI.gameObject.SetActive(false);
+
+        if (ui.craftUI != null)
+            ui.craftUI.gameObject.SetActive(false);
     }
 }
