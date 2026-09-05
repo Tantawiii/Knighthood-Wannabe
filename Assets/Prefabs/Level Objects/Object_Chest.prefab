@@ -35,6 +35,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2329930885984822402
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +54,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,9 +77,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1496152361
   m_SortingLayer: -3
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 150907041ab4ac149921e8015d29c33e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,7 +91,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &51391308313328023
 Animator:
@@ -123,6 +127,7 @@ GameObject:
   - component: {fileID: 3274029304900803820}
   - component: {fileID: 347338508454935477}
   - component: {fileID: 3312425649058845564}
+  - component: {fileID: 6322076801182260758}
   m_Layer: 7
   m_Name: Object_Chest
   m_TagString: Untagged
@@ -232,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openKnockback: {x: 0, y: 3}
+  canDropItems: 1
 --- !u!114 &3312425649058845564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,4 +257,20 @@ MonoBehaviour:
   critHitVFX: {fileID: 0}
   chillVFX: {r: 0, g: 1, b: 1, a: 1}
   burnVFX: {r: 1, g: 0, b: 0, a: 1}
-  electrifyVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  shockVFX: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &6322076801182260758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524106831218379383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a15c8fd975ccdd4583ef22c2061ae04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Entity_DropManager
+  itemDropPrefab: {fileID: 3627686447042734137, guid: d40383053da2f62429807fad14a79aef, type: 3}
+  dropData: {fileID: 11400000, guid: 2eb1ddc734eb793409b53bfcd6a7ed58, type: 2}
+  maxRarityAmount: 1200
+  maxItemsToDrop: 3

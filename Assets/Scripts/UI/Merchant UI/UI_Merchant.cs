@@ -7,6 +7,7 @@ public class UI_Merchant : MonoBehaviour
 
     [SerializeField] private UI_ItemSlotParent merchantSlots;
     [SerializeField] private UI_ItemSlotParent inventorySlots;
+    [SerializeField] private UI_EquipSlotParent equipSlots;
 
     public void SetUpMerchantUI(Inventory_Merchant merchant, Inventory_Player inventory)
     {
@@ -32,7 +33,13 @@ public class UI_Merchant : MonoBehaviour
 
     private void UpdateSlotUI()
     {
-        inventorySlots.UpdateSlots(inventory.itemList);
+        if(inventory == null)
+        {
+            return;
+        }
+
         merchantSlots.UpdateSlots(merchant.itemList);
+        inventorySlots.UpdateSlots(inventory.itemList);
+        equipSlots.UpdateEquipSlots(inventory.equipmentList);
     }
 }

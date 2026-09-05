@@ -9,6 +9,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
     Entity_VFX entityVFX;
     Entity entity;
     Entity_Stats entityStats;
+    Entity_DropManager dropManager;
 
     [SerializeField] protected float currentHealth;
     [Header("Health Regenerate")]
@@ -33,6 +34,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
         healthBar = GetComponentInChildren<Slider>();
         entityVFX = GetComponent<Entity_VFX>();
         entity = GetComponent<Entity>();
+        dropManager = GetComponent<Entity_DropManager>();   
 
         SetupHealth();
     }
@@ -118,7 +120,8 @@ public class Entity_Health : MonoBehaviour, IDamagable
     protected virtual void Die()
     {
         isDead = true;
-        entity.EntityDeath();
+        entity?.EntityDeath();
+        dropManager?.DropItems();
     }
 
     public float GetCurrentHealth() => currentHealth / entityStats.GetMaxHealth();
