@@ -25,8 +25,34 @@ public class UI_ItemToolTip : UI_ToolTip
         string singleStackPrice = ($"Price: {price}g.");
         
         itemPrice.text = itemToShow.stackSize > 1 ? fullStackPrice : singleStackPrice;
-        itemName.text = itemToShow.itemData.itemName;
         itemType.text = itemToShow.itemData.itemType.ToString();
         itemInfo.text = itemToShow.GetItemInfo();
+
+        string color = GetColorByRarity(itemToShow.itemData.itemRarity);
+        itemName.text = GetColoredText(color,itemToShow.itemData.itemName);
+    }
+
+    private string GetColorByRarity(int rarity)
+    {
+        if (rarity <= 100)
+        {
+            return "#FFFFFF";
+        }
+        else if (rarity <= 300)
+        {
+            return "#00FF00";
+        }
+        else if (rarity <= 600)
+        {
+            return "#0000FF";
+        }
+        else if (rarity <= 900)
+        {
+            return "#800080";
+        }
+        else
+        {
+            return "#FFA500";
+        }
     }
 }

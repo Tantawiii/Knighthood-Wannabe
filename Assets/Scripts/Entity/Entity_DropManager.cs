@@ -11,16 +11,23 @@ public class Entity_DropManager : MonoBehaviour
     [SerializeField] private int maxRarityAmount = 1200;
     [SerializeField] private int maxItemsToDrop = 3;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            DropItems();
-        }
-    }
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.X))
+    //     {
+    //         DropItems();
+    //     }
+    // }
 
     public virtual void DropItems()
     {
+        if(dropData == null)
+        {
+            Debug.LogWarning("Assign a dropData SO to the Entity_DropManager script on " + gameObject.name + " to enable item drops.");
+            return;
+        }
+
+
         List<Item_DataSO> itemsToDrop = RollDrops();
 
         int amountToDrop = Mathf.Min(itemsToDrop.Count, maxItemsToDrop);
@@ -41,7 +48,7 @@ public class Entity_DropManager : MonoBehaviour
     {
         List<Item_DataSO> possibleDrops = new List<Item_DataSO>();
         List<Item_DataSO> finalDrops = new List<Item_DataSO>();
-        float maxRarityAmount = this.maxRarityAmount;
+        // float maxRarityAmount = this.maxRarityAmount;
 
         // Step 1: Filter items based on rarity
         foreach (var item in dropData.itemList)

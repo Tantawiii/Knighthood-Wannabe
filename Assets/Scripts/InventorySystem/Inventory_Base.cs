@@ -91,9 +91,17 @@ public class Inventory_Base : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    public Inventory_Item FindItem(Item_DataSO itemData)
+    public void RemoveAllItems(Inventory_Item itemToRemove)
     {
-        return itemList.Find(item => item.itemData == itemData);
+        for (int i = 0; i < itemToRemove.stackSize; i++)
+        {
+            RemoveOneItem(itemToRemove);
+        }
+    }
+
+    public Inventory_Item FindItem(Inventory_Item itemToFind)
+    {
+        return itemList.Find(item => item == itemToFind);
     }
 
     public void TriggerUpdateUI() => OnInventoryChanged?.Invoke();

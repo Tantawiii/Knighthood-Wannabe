@@ -10209,7 +10209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &288737618
 Transform:
   m_ObjectHideFlags: 0
@@ -68508,7 +68508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1060446534
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -97005,6 +97005,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Object_Chest
       objectReference: {fileID: 0}
+    - target: {fileID: 8524106831218379383, guid: 8fe7c00e12996ef41905e98362b6bd4a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -101869,6 +101873,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 5366678103698679682, guid: f0277845a25fbf3419f6890c58f3fafa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6025969455284658488, guid: f0277845a25fbf3419f6890c58f3fafa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.992199
@@ -101911,11 +101919,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6242233465234920455, guid: f0277845a25fbf3419f6890c58f3fafa, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6242233465234920455, guid: f0277845a25fbf3419f6890c58f3fafa, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -112494,7 +112502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2093050557
 Transform:
   m_ObjectHideFlags: 0
@@ -115310,63 +115318,6 @@ MonoBehaviour:
   rotationPoint: {fileID: 2146308605}
   connectionLength: {fileID: 60703708}
   childNodeConnectionPoint: {fileID: 1996555580}
---- !u!1001 &589386958867959391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.0300293
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680692628558549449, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3627686447042734137, guid: d40383053da2f62429807fad14a79aef, type: 3}
-      propertyPath: m_Name
-      value: Object_ItemPickup - Wooden Sword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d40383053da2f62429807fad14a79aef, type: 3}
 --- !u!1 &1030606241206853219
 GameObject:
   m_ObjectHideFlags: 0
@@ -115570,6 +115521,7 @@ GameObject:
   - component: {fileID: 8787814854938881942}
   - component: {fileID: 8787814854938881943}
   - component: {fileID: 8787814854938881944}
+  - component: {fileID: 8787814854938881947}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -115853,6 +115805,23 @@ MonoBehaviour:
     vitality:
       baseValue: 0
       modifiers: []
+--- !u!114 &8787814854938881947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8787814854938881934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db20a7a32ddfb8b4ab31e07bef55a7c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_DropManager
+  itemDropPrefab: {fileID: 3627686447042734137, guid: d40383053da2f62429807fad14a79aef, type: 3}
+  dropData: {fileID: 0}
+  maxRarityAmount: 1200
+  maxItemsToDrop: 3
+  chanceToLoseItem: 90
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -115865,7 +115834,6 @@ SceneRoots:
   - {fileID: 233132001}
   - {fileID: 721003449}
   - {fileID: 243648185}
-  - {fileID: 589386958867959391}
   - {fileID: 288737618}
   - {fileID: 2093050557}
   - {fileID: 1060446535}
