@@ -95,12 +95,12 @@ public class Skill_Shard : Skill_Base
         if(currentShard == null)
         {
             CreateShard();
-            healthRewindAmount = playerHealth.GetCurrentHealth();
+            healthRewindAmount = playerHealth.GetHealthPercent();
         }
         else
         {
             SwapPlayerPosition();
-            playerHealth.SetCurrentHealth(healthRewindAmount);
+            playerHealth.SetHealthPercent(healthRewindAmount);
             SetSkillOnCooldown();
         }
     }

@@ -18,7 +18,7 @@ public class ItemEffect_IceBlastOnTakingDamage : ItemEffect_DataSO
     public override void ExecuteEffect()
     {
         bool canUse = Time.time >= lastTimeUsed + cooldown;
-        bool reachedThreshold = player.health.GetCurrentHealth() <= healthPercentTrigger;
+        bool reachedThreshold = player.health.GetHealthPercent() <= healthPercentTrigger;
 
         if (canUse && reachedThreshold)
         {

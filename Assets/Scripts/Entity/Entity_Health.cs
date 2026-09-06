@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Entity_Health : MonoBehaviour, IDamagable
 {
     public event Action OnTakingDamage;
+    public event Action OnHealthUpdate;
 
     Slider healthBar;
     Entity_VFX entityVFX;
@@ -45,6 +46,8 @@ public class Entity_Health : MonoBehaviour, IDamagable
             return;
 
         currentHealth = entityStats.GetMaxHealth();
+        OnHealthUpdate += UpdateHealthBar;
+
         UpdateHealthBar();
         InvokeRepeating(nameof(RegenerateHealth), 0, regenInterval);
     }
@@ -95,7 +98,6 @@ public class Entity_Health : MonoBehaviour, IDamagable
 
         float regenAmount = entityStats.resourceGroup.healthRegen.GetValue();
         IncreaseHealth(regenAmount);
-        UpdateHealthBar();
     }
 
     public void IncreaseHealth(float healAmount)
@@ -107,13 +109,16 @@ public class Entity_Health : MonoBehaviour, IDamagable
         float maxHealth = entityStats.GetMaxHealth();
         
         currentHealth = Mathf.Min(newHealth, maxHealth);
+        OnHealthUpdate?.Invoke();
     }
 
     public void ReduceHealth(float damage)
     {
-        entityVFX?.PlayOnDamageVFX();
         currentHealth -= damage;
-        UpdateHealthBar();
+
+        entityVFX?.PlayOnDamageVFX();
+        OnHealthUpdate?.Invoke();
+
         if(currentHealth <= 0) Die();
     }
 
@@ -124,13 +129,15 @@ public class Entity_Health : MonoBehaviour, IDamagable
         dropManager?.DropItems();
     }
 
-    public float GetCurrentHealth() => currentHealth / entityStats.GetMaxHealth();
+    public float GetHealthPercent() => currentHealth / entityStats.GetMaxHealth();
 
-    public void SetCurrentHealth(float health)
+    public void SetHealthPercent(float health)
     {
         currentHealth = entityStats.GetMaxHealth() * Mathf.Clamp01(health);
-        UpdateHealthBar();
+        OnHealthUpdate?.Invoke();
     }
+
+    public float GetCurrentHealthValue() => currentHealth;
 
     private void UpdateHealthBar() 
     {

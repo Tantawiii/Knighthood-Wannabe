@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : Entity
 {
     public static event Action OnPlayerDeath;
-    private UI ui;
+    public UI ui { get; private set; }
     public PlayerInputSet input { get; private set; }
     public Player_SkillManager skillManager { get; private set; }
     public Player_VFX VFX { get; private set; }

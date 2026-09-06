@@ -43,13 +43,13 @@ public class Inventory_Player : Inventory_Base
 
     private void EquipItemToSlot(Inventory_Item item, Inventory_EquipmentSlot slot)
     {
-        float savedHealthPercent = player.health.GetCurrentHealth(); // Save current health percentage before equipping
+        float savedHealthPercent = player.health.GetHealthPercent(); // Save current health percentage before equipping
 
         slot.equippedItem = item;
         item.AddModifiers(player.entityStats);
         slot.equippedItem.AddItemEffect(player);
 
-        player.health.SetCurrentHealth(savedHealthPercent); // Restore health percentage after equipping
+        player.health.SetHealthPercent(savedHealthPercent); // Restore health percentage after equipping
 
         RemoveOneItem(item);
     }
@@ -61,7 +61,7 @@ public class Inventory_Player : Inventory_Base
             return;
         }
 
-        float savedHealthPercent = player.health.GetCurrentHealth(); // Save current health percentage before unequipping
+        float savedHealthPercent = player.health.GetHealthPercent(); // Save current health percentage before unequipping
 
         var slotUnequip = equipmentList.Find(slot => slot.equippedItem == unEquipItem);
 
@@ -73,7 +73,7 @@ public class Inventory_Player : Inventory_Base
         unEquipItem.RemoveModifiers(player.entityStats);
         unEquipItem.RemoveItemEffect();
 
-        player.health.SetCurrentHealth(savedHealthPercent); // Restore health percentage after unequipping
+        player.health.SetHealthPercent(savedHealthPercent); // Restore health percentage after unequipping
         AddItem(unEquipItem);
     }
 }

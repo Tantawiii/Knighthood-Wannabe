@@ -20,9 +20,14 @@ public class Skill_Base : MonoBehaviour
         player = GetComponentInParent<Player>();
         lastTimeUsed -= cooldown;
         damageScaleData = new DamageScaleData(); // Initialize with default values
+    }
 
+    protected virtual void Start()
+    {
+        // Deferred to Start so Player.ui, UI.inGameUI and UI_InGame.skillSlots
+        // are all initialized before SetSkillUpgrade touches the in-game UI.
         if (skillData != null && skillData.unlockedByDefault)
-            SetSkillUpgrade(skillData.upgradeData);
+            SetSkillUpgrade(skillData);
     }
 
     public virtual void TryUseSkill()
@@ -30,11 +35,16 @@ public class Skill_Base : MonoBehaviour
 
     }
 
-    public void SetSkillUpgrade(UpgradeData upgradeData)
+    public void SetSkillUpgrade(Skill_DataSO skillData)
     {
+        UpgradeData upgradeData = skillData.upgradeData;
+
         this.upgradeType = upgradeData.upgradeType;
         this.cooldown = upgradeData.cooldown;
         damageScaleData = upgradeData.damageScaleData;
+
+        player.ui.inGameUI.GetSkillSlot(skillType)?.SetUpSkillSlot(skillData);
+
         ResetCooldown();
     }
 
@@ -55,7 +65,17 @@ public class Skill_Base : MonoBehaviour
     protected bool Unlocked(SkillUpgradeType upgradeType) => this.upgradeType == upgradeType;
 
     protected bool OnCooldown() => Time.time < lastTimeUsed + cooldown;
-    public void SetSkillOnCooldown() => lastTimeUsed = Time.time;
+    public void SetSkillOnCooldown()
+    {
+        player.ui.inGameUI.GetSkillSlot(skillType)?.StartCooldown(cooldown);
+
+        lastTimeUsed = Time.time;
+    }
     public void ReduceCooldownBy(float cooldownReduction) => lastTimeUsed += cooldownReduction;
-    public void ResetCooldown() => lastTimeUsed = Time.time - cooldown;
+    public void ResetCooldown() 
+    {
+        player.ui.inGameUI.GetSkillSlot(skillType)?.ResetCooldown();
+
+        lastTimeUsed = Time.time - cooldown;
+    }
 }
