@@ -12,6 +12,7 @@ public class Player : Entity
     public Entity_Health health { get; private set; }
     public Entity_StatusHandler statusHandler { get; private set; }
     public Player_Combat combat { get; private set; }
+    public Inventory_Player inventory { get; private set; }
 
     #region Player States
     public Player_IdleState idleState { get; private set; }
@@ -68,6 +69,7 @@ public class Player : Entity
         skillManager = GetComponent<Player_SkillManager>();
         statusHandler = GetComponent<Entity_StatusHandler>();
         combat = GetComponent<Player_Combat>();
+        inventory = GetComponent<Inventory_Player>();
         
         input = new PlayerInputSet();
 
@@ -202,6 +204,9 @@ public class Player : Entity
         input.Player.Spell.performed += ctx => skillManager.timeEcho.TryUseSkill();
 
         input.Player.Interact.performed += ctx => TryInteract();
+
+        input.Player.QuickItemSlot_1.performed += ctx => inventory.TryUseQuickItem(1);
+        input.Player.QuickItemSlot_2.performed += ctx => inventory.TryUseQuickItem(2);
 
         input.Player.SkillTree.performed += ctx => ui.ToggleSkillTreeUI();
         input.Player.Inventory.performed += ctx => ui.ToggleInventoryUI();
