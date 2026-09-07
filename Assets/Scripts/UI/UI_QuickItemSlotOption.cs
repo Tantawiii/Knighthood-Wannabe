@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UI_QuickItemSlotOption : MonoBehaviour
+public class UI_QuickItemSlotOption : UI_ItemSlot
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private UI_QuickItemSlot currentQuickItemSlot;
+    public void SetupOption(UI_QuickItemSlot currentQuickItemSlot, Inventory_Item itemToSet)
     {
-        
+        this.currentQuickItemSlot = currentQuickItemSlot;
+        UpdateSlot(itemToSet);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        
+        currentQuickItemSlot.SetUpQuickSlotItem(itemInSlot);
+        ui.inGameUI.HideQuickItemOptions();
     }
 }

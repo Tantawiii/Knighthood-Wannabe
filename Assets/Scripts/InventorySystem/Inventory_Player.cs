@@ -25,7 +25,7 @@ public class Inventory_Player : Inventory_Base
     public void SetQuickItemInSlot(int slotNumber, Inventory_Item itemToSet)
     {
         quickItems[slotNumber - 1] = itemToSet;
-        OnQuickSlotUsed?.Invoke(slotNumber, itemToSet);
+        OnQuickSlotUsed?.Invoke(slotNumber - 1, itemToSet);
     }
 
     public void TryUseQuickItem(int passedSlotNumber)

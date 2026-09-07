@@ -15,7 +15,7 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
     [SerializeField] protected Image itemIcon;
     [SerializeField] protected TextMeshProUGUI itemStackSize;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         ui = GetComponentInParent<UI>();
         rect = GetComponent<RectTransform>();

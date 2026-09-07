@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_QuickItemSlot : UI_ItemSlot
 {
@@ -21,5 +22,10 @@ public class UI_QuickItemSlot : UI_ItemSlot
 
         itemIcon.sprite = currentItemInSlot.itemData.itemIcon;
         itemStackSize.text = currentItemInSlot.stackSize.ToString();
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        ui.inGameUI.OpenQuickItemOptions(this, rect);
     }
 }
