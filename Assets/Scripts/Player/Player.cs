@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : Entity
 {
+    public static Player Instance { get; private set; }
     public static event Action OnPlayerDeath;
     public UI ui { get; private set; }
     public PlayerInputSet input { get; private set; }
@@ -63,6 +64,7 @@ public class Player : Entity
     protected override void Awake()
     {
         base.Awake();
+        Instance = this;
 
         ui = FindAnyObjectByType<UI>();
         VFX = GetComponent<Player_VFX>();

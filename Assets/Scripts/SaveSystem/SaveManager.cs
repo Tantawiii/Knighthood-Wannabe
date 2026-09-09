@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
+    public static SaveManager Instance { get; private set; }
     private FileDataHandler dataHandler;
     private GameData gameData;
     private List<ISaveable> allSaveables;
     [SerializeField] private string fileName = "Knighthood Wannabe.json";
     [SerializeField] private bool encryptData = true;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     IEnumerator Start()
     {
@@ -21,6 +27,7 @@ public class SaveManager : MonoBehaviour
         LoadGame();
     }
 
+    public GameData GetGameData() => gameData;
     public void SaveGame()
     {
         foreach (var saveable in allSaveables)

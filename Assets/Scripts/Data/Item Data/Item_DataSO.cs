@@ -1,8 +1,11 @@
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "RPG Setup/Item Data/Material Item", fileName = "Material Data - ")]
 public class Item_DataSO : ScriptableObject
 {
+    public string saveID { get; private set; }
+
     [Header("Item Details")]
     public string itemName;
     public Sprite itemIcon;
@@ -32,6 +35,11 @@ public class Item_DataSO : ScriptableObject
     private void OnValidate()
     {
         dropChance = GetDropChance();
+
+        #if UNITY_EDITOR
+            string path = AssetDatabase.GetAssetPath(this);
+            saveID = AssetDatabase.AssetPathToGUID(path);
+        #endif
     }
 
     public float GetDropChance()

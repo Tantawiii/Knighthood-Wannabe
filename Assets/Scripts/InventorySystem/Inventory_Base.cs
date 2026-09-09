@@ -9,6 +9,9 @@ public class Inventory_Base : MonoBehaviour, ISaveable
     
     public int maxInventorySize = 10;
     public List<Inventory_Item> itemList = new List<Inventory_Item>();
+    [Header("Item Data Base")]
+    [SerializeField] protected ItemList_DataSO itemDataBase;
+
 
     protected virtual void Awake()
     {

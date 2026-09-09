@@ -8,7 +8,7 @@ public class Skill_Base : MonoBehaviour
     public DamageScaleData damageScaleData { get; private set; }
 
     [Header("General Details")]
-    [SerializeField] private SkillType skillType;
+    [SerializeField] protected SkillType skillType;
     [SerializeField] protected SkillUpgradeType upgradeType;
     [SerializeField] protected float cooldown;
     [SerializeField] private Skill_DataSO skillData;
@@ -63,6 +63,8 @@ public class Skill_Base : MonoBehaviour
     }
 
     protected bool Unlocked(SkillUpgradeType upgradeType) => this.upgradeType == upgradeType;
+    public SkillUpgradeType GetUpgradeType() => upgradeType;
+    public SkillType GetSkillType() => skillType;
 
     protected bool OnCooldown() => Time.time < lastTimeUsed + cooldown;
     public void SetSkillOnCooldown()
