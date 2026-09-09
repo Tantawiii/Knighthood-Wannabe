@@ -20,7 +20,7 @@ public class SkillObject_TimeEcho : SkillObject_Base
     public void SetUpEcho(Skill_TimeEcho echoManager)
     {
         this.echoManager = echoManager;
-        playerStats = echoManager.player.entityStats;
+        playerStats = echoManager.player.stats;
         ownerTransform = echoManager.player.transform.root;
         damageScaleData = echoManager.damageScaleData;
         maxAttacks = echoManager.GetMaxAttacks();

@@ -49,7 +49,7 @@ public class SkillObject_Shard : SkillObject_Base
         this.shardManager = shardManager;
 
         ownerTransform = shardManager.player.transform;
-        playerStats = shardManager.player.entityStats;
+        playerStats = shardManager.player.stats;
         damageScaleData = shardManager.damageScaleData;
 
         float detonationTime = shardManager.GetDetonationTime();
@@ -61,7 +61,7 @@ public class SkillObject_Shard : SkillObject_Base
         this.shardManager = shardManager;
 
         ownerTransform = shardManager.player.transform;
-        playerStats = shardManager.player.entityStats;
+        playerStats = shardManager.player.stats;
         damageScaleData = shardManager.damageScaleData;
 
         Invoke(nameof(Explode), detonationTime);

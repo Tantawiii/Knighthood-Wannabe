@@ -21,8 +21,7 @@ public class Object_Blacksmith : Object_NPC, IInteractable
         ui.storageUI.SetUpStorageUI(storage);
         ui.craftUI.SetUpCraftUI(storage);
 
-        ui.storageUI.gameObject.SetActive(true);
-        // ui.craftUI.gameObject.SetActive(true);
+        ui.OpenStorageUI(true);
     }
 
     private bool EnsurePlayerInventory()
@@ -54,12 +53,8 @@ public class Object_Blacksmith : Object_NPC, IInteractable
 
         if (ui == null) return;
 
-        ui.SwitchOffAllToolTips();
+        ui.HideToolTips();
 
-        if (ui.storageUI != null)
-            ui.storageUI.gameObject.SetActive(false);
-
-        if (ui.craftUI != null)
-            ui.craftUI.gameObject.SetActive(false);
+        ui.OpenStorageUI(false);
     }
 }

@@ -31,12 +31,20 @@ public class UI_InGame : MonoBehaviour
         player.health.OnHealthUpdate += UpdateHealthBar;
 
         inventory = player.inventory;
-        inventory.OnQuickSlotUsed += UpdateQuickSlotsUI;
+        inventory.OnInventoryChanged += UpdateQuickSlotsUI;
+        inventory.OnQuickSlotUsed += PlayQuickSlotFeedback;
     }
 
-    public void UpdateQuickSlotsUI(int slotNumber, Inventory_Item itemInSlot)
+    public void PlayQuickSlotFeedback(int slotNumber) => quickItemSlots[slotNumber].SimulateButtonFeedback();
+
+    public void UpdateQuickSlotsUI()
     {
-        quickItemSlots[slotNumber].UpdateQuickSlotUI(itemInSlot);
+        Inventory_Item[] quickItems = inventory.quickItems;
+
+        for(int i = 0; i < quickItems.Length; i++)
+        {
+            quickItemSlots[i].UpdateQuickSlotUI(quickItems[i]);
+        }
     }
 
     public void OpenQuickItemOptions(UI_QuickItemSlot quickItemSlot, RectTransform targetRect)
@@ -81,8 +89,8 @@ public class UI_InGame : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        float currentHealth = Mathf.Min(Mathf.RoundToInt(player.health.GetCurrentHealthValue()), player.entityStats.GetMaxHealth());
-        float maxHealth = player.entityStats.GetMaxHealth();
+        float currentHealth = Mathf.Min(Mathf.RoundToInt(player.health.GetCurrentHealthValue()), player.stats.GetMaxHealth());
+        float maxHealth = player.stats.GetMaxHealth();
         float sizeDifference = Mathf.Abs(maxHealth - healthRect.sizeDelta.x);
 
         if(sizeDifference > 0.1f)

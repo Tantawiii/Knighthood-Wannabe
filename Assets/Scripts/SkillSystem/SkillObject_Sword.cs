@@ -24,7 +24,7 @@ public class SkillObject_Sword : SkillObject_Base
         
         playerTransform = swordManager.transform.root; // Assuming the player is the root of the swordManager's transform hierarchy
         ownerTransform = playerTransform;
-        playerStats = swordManager.player.entityStats;
+        playerStats = swordManager.player.stats;
         damageScaleData = swordManager.damageScaleData;
     }
 

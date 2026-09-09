@@ -9,7 +9,7 @@ public class ItemEffect_Heal : ItemEffect_DataSO
     {
         Player player = FindFirstObjectByType<Player>();
 
-        float healAmount = player.entityStats.GetMaxHealth() * healPercentage;
+        float healAmount = player.stats.GetMaxHealth() * healPercentage;
 
         player.health.IncreaseHealth(healAmount);
     }

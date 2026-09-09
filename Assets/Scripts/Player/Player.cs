@@ -13,6 +13,7 @@ public class Player : Entity
     public Entity_StatusHandler statusHandler { get; private set; }
     public Player_Combat combat { get; private set; }
     public Inventory_Player inventory { get; private set; }
+    public Player_Stats stats { get; private set; }   
 
     #region Player States
     public Player_IdleState idleState { get; private set; }
@@ -70,8 +71,10 @@ public class Player : Entity
         statusHandler = GetComponent<Entity_StatusHandler>();
         combat = GetComponent<Player_Combat>();
         inventory = GetComponent<Inventory_Player>();
+        stats = GetComponent<Player_Stats>();
         
         input = new PlayerInputSet();
+        ui.SetUpControlsUI(input);
 
         #region State Initialization
 
@@ -207,9 +210,6 @@ public class Player : Entity
 
         input.Player.QuickItemSlot_1.performed += ctx => inventory.TryUseQuickItem(1);
         input.Player.QuickItemSlot_2.performed += ctx => inventory.TryUseQuickItem(2);
-
-        input.Player.SkillTree.performed += ctx => ui.ToggleSkillTreeUI();
-        input.Player.Inventory.performed += ctx => ui.ToggleInventoryUI();
     }
 
     private void OnDisable()

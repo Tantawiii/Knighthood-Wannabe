@@ -12,7 +12,7 @@ public abstract class PlayerState : EntityState
         animator = player.animator;
         rb = player.rb;
         input = player.input;
-        entityStats = player.entityStats;
+        entityStats = player.stats;
         skillManager = player.skillManager;
     }
 

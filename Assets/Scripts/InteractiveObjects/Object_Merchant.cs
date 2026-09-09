@@ -27,7 +27,7 @@ public class Object_Merchant : Object_NPC, IInteractable
 
         ui.merchantUI.SetUpMerchantUI(merchant, inventory);
 
-        ui.merchantUI.gameObject.SetActive(true);
+        ui.OpenMerchantUI(true);
     }
 
     private bool EnsurePlayerInventory()
@@ -58,8 +58,8 @@ public class Object_Merchant : Object_NPC, IInteractable
 
         if (ui == null) return;
 
-        ui.SwitchOffAllToolTips();
+        ui.HideToolTips();
 
-        ui.merchantUI.gameObject.SetActive(false);
+        ui.OpenMerchantUI(false);
     }
 }
