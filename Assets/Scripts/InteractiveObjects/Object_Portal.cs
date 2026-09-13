@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Object_Portal : MonoBehaviour
+public class Object_Portal : MonoBehaviour, ISaveable
 {
     public static Object_Portal Instance;
 
@@ -13,7 +13,7 @@ public class Object_Portal : MonoBehaviour
     [SerializeField] private bool canBeTriggered;   
 
     private string currentSceneName;
-    private string lastSceneName; // will be used to returning destination.
+    private bool returningFromTown;
 
     private void Awake()
     {
@@ -22,9 +22,13 @@ public class Object_Portal : MonoBehaviour
         transform.position = new Vector3(9999,9999);
     }
 
-    public void ActivatePortal()
+    public void ActivatePortal(Vector3 position, int facingDir = 1)
     {
-        
+        isActive = true;
+        transform.position = position;
+
+        if(facingDir == -1)
+            transform.Rotate(0, 180, 0);
     }
 
     private void UseTeleport()
@@ -41,4 +45,37 @@ public class Object_Portal : MonoBehaviour
 
     public void SetCanBeTriggered(bool canBeTriggered) => this.canBeTriggered = canBeTriggered;
     public Vector3 GetPosition() => respawnPoint != null ? respawnPoint.position : transform.position;
+
+    private bool IsInTownScene() => currentSceneName == townSceneName;
+
+    public void LoadData(GameData data)
+    {
+        if(IsInTownScene() && data.inScenePortals.Count > 0)
+        {
+            transform.position = defaultPosition;
+            isActive = true;
+        }
+        else if(data.inScenePortals.TryGetValue(currentSceneName, out Vector3 portalPosition))
+        {
+            transform.position = portalPosition;
+            isActive = true;
+        }
+
+        returningFromTown = data.returningFromTown;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if(isActive)
+        {
+            data.inScenePortals[currentSceneName] = transform.position;
+        }
+        else
+        {
+            data.inScenePortals.Remove(currentSceneName);
+        }
+
+        data.portalDestinationSceneName = currentSceneName;
+        data.returningFromTown = IsInTownScene();
+    }
 }
