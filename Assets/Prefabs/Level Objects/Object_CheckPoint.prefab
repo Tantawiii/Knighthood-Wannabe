@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4025692804506978699
 Transform:
   m_ObjectHideFlags: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac81773c8598d1b48ba65ef84e219081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Object_Checkpoint
+  checkpointID: 41757582-dc5a-4937-b952-b7f255480e19
 --- !u!1 &8810183869946457775
 GameObject:
   m_ObjectHideFlags: 0

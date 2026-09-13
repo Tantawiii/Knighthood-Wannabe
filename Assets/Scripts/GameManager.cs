@@ -1,10 +1,12 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    private Vector3 lastDeathPosition;
 
     private void Awake()
     {
@@ -16,6 +18,15 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void SetLastDeathPosition(Vector3 position) => lastDeathPosition = position;
+
+    public void RestartScene()
+    {
+        SaveManager.Instance.SaveGame();
+        string sceneName = SceneManager.GetActiveScene().name;
+        ChangeScene(sceneName, RespawnType.None);
     }
 
     public void ChangeScene(string sceneName, RespawnType respawnType)
@@ -33,12 +44,43 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(.2f);
 
-        Vector3 respawnPosition = GetWaypointPosition(respawnType);
+        Vector3 respawnPosition = GetNewPlayerPostion(respawnType);
 
         if(respawnPosition != Vector3.zero)
         {
             Player.Instance.TeleportPlayer(respawnPosition);
         }
+    }
+
+    private Vector3 GetNewPlayerPostion(RespawnType type)
+    {
+        if(type == RespawnType.None)
+        {
+            var data = SaveManager.Instance.GetGameData();
+            var checkpoints = FindObjectsByType<Object_Checkpoint>(FindObjectsSortMode.None);
+            var unlockedCheckpoints = checkpoints
+                .Where(cp => data.unlockedCheckpoints.TryGetValue(cp.GetCheckpointID(), out bool unlocked) && unlocked)
+                .Select(cp => cp.GetPosition())
+                .ToList();
+
+            var enterWaypoints = FindObjectsByType<Object_Waypoint>(FindObjectsSortMode.None)
+                .Where(wp => wp.GetWaypointType() == RespawnType.Enter)
+                .Select(wp => wp.GetPositionAndSetTriggerToFalse())
+                .ToList();
+
+            var selectedPositions = unlockedCheckpoints.Concat(enterWaypoints).ToList(); // Combine both lists into one list.
+
+            if(selectedPositions.Count == 0)
+            {
+                return Vector3.zero; // No valid positions found.
+            }
+
+            return selectedPositions
+            .OrderBy(pos => Vector3.Distance(pos, lastDeathPosition)) // Order the positions by distance to the last death position.
+            .First();  // Return the closest position.
+        }
+
+        return GetWaypointPosition(type);
     }
 
     private Vector3 GetWaypointPosition(RespawnType type)
@@ -47,10 +89,9 @@ public class GameManager : MonoBehaviour
 
         foreach (var waypoint in waypoints)
         {
-            if (waypoint.GetRespawnType() == type)
+            if (waypoint.GetWaypointType() == type)
             {
-                waypoint.SetCanBeTriggered(false);
-                return waypoint.GetPosition();
+                return waypoint.GetPositionAndSetTriggerToFalse();
             }
         }
 

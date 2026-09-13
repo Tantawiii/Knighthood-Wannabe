@@ -40,10 +40,11 @@ public class Object_Waypoint : MonoBehaviour
         canBeTriggered = true;
     }
 
-    public RespawnType GetRespawnType() => waypointType;
+    public RespawnType GetWaypointType() => waypointType;
 
-    public Vector3 GetPosition()
+    public Vector3 GetPositionAndSetTriggerToFalse()
     {
+        canBeTriggered = false;
         return respawnPosition == null ? transform.position : respawnPosition.position;
     }
 }
