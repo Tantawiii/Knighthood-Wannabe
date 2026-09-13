@@ -24,13 +24,13 @@ public class GameManager : MonoBehaviour
 
     public void RestartScene()
     {
-        SaveManager.Instance.SaveGame();
         string sceneName = SceneManager.GetActiveScene().name;
-        ChangeScene(sceneName, RespawnType.None);
+        ChangeScene(sceneName, RespawnType.NoneSpecific);
     }
 
     public void ChangeScene(string sceneName, RespawnType respawnType)
     {
+        SaveManager.Instance.SaveGame();
         StartCoroutine(ChangeSceneCo(sceneName, respawnType));
     }
 
@@ -54,7 +54,19 @@ public class GameManager : MonoBehaviour
 
     private Vector3 GetNewPlayerPostion(RespawnType type)
     {
-        if(type == RespawnType.None)
+        if(type == RespawnType.Portal)
+        {
+            Object_Portal portal = Object_Portal.Instance;
+
+            Vector3 portalPosition = portal.GetPosition();
+
+            portal.SetCanBeTriggered(false);
+            portal.DisableIfNeeded();
+
+            return portalPosition;
+        }
+
+        if(type == RespawnType.NoneSpecific)
         {
             var data = SaveManager.Instance.GetGameData();
             var checkpoints = FindObjectsByType<Object_Checkpoint>(FindObjectsSortMode.None);

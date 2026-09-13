@@ -13,6 +13,7 @@ public class Object_Portal : MonoBehaviour, ISaveable
     [SerializeField] private bool canBeTriggered;   
 
     private string currentSceneName;
+    private string returnSceneName;
     private bool returningFromTown;
 
     private void Awake()
@@ -26,14 +27,29 @@ public class Object_Portal : MonoBehaviour, ISaveable
     {
         isActive = true;
         transform.position = position;
+        SaveManager.Instance.GetGameData().inScenePortals.Clear();
 
         if(facingDir == -1)
             transform.Rotate(0, 180, 0);
     }
 
+    public void DisableIfNeeded()
+    {
+        if(!returningFromTown)
+        {
+            return;
+        }
+
+        SaveManager.Instance.GetGameData().inScenePortals.Remove(currentSceneName);
+        isActive = false;
+        transform.position = new Vector3(9999,9999);
+    }
+
     private void UseTeleport()
     {
-        
+        string destinationScene = IsInTownScene() ? returnSceneName : townSceneName;
+
+        GameManager.Instance.ChangeScene(destinationScene, RespawnType.Portal);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -62,20 +78,22 @@ public class Object_Portal : MonoBehaviour, ISaveable
         }
 
         returningFromTown = data.returningFromTown;
+        returnSceneName = data.portalDestinationSceneName;
     }
 
     public void SaveData(ref GameData data)
     {
-        if(isActive)
+        data.returningFromTown = IsInTownScene();
+        
+        if(isActive && !IsInTownScene())
         {
             data.inScenePortals[currentSceneName] = transform.position;
+            data.portalDestinationSceneName = currentSceneName;
         }
         else
         {
             data.inScenePortals.Remove(currentSceneName);
         }
 
-        data.portalDestinationSceneName = currentSceneName;
-        data.returningFromTown = IsInTownScene();
     }
 }

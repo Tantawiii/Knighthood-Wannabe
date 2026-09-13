@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44892bc421141a94ea404f1f5097725d, type: 3}
+  m_Name: Consumable Data - Portal Scroll
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableItem_DataSO
+  itemName: Portal Scroll
+  itemIcon: {fileID: -6412529325694471836, guid: 83704a97d5fe35e4c85d9e485c8be124, type: 3}
+  itemType: 4
+  maxStackSize: 99
+  itemRarity: 100
+  dropChance: 65
+  maxDropChance: 65
+  itemEffect: {fileID: 11400000, guid: eacfc13c5cd8cd44f9c0c23e6f4e3c78, type: 2}
+  craftRecipe: []
+  itemPrice: 100
+  minStackSizeAtShop: 1
+  maxStackSizeAtShop: 5
