@@ -23,7 +23,7 @@ public class SaveManager : MonoBehaviour
         dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encryptData );
         allSaveables = FindISaveables();
 
-        yield return new WaitForSeconds(0.01f);
+        yield return null; // Wait for one frame to ensure all saveables are initialized before loading data
         LoadGame();
     }
 
@@ -60,6 +60,8 @@ public class SaveManager : MonoBehaviour
     {
         dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encryptData);
         dataHandler.DeleteData();
+
+        LoadGame(); // Load the game after deleting the save data to reset the game state
     }
 
     private void OnApplicationQuit()

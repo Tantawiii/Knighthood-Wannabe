@@ -3,10 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, ISaveable
 {
     public static GameManager Instance;
-    private Vector3 lastDeathPosition;
+    private Vector3 lastPlayerPosition;
+
+    public string lastScenePlayed;
+    private bool dataLoaded;
 
     private void Awake()
     {
@@ -20,7 +23,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetLastDeathPosition(Vector3 position) => lastDeathPosition = position;
+    // public void SetLastPlayerPosition(Vector3 position) => lastPlayerPosition = position;    
+
+    public void ContinuePlay()
+    {
+        ChangeScene(lastScenePlayed, RespawnType.NoneSpecific);
+    }
 
     public void RestartScene()
     {
@@ -30,25 +38,59 @@ public class GameManager : MonoBehaviour
 
     public void ChangeScene(string sceneName, RespawnType respawnType)
     {
+        // Time.timeScale = 1f; // Reset time scale to normal speed
         SaveManager.Instance.SaveGame();
         StartCoroutine(ChangeSceneCo(sceneName, respawnType));
     }
 
     private IEnumerator ChangeSceneCo(string sceneName, RespawnType respawnType)
     {
-        // Fade Effect
+        UI_FadeScreen fadeScreenUI = FindFadeScreenUI();
 
-        yield return new WaitForSeconds(1f);
+        fadeScreenUI?.FadeOut(); // Fade to black over 1 second
+
+        yield return fadeScreenUI?.fadeEffectCo; // Wait for the fade effect to complete
 
         SceneManager.LoadScene(sceneName);
 
-        yield return new WaitForSeconds(.2f);
+        dataLoaded = false; // Reset the flag before loading data
+        yield return null; // Wait for one frame to ensure the scene is fully loaded
+
+        while(dataLoaded == false)
+        {
+            yield return null; // Wait until data is loaded
+        }
+
+        fadeScreenUI = FindFadeScreenUI();
+
+        fadeScreenUI?.FadeIn(); // Fade to transparent over 1 second
+
+        // yield return dataLoaded ? null : new WaitUntil(() => dataLoaded); // Wait until data is loaded
+
+        Player player = Player.Instance;
+
+        if(player == null)
+        {
+            yield break; // Exit the coroutine if the player is not found
+        }
 
         Vector3 respawnPosition = GetNewPlayerPostion(respawnType);
 
         if(respawnPosition != Vector3.zero)
         {
-            Player.Instance.TeleportPlayer(respawnPosition);
+            player.TeleportPlayer(respawnPosition);
+        }
+    }
+
+    private UI_FadeScreen FindFadeScreenUI()
+    {
+        if(UI.Instance != null)
+        {
+            return UI.Instance.fadeUI;
+        }
+        else
+        {
+            return FindFirstObjectByType<UI_FadeScreen>();
         }
     }
 
@@ -88,7 +130,7 @@ public class GameManager : MonoBehaviour
             }
 
             return selectedPositions
-            .OrderBy(pos => Vector3.Distance(pos, lastDeathPosition)) // Order the positions by distance to the last death position.
+            .OrderBy(pos => Vector3.Distance(pos, lastPlayerPosition)) // Order the positions by distance to the last death position.
             .First();  // Return the closest position.
         }
 
@@ -108,5 +150,34 @@ public class GameManager : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    public void LoadData(GameData data)
+    {
+        lastScenePlayed = data.lastScenePlayed;
+        lastPlayerPosition = data.lastPlayerPosition;
+
+        if(string.IsNullOrEmpty(lastScenePlayed))
+        {
+            lastScenePlayed = "Level 0";
+        }
+
+        dataLoaded = true; // Set the flag to indicate that data has been loaded
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if(currentSceneName == "MainMenu")
+        {
+            return; // Do not save the main menu scene
+        }
+
+        data.lastPlayerPosition = Player.Instance.transform.position;
+
+        data.lastScenePlayed = currentSceneName;
+
+        dataLoaded = false; // Reset the flag after saving data
     }
 }

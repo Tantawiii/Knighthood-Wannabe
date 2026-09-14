@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class UI_MainMenu : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
+        transform.root.GetComponentInChildren<UI_FadeScreen>().FadeIn(); // Fade to transparent over 1 second
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayGame()
     {
-        
+        GameManager.Instance.ContinuePlay();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
