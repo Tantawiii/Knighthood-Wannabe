@@ -40,13 +40,14 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        allSaveables ??= FindISaveables();
+
         gameData = dataHandler.LoadData();
 
         if (gameData == null)
         {
             Debug.Log("No data was found. A new game will be started.");
             gameData = new GameData();
-            return;
         }
 
         foreach (var saveable in allSaveables)

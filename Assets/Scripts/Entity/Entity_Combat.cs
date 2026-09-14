@@ -7,6 +7,7 @@ public class Entity_Combat : MonoBehaviour
 
     Entity_Stats stats;
     Entity_VFX vfx;
+    Entity_SFX sfx;
 
     public DamageScaleData basicDamageScale;
 
@@ -19,9 +20,11 @@ public class Entity_Combat : MonoBehaviour
     {
         stats = GetComponent<Entity_Stats>();
         vfx = GetComponent<Entity_VFX>();
+        sfx = GetComponent<Entity_SFX>();
     }
     public void PreformAttack()
     {
+        bool targetGotHit = false;
         foreach (var target in GetDetectedColliders())
         {
             IDamagable damagable = target.GetComponent<IDamagable>();
@@ -37,7 +40,7 @@ public class Entity_Combat : MonoBehaviour
 
             ElementType element = attackData.elementType;
 
-            bool targetGotHit = damagable.TakeDamage(physicalDamage, elementalDamage, element, transform);
+            targetGotHit = damagable.TakeDamage(physicalDamage, elementalDamage, element, transform);
 
             if (element != ElementType.None)
                 statusHandler.ApplyStatusEffect(element, attackData.elementalEffectData);
@@ -46,8 +49,12 @@ public class Entity_Combat : MonoBehaviour
             {
                 OnDoingPhysicalDamage?.Invoke(physicalDamage);
                 vfx.CreateOnHitVFX(target.transform, attackData.isCritical, element);
+                sfx?.PlayAttackHitSFX();
             }
         }
+        
+        if(!targetGotHit)
+            sfx?.PlayAttackMissSFX();
     }
 
     protected Collider2D[] GetDetectedColliders()

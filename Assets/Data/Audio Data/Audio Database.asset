@@ -18,15 +18,15 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7cb1c432849c7f14d9c68b7a0d1c2642, type: 3}
     - {fileID: 8300000, guid: 3b61c281e95c0044bbf5607dcaace4a7, type: 3}
     - {fileID: 8300000, guid: 9e9b0dad1ec0b854985e81459a630c46, type: 3}
-    volume: 0
+    volume: 0.477
   - audioName: player_attackMiss
     clips:
     - {fileID: 8300000, guid: eb7b31c172a3d2942b08f11500579954, type: 3}
     - {fileID: 8300000, guid: b20aa936f3a08e64f9a5d6deee9c55ed, type: 3}
     - {fileID: 8300000, guid: 314e87f7c9958154589ac7620cca50b7, type: 3}
-    volume: 0
+    volume: 0.487
   uiAudio:
   - audioName: button_click
     clips:
     - {fileID: 8300000, guid: e25ad16bb67b643408ae4a0c720b1847, type: 3}
-    volume: 0
+    volume: 0.533
