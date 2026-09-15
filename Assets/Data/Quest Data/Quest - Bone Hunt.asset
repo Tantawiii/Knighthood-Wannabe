@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b319b4455bb0c4b80a3a02e1fd483a, type: 3}
+  m_Name: Quest - Bone Hunt
+  m_EditorClassIdentifier: Assembly-CSharp::Quest_DataSO
+  questSaveID: 8570dd05697ced048bbe2a6d5031c1a8
+  questName: 
+  questDescription: "Those rattling piles of bones have been causing trouble again,
+    and I\u2019ve got a business opportunity that\u2019s too good to pass up! Head
+    into the nearby crypts, caves, or graveyard and put down some skeletons. Bring
+    me their bones. Clean, intact ones if you can. I\u2019ve got customers who\u2019ll
+    pay good coin for quality bone, and frankly, the dead are terrible at negotiating."
+  questObjective: '- Eliminate 2 skeletons'
+  questTargetID: enemy_skeleton
+  requiredAmount: 2
+  rewardGiver: 0
+  questRewards: []
+  goldReward: 100

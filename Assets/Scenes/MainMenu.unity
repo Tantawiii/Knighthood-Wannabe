@@ -2889,13 +2889,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 5486891563329243241}
   m_HandleRect: {fileID: 9049491696602247839}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.429
+  m_Value: 0.6
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2225706147505380727}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: SFXSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2225706147505380727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2909,6 +2921,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_Options
   healthBarToggle: {fileID: 1452409059516588172}
+  audioMixer: {fileID: 24100000, guid: dface2adb9f878a4683b1abdd5de44d7, type: 2}
+  mixerMultiplier: 25
+  bgmVolumeSlider: {fileID: 3693820663903703337}
+  bgmParameter: bgmMixer
+  sfxVolumeSlider: {fileID: 2196249130929579848}
+  sfxParameter: sfxMixer
 --- !u!224 &2289881400925455230
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3433,13 +3451,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 4588443682535096612}
   m_HandleRect: {fileID: 786949567343866127}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.429
+  m_Value: 0.6
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2225706147505380727}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: BGMSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &3822233154379915335
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4550,7 +4580,7 @@ GameObject:
   - component: {fileID: 299095940089195414}
   - component: {fileID: 3693820663903703337}
   m_Layer: 5
-  m_Name: SFX_Volume
+  m_Name: BGM_Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

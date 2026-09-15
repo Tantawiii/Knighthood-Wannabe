@@ -24531,7 +24531,7 @@ GameObject:
   - component: {fileID: 4630145163505469566}
   - component: {fileID: 8585013178625290945}
   m_Layer: 5
-  m_Name: SFX_Volume
+  m_Name: BGM_Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24603,13 +24603,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 8920051299124798156}
   m_HandleRect: {fileID: 5660110096145191655}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.429
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6522414715842182815}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: BGMSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2353172787445395854
 GameObject:
   m_ObjectHideFlags: 0
@@ -40159,6 +40171,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_Options
   healthBarToggle: {fileID: 5782885850286130020}
+  audioMixer: {fileID: 24100000, guid: dface2adb9f878a4683b1abdd5de44d7, type: 2}
+  mixerMultiplier: 25
+  bgmVolumeSlider: {fileID: 8585013178625290945}
+  bgmParameter: bgmMixer
+  sfxVolumeSlider: {fileID: 6493533843397199008}
+  sfxParameter: sfxMixer
 --- !u!222 &6687971866086086474
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -54773,13 +54791,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 595131133090884481}
   m_HandleRect: {fileID: 4175204722449928567}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.429
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6522414715842182815}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: SFXSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5292088350129146872
 GameObject:
   m_ObjectHideFlags: 0

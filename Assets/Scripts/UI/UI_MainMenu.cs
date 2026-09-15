@@ -4,7 +4,10 @@ public class UI_MainMenu : MonoBehaviour
 {
     private void Start()
     {
+        transform.root.GetComponentInChildren<UI_Options>(true).LoadUpVolume();
         transform.root.GetComponentInChildren<UI_FadeScreen>().FadeIn(); // Fade to transparent over 1 second
+
+        AudioManager.Instance.StartBGM("playlist_mainMenu");
     }
 
     public void PlayGame()

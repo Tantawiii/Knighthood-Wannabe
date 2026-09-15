@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b319b4455bb0c4b80a3a02e1fd483a, type: 3}
+  m_Name: Quest - It's Dangerous To Go Alone
+  m_EditorClassIdentifier: Assembly-CSharp::Quest_DataSO
+  questSaveID: a286fc0bc03f0ed4b85af6fa6b138336
+  questName: 
+  questDescription: Before you head off on your grand adventure, you should probably
+    have a proper weapon. Luckily, I happen to have just the thing! There's only
+    one little problem... I seem to have left my sword at the blacksmith's shop.
+    Go find the blacksmith and tell him I sent you. He should have the sword waiting
+    for you. Take it, and then you'll be ready to face whatever dangers lie ahead.
+  questObjective: '- Talk to Blacksmith'
+  questTargetID: blacksmith
+  requiredAmount: 1
+  rewardGiver: 2
+  questRewards:
+  - itemData: {fileID: 11400000, guid: 9e579e77cc20e444ebb49e61ed5130cc, type: 2}
+    stackSize: 0
+    itemEffect: {fileID: 0}
+  goldReward: 0

@@ -27,6 +27,22 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        if(!bgmSource.isPlaying && bgmShouldPlay)
+        {
+            if(!string.IsNullOrEmpty(currentMusicGroup))
+            {
+                SwitchMusic(currentMusicGroup);
+            }
+        }
+
+        if(bgmSource.isPlaying && !bgmShouldPlay)
+        {
+            StopBGM();
+        }
+    }
+
     public void StartBGM(string musicGroup)
     {
         bgmShouldPlay = true;

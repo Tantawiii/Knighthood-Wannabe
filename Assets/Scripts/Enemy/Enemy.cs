@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
+    [Header("Quest Info")]
+    public string questTargetID; // Enemy name, NPC name, Item name, etc.
+
     public Entity_Stats entityStats { get; private set; }
     public Enemy_Health health { get; private set; }
     public Enemy_IdleState idleState;
