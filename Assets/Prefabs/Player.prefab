@@ -836,6 +836,7 @@ GameObject:
   - component: {fileID: 123363813393746646}
   - component: {fileID: 4603057691883491871}
   - component: {fileID: 3088010424665270832}
+  - component: {fileID: 2101699173138229868}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -1216,6 +1217,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Entity_SFX
   attackHit: player_attackHit
   attackMiss: player_attackMiss
+  soundDistance: 15
+  drawGizmos: 0
+--- !u!114 &2101699173138229868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7997588685053657495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f06e326aafc946e45a74d6b7f608e3eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_QuestManager
 --- !u!1 &8305267813023355813
 GameObject:
   m_ObjectHideFlags: 0

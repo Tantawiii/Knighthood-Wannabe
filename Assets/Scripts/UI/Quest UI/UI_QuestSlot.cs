@@ -7,7 +7,7 @@ public class UI_QuestSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questName;
     [SerializeField] private Image[] rewardQuickPreviewSlots;
 
-    private Quest_DataSO questInSlot;
+    public Quest_DataSO questInSlot { get; private set; }
     private UI_QuestPreview questPreview;
 
     public void SetupQuestSlot(Quest_DataSO questDataSO)
