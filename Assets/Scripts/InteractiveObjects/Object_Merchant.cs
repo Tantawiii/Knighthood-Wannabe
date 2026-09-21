@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Object_Merchant : Object_NPC, IInteractable
 {
+    [Header("Quest & Dialogue")]
+    [SerializeField] private Quest_DataSO[] questsToOffer;
+
+
     private Inventory_Player inventory;
     private Inventory_Merchant merchant;
 
@@ -25,9 +29,11 @@ public class Object_Merchant : Object_NPC, IInteractable
     {
         if (!EnsurePlayerInventory()) return;
 
-        ui.merchantUI.SetUpMerchantUI(merchant, inventory);
+        // ui.merchantUI.SetUpMerchantUI(merchant, inventory);
 
-        ui.OpenMerchantUI(true);
+        // ui.OpenMerchantUI(true);
+
+        ui.OpenQuestUI(questsToOffer);
     }
 
     private bool EnsurePlayerInventory()

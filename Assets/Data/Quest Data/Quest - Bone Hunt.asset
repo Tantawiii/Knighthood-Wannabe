@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Quest - Bone Hunt
   m_EditorClassIdentifier: Assembly-CSharp::Quest_DataSO
   questSaveID: 8570dd05697ced048bbe2a6d5031c1a8
-  questName: 
+  questName: Bone Hunt
   questDescription: "Those rattling piles of bones have been causing trouble again,
     and I\u2019ve got a business opportunity that\u2019s too good to pass up! Head
     into the nearby crypts, caves, or graveyard and put down some skeletons. Bring

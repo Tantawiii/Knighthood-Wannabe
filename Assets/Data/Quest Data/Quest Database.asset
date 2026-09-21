@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d9b3dea0fd3674ea5248bf23ff6c8a, type: 3}
   m_Name: Quest Database
   m_EditorClassIdentifier: Assembly-CSharp::QuestDatabase_DataSO
-  allQuests: []
+  allQuests:
+  - {fileID: 11400000, guid: 8570dd05697ced048bbe2a6d5031c1a8, type: 2}
+  - {fileID: 11400000, guid: a286fc0bc03f0ed4b85af6fa6b138336, type: 2}

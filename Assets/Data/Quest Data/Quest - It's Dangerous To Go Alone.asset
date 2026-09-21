@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Quest - It's Dangerous To Go Alone
   m_EditorClassIdentifier: Assembly-CSharp::Quest_DataSO
   questSaveID: a286fc0bc03f0ed4b85af6fa6b138336
-  questName: 
+  questName: It's Dangerous To Go Alone
   questDescription: Before you head off on your grand adventure, you should probably
     have a proper weapon. Luckily, I happen to have just the thing! There's only
     one little problem... I seem to have left my sword at the blacksmith's shop.

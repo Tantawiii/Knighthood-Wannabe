@@ -20,6 +20,7 @@ public class UI : MonoBehaviour
     public UI_Options optionsUI { get; private set; }
     public UI_DeathScreen deathScreenUI { get; private set; }
     public UI_FadeScreen fadeUI { get; private set; }
+    public UI_Quest questUI { get; private set; }
     #endregion
     private bool skillTreeEnabled;
     private bool inventoryEnabled;
@@ -41,6 +42,7 @@ public class UI : MonoBehaviour
         optionsUI = GetComponentInChildren<UI_Options>(true); // This line is can find options if it is inactive
         deathScreenUI = GetComponentInChildren<UI_DeathScreen>(true); // This line is can find death screen if it is inactive
         fadeUI = GetComponentInChildren<UI_FadeScreen>(true); // This line is can find fade screen if it is inactive
+        questUI = GetComponentInChildren<UI_Quest>(true); // This line is can find quest UI if it is inactive
 
         skillTreeEnabled = skillTreeUI.gameObject.activeSelf;
         inventoryEnabled = inventoryUI.gameObject.activeSelf;
@@ -144,6 +146,15 @@ public class UI : MonoBehaviour
         HideToolTips();
 
         StopPlayerControlsIfNeeded();
+    }
+
+    public void OpenQuestUI(Quest_DataSO[] questsToShow)
+    {
+        StopPlayerControls(true);
+        HideToolTips();
+
+        questUI.gameObject.SetActive(true);
+        questUI.SetUpQuestUI(questsToShow);
     }
 
     public void OpenStorageUI(bool openStorageUI)
