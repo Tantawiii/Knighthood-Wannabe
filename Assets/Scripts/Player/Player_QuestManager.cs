@@ -1,12 +1,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_QuestManager : MonoBehaviour
+public class Player_QuestManager : MonoBehaviour, ISaveable
 {
     public List<QuestData> activeQuests;
+    public List<QuestData> completedQuests;
+
+    [Header("Quest Database")]
+    [SerializeField] private QuestDatabase_DataSO questDatabase;
+    private Entity_DropManager dropManager;
+
+    private void Awake()
+    {
+        dropManager = GetComponent<Entity_DropManager>();
+    }
+
+    public void TryGiveRewardFrom(RewardGiver npcType)
+    {
+        List<QuestData> getRewardQuests = new List<QuestData>();
+
+        foreach(var quest in activeQuests)
+        {
+            if(quest.CanGetReward() && quest.questDataSO.rewardGiver == npcType)
+            {
+                getRewardQuests.Add(quest);
+            }
+        }
+
+        foreach(var quest in getRewardQuests)
+        {
+            GiveQuestReward(quest.questDataSO);
+            CompleteQuest(quest);
+        }
+    }
+
+    private void GiveQuestReward(Quest_DataSO questDataSO)
+    {
+        foreach(var item in questDataSO.questRewards)
+        {
+            if(item == null || item.itemData == null)
+            {
+                continue;
+            }
+
+            for(int i = 0; i < item.stackSize; i++)
+            {
+                dropManager.CreateItemDrop(item.itemData);
+            }
+        }
+    }
 
     public void AddProgress(string questTargetId, int amount = 1)
     {
+        List<QuestData> getRewardQuests = new List<QuestData>();
+
         foreach(var quest in activeQuests)
         {
             if(quest.questDataSO.questTargetID != questTargetId)
@@ -15,12 +62,29 @@ public class Player_QuestManager : MonoBehaviour
             }
 
             quest.AddQuestProgress(amount);
+
+            if(quest.questDataSO.rewardGiver == RewardGiver.None && quest.CanGetReward())
+            {
+                getRewardQuests.Add(quest);
+            }
+        }
+
+        foreach(var quest in getRewardQuests)
+        {
+            GiveQuestReward(quest.questDataSO);
+            CompleteQuest(quest);
         }
     }
 
     public void AcceptQuest(Quest_DataSO questDataSO)
     {
         activeQuests.Add(new QuestData(questDataSO));
+    }
+
+    public void CompleteQuest(QuestData quest)
+    {
+        completedQuests.Add(quest);
+        activeQuests.Remove(quest);
     }
 
     public bool QuestIsActive(Quest_DataSO questToCheck)
@@ -31,5 +95,43 @@ public class Player_QuestManager : MonoBehaviour
         }
 
         return activeQuests.Find(q => q.questDataSO == questToCheck) != null;
+    }
+
+    public void LoadData(GameData data)
+    {
+        activeQuests.Clear();
+
+        foreach(var entry in data.activeQuests)
+        {
+            string questSaveID = entry.Key;
+            int progress = entry.Value;
+
+            Quest_DataSO questDataSO = questDatabase.GetQuestDataByID(questSaveID);
+            if(questDataSO == null)
+            {
+                Debug.LogWarning($"Quest with ID {questSaveID} not found in the database.");
+                continue;
+            }
+
+            QuestData questToLoad = new QuestData(questDataSO);
+            questToLoad.currentAmount = progress;
+
+            activeQuests.Add(questToLoad);
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.activeQuests.Clear();
+
+        foreach(var quest in activeQuests)
+        {
+            data.activeQuests.Add(quest.questDataSO.questSaveID, quest.currentAmount);
+        }
+
+        foreach(var quest in completedQuests)
+        {
+            data.completedQuests.Add(quest.questDataSO.questSaveID, true);
+        }
     }
 }

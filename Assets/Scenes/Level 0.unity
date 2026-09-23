@@ -12981,6 +12981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Object_Blacksmith
   npcTargetQuestID: blacksmith
+  npcType: 0
   npc: {fileID: 1168045371}
   interactTooltip: {fileID: 65255051}
   floatSpeed: 8
@@ -14053,6 +14054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Object_Merchant
   npcTargetQuestID: merchant_bob
+  npcType: 0
   npc: {fileID: 899691637}
   interactTooltip: {fileID: 744512040}
   floatSpeed: 8
@@ -16228,6 +16230,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2101699173138229868, guid: 144e47ce2261e3b49ad473c4e87c0153, type: 3}
+      propertyPath: questDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 81a2fd74376ccc8469d2811d056e1523, type: 2}
     - target: {fileID: 6482984329287108243, guid: 144e47ce2261e3b49ad473c4e87c0153, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
