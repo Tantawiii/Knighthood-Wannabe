@@ -4,7 +4,12 @@
 
 The biggest system in the codebase by density (16 files, ~1,380 lines) — and the one that finally cashes in the `SkillUpgradeType` enum from `01-Foundations.md`. Every one of that enum's ~28 values (`Dash_CloneOnStart`, `Shard_MultiCast`, `SwordThrow_Pierce`, `TimeEcho_HealWisp`, `Domain_EchoSpam`, and so on) gets checked *somewhere* in this folder — this doc is where you see exactly what each upgrade node actually does.
 
-The shape repeats five times: a **`Skill_X`** component (lives on a child GameObject under the player, per `Player_SkillManager` in `03-Player.md`) is the "manager" — it knows which upgrade is currently unlocked, holds cooldown/config data, and decides *what* should happen when the skill is used. A **`SkillObject_X`** is the actual spawned prefab (a projectile, an echo, a domain) — it's what physically exists in the world and does the moment-to-moment work (move, collide, damage, expire). Both halves build on their own shared base class, `Skill_Base` and `SkillObject_Base` respectively.
+The shape repeats five times:
+
+- A **`Skill_X`** component (lives on a child GameObject under the player, per `Player_SkillManager` in `03-Player.md`) is the "manager" — it knows which upgrade is currently unlocked, holds cooldown/config data, and decides *what* should happen when the skill is used.
+- A **`SkillObject_X`** is the actual spawned prefab (a projectile, an echo, a domain) — it's what physically exists in the world and does the moment-to-moment work (move, collide, damage, expire).
+
+Both halves build on their own shared base class, `Skill_Base` and `SkillObject_Base` respectively.
 
 ---
 
@@ -66,7 +71,7 @@ protected virtual void Start()
         SetSkillUpgrade(skillData);
 }
 ```
-Worth quoting the source's own comment here directly — it's an unusually explicit explanation of an `Awake`-vs-`Start` ordering decision (see [Concepts-Glossary](Concepts-Glossary.md#monobehaviour--the-unity-lifecycle)): the optional `skillData` field lets a skill start the game already unlocked at some base tier (e.g. tier-1 Dash), but doing that setup has to wait until `Start()` specifically because it reaches into the UI hub chain, which needs its own `Awake()`s to have already run first.
+Worth quoting the source's own comment here directly — an unusually explicit explanation of an `Awake`-vs-`Start` ordering decision (see [Concepts-Glossary](Concepts-Glossary.md#monobehaviour--the-unity-lifecycle)): the optional `skillData` field lets a skill start the game already unlocked at some base tier (e.g. tier-1 Dash), but doing that setup has to wait until `Start()` specifically because it reaches into the UI hub chain, which needs its own `Awake()`s to have already run first.
 
 ### Cooldown bookkeeping
 
@@ -86,7 +91,7 @@ public void ResetCooldown()
 ```
 `ReduceCooldownBy` is exactly the method `Player_SkillManager.ReduceAllSkillsCooldownBy` (`03-Player.md`) loops over every skill to call — pushing `lastTimeUsed` further into the past is a clean one-line way to shorten remaining wait time without touching `cooldown` itself. `ResetCooldown` does the opposite extreme (same trick as the `Awake()` initialization above): pretend the skill was used one full cooldown ago, so it's instantly available.
 
-`CanUseSkill()` (the base gate every concrete skill's own override extends via `base.CanUseSkill()`) is just "is this skill unlocked at all, and is it off cooldown" — nothing more.
+`CanUseSkill()` — the base gate every concrete skill's own override extends via `base.CanUseSkill()` — is just "is this skill unlocked at all, and is it off cooldown." Nothing more.
 
 ---
 
@@ -187,7 +192,7 @@ This `if`-per-upgrade shape (not `else if`) is the pattern every skill's `TryUse
       player.TeleportPlayer(shardPosition);
   }
   ```
-  First press plants a shard (with a much longer `shardExistDuration` detonation window than the default — it's meant to sit and wait, not detonate quickly). Second press swaps the shard to the player's *current* position, detonates it there, and teleports the player to where the shard *was*. Notice `SetSkillOnCooldown()` is only called on the **second** press — planting the shard alone doesn't cost the cooldown. The `HpRewind` variant additionally snapshots `playerHealth.GetHealthPercent()` at the moment of planting and restores it on the second press — a genuine "rewind," both position and health, back to how things were when the shard was planted.
+  First press plants a shard, with a much longer `shardExistDuration` detonation window than the default — it's meant to sit and wait, not detonate quickly. Second press swaps the shard to the player's *current* position, detonates it there, and teleports the player to where the shard *was*. Notice `SetSkillOnCooldown()` is only called on the **second** press — planting the shard alone doesn't cost the cooldown. The `HpRewind` variant additionally snapshots `playerHealth.GetHealthPercent()` at the moment of planting and restores it on the second press — a genuine "rewind," both position and health, back to how things were when the shard was planted.
 - **`ForceCooldown` / `OnShardExploded`** — closes a real gap the two-press design would otherwise have:
   ```csharp
   if (Unlocked(SkillUpgradeType.Shard_Teleport) || Unlocked(SkillUpgradeType.Shard_TeleportHpRewind))

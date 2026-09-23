@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the smallest system documented so far (5 files, ~113 lines total) but one of the most-used — `Entity_Stats` (`02-Entity.md`) is built entirely out of these pieces, and `Player_Stats`' buff system (`03-Player.md`) works *only* because of how `Stat` tracks modifiers. If you've read either of those docs, you've already seen `GetValue()`, `AddModifier(...)`, and `SetBaseValue(...)` in action — this doc is where those actually live and get explained properly.
+This is the smallest system documented so far (5 files, ~113 lines total), but one of the most-used — `Entity_Stats` (`02-Entity.md`) is built entirely out of these pieces, and `Player_Stats`' buff system (`03-Player.md`) works *only* because of how `Stat` tracks modifiers. If you've read either of those docs, you've already seen `GetValue()`, `AddModifier(...)`, and `SetBaseValue(...)` in action — this doc is where those actually live and get explained properly.
 
 ---
 
@@ -65,14 +65,16 @@ Note the model itself is intentionally simple: **every modifier is purely additi
 
 ### `AddModifier`/`RemoveModifier` and the `source` string
 
-Each `StatModifier` carries a `source` string — a label for *who* added it, not a description of *what* it does. `RemoveModifier(source)` uses `modifiers.RemoveAll(modifier => modifier.source == source)`, which removes **every** modifier tagged with that exact source in one call, not just one. This is precisely the mechanism `Player_Stats.ApplyBuff` (`03-Player.md`) depends on: it tags every stat modifier a single buff instance adds with that buff's own name as the `source`, so when the buff expires, one `RemoveModifier(buffName)` call per affected stat cleanly removes exactly and only what that buff added — regardless of how many separate `AddModifier` calls it took to apply the buff in the first place. The same mechanism will very likely turn out to be how equipping/unequipping gear applies and removes its own stat bonuses too, once the `InventorySystem` doc covers that — an item's own save ID would make a natural `source` tag for the same reason a buff's name does.
+Each `StatModifier` carries a `source` string — a label for *who* added it, not a description of *what* it does. `RemoveModifier(source)` uses `modifiers.RemoveAll(modifier => modifier.source == source)`, which removes **every** modifier tagged with that exact source in one call, not just one. This is precisely the mechanism `Player_Stats.ApplyBuff` (`03-Player.md`) depends on: it tags every stat modifier a single buff instance adds with that buff's own name as the `source`, so when the buff expires, one `RemoveModifier(buffName)` call per affected stat cleanly removes exactly and only what that buff added, regardless of how many separate `AddModifier` calls it took to apply the buff in the first place. The same mechanism will very likely turn out to be how equipping/unequipping gear applies and removes its own stat bonuses too, once the `InventorySystem` doc covers that — an item's own save ID would make a natural `source` tag for the same reason a buff's name does.
 
 ### `SetBaseValue`
 
 ```csharp
 public void SetBaseValue(float value) => baseValue = value;
 ```
-Sets the *unmodified* floor value directly, bypassing the modifier list entirely. This is what `Entity_Stats.ApplyDefaultStatSetup()` (`02-Entity.md`) calls once per stat to copy values out of a `Stat_SetupSO` preset asset. Note it doesn't itself flip `needToRecalculate` — wait, actually it doesn't need to: `SetBaseValue` changing `baseValue` *does* need a recalculation the next time `GetValue()` runs, but this method as written doesn't set `needToRecalculate = true`. In practice this is only ever called during setup (before `GetValue()` has necessarily been read yet, or where a stale first read is inconsequential), so it doesn't cause an observed problem — but it's worth knowing that, unlike `AddModifier`/`RemoveModifier`, `SetBaseValue` doesn't itself invalidate the cache the way you might expect it to.
+Sets the *unmodified* floor value directly, bypassing the modifier list entirely. This is what `Entity_Stats.ApplyDefaultStatSetup()` (`02-Entity.md`) calls once per stat to copy values out of a `Stat_SetupSO` preset asset.
+
+Worth a small precision note: `SetBaseValue` doesn't itself flip `needToRecalculate = true`, unlike `AddModifier`/`RemoveModifier`. In principle, changing `baseValue` should invalidate the cache the same way adding a modifier does — but this method as written doesn't do that. In practice this is only ever called during setup, before `GetValue()` has necessarily been read yet (or where a stale first read is inconsequential), so it doesn't cause an observed problem. Still worth knowing this one setter doesn't invalidate the cache the way you might expect it to.
 
 ## `StatModifier` — a small, deliberately dumb data holder
 
@@ -137,7 +139,12 @@ public class Stat_ResourceGroup
 }
 ```
 
-These four classes have **zero methods between them** — every one is purely a labeled bundle of `Stat` fields, grouped by the same rough categories `StatType` (`01-Foundations.md`) implies: Major (the four classic RPG primary attributes — Strength, Agility, Intelligence, Vitality), Offense (attack-related, including elemental damage stats), Defense (mitigation and resistances), Resource (health and its regen).
+These four classes have **zero methods between them** — every one is purely a labeled bundle of `Stat` fields, grouped by the same rough categories `StatType` (`01-Foundations.md`) implies:
+
+- **Major** — the four classic RPG primary attributes: Strength, Agility, Intelligence, Vitality.
+- **Offense** — attack-related, including elemental damage stats.
+- **Defense** — mitigation and resistances.
+- **Resource** — health and its regen.
 
 **Why bother with four small classes instead of just putting all ~19 `Stat` fields directly on `Entity_Stats`?** Purely for organization and readability — because each is `[Serializable]`, Unity's Inspector renders each group as its own labeled, collapsible section wherever `Entity_Stats` is shown, instead of one long undifferentiated list of 19 numeric fields. It's the same instinct behind the `[Header("...")]` attributes seen throughout other files, just achieved by grouping into actual separate types instead. None of these groupings change how any calculation works — `Entity_Stats.GetBaseDamage()` (`02-Entity.md`) still reaches straight through `offenseGroup.damage.GetValue()` — they exist entirely for the human reading/editing the Inspector, not for the code.
 

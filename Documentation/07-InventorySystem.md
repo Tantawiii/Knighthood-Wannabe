@@ -2,9 +2,11 @@
 
 ## Overview
 
-Four files (`Inventory_Base`, `Inventory_Item`, `Inventory_EquipmentSlot`, plus the three subclasses `Inventory_Player`/`Inventory_Merchant`/`Inventory_Storage`) that implement everything about owning, equipping, buying, selling, and crafting items. The single most important idea to get straight before anything else here makes sense:
+Four files (`Inventory_Base`, `Inventory_Item`, `Inventory_EquipmentSlot`, plus the three subclasses `Inventory_Player`/`Inventory_Merchant`/`Inventory_Storage`) implement everything about owning, equipping, buying, selling, and crafting items. One idea to get straight before anything else here makes sense:
 
-**`Item_DataSO` (and its subclass `Equipment_DataSO`) is the *design* of an item — one ScriptableObject asset per unique item, shared by everyone. `Inventory_Item` is one *owned copy* of that design — created fresh every single time someone actually gets one.** Two players (or the same player twice) picking up "Iron Sword" both end up with their own separate `Inventory_Item` object, but both point at the exact same one `Equipment_DataSO` asset for its name, icon, base stats, and so on. This doc covers the *owning* side (`Inventory_*`); the *design* side (`Item_DataSO`/`Equipment_DataSO`/`ItemEffect_DataSO` and friends) gets its full treatment in the later `Data-ScriptableObjects` doc — this doc reads just enough of them to explain how the inventory system uses them.
+**`Item_DataSO` (and its subclass `Equipment_DataSO`) is the *design* of an item** — one ScriptableObject asset per unique item, shared by everyone. **`Inventory_Item` is one *owned copy* of that design** — created fresh every single time someone actually gets one. Two players (or the same player twice) picking up "Iron Sword" both end up with their own separate `Inventory_Item` object, but both point at the exact same one `Equipment_DataSO` asset for its name, icon, base stats, and so on.
+
+This doc covers the *owning* side (`Inventory_*`); the *design* side (`Item_DataSO`/`Equipment_DataSO`/`ItemEffect_DataSO` and friends) gets its full treatment in the later `Data-ScriptableObjects` doc — this doc reads just enough of them to explain how the inventory system uses them.
 
 ---
 
@@ -79,7 +81,9 @@ public class ItemEffect_DataSO : ScriptableObject
     public virtual void Unsubscribe() { }
 }
 ```
-Four `virtual` hooks, all empty/trivial by default — concrete subclasses (Heal, Buff, lifesteal-on-damage, reactive ice blast, grant/refund skill points — per CLAUDE.md, full detail in the `Data` doc) override whichever ones they actually need. `Subscribe`/`Unsubscribe` exist specifically for *passive*, always-active equipment effects: a lifesteal trinket, for instance, would override `Subscribe` to attach a listener onto `Entity_Combat.OnDoingPhysicalDamage` (`02-Entity.md`) and `Unsubscribe` to detach it — meaning the effect turns on the moment the item is equipped and off the moment it's removed, entirely through this one pair of calls, without `Inventory_Item` or `Inventory_Player` needing to know anything about what the effect actually does. `CanBeUsed`/`ExecuteEffect` are instead for *consumable* items — see `Inventory_Base.TryUseItem` below.
+Four `virtual` hooks, all empty/trivial by default — concrete subclasses (Heal, Buff, lifesteal-on-damage, reactive ice blast, grant/refund skill points — per CLAUDE.md, full detail in the `Data` doc) override whichever ones they actually need.
+
+`Subscribe`/`Unsubscribe` exist specifically for *passive*, always-active equipment effects: a lifesteal trinket, for instance, would override `Subscribe` to attach a listener onto `Entity_Combat.OnDoingPhysicalDamage` (`02-Entity.md`) and `Unsubscribe` to detach it — meaning the effect turns on the moment the item is equipped and off the moment it's removed, entirely through this one pair of calls, without `Inventory_Item` or `Inventory_Player` needing to know anything about what the effect actually does. `CanBeUsed`/`ExecuteEffect` are instead for *consumable* items — see `Inventory_Base.TryUseItem` below.
 
 ### `GetItemInfo()` — building the tooltip text
 
@@ -91,7 +95,7 @@ foreach (var mod in modifiers)
     sb.AppendLine("+ " + modValue + " " + modType);
 }
 ```
-Uses a `StringBuilder` (efficient for building up a multi-line string piece by piece, better than repeated `string +=` concatenation) with three branches by `itemType` (Material → static "used for crafting" text; Consumable → shows `itemEffect.effectDescription`; everything else → lists each stat modifier as a formatted line). `GetStatType(StatType)` and `IsPercentageStat(StatType)` are two more instances of the recurring **"enum in, something out, via a `switch`"** lookup shape already seen for `Entity_Stats.GetStatByType` and `Player_SkillManager.GetSkillByType` — here mapping a `StatType` to its human-readable display name, and separately flagging which stat types should render as a `%` (crit chance, resistances, evasion, attack speed, armor reduction) versus a flat number.
+Uses a `StringBuilder` (efficient for building up a multi-line string piece by piece, better than repeated `string +=` concatenation) with three branches by `itemType`: Material shows a static "used for crafting" text; Consumable shows `itemEffect.effectDescription`; everything else lists each stat modifier as a formatted line. `GetStatType(StatType)` and `IsPercentageStat(StatType)` are two more instances of the recurring **"enum in, something out, via a `switch`"** lookup shape already seen for `Entity_Stats.GetStatByType` and `Player_SkillManager.GetSkillByType` — here mapping a `StatType` to its human-readable display name, and separately flagging which stat types should render as a `%` (crit chance, resistances, evasion, attack speed, armor reduction) versus a flat number.
 
 ---
 
@@ -123,9 +127,9 @@ public class Inventory_Base : MonoBehaviour, ISaveable
 
     protected virtual void Awake() => player = GetComponent<Player>();
 ```
-Implements `ISaveable` (`01-Foundations.md`) with empty `virtual` `LoadData`/`SaveData` — the template-method pattern seen before with `Entity.SlowDownEntityCo`/`EntityDeath` — each concrete subclass provides its own actual save shape.
+Implements `ISaveable` (`01-Foundations.md`) with empty `virtual` `LoadData`/`SaveData` — the same template-method pattern seen with `Entity.SlowDownEntityCo`/`EntityDeath` — each concrete subclass provides its own actual save shape.
 
-Worth noticing: `player = GetComponent<Player>()` only ever finds something on `Inventory_Player` (which genuinely lives on the Player GameObject) — for `Inventory_Merchant`/`Inventory_Storage` (which live on their own separate merchant/storage objects), this silently returns `null` rather than throwing, since `GetComponent` simply returns `null` when nothing matches. `player` is a field on the *shared* base even though only one of the three subclasses ever actually uses it meaningfully.
+Worth noticing: `player = GetComponent<Player>()` only ever finds something on `Inventory_Player` (which genuinely lives on the Player GameObject). For `Inventory_Merchant`/`Inventory_Storage` (which live on their own separate merchant/storage objects), this silently returns `null` rather than throwing, since `GetComponent` simply returns `null` when nothing matches. `player` is a field on the *shared* base even though only one of the three subclasses ever actually uses it meaningfully.
 
 `itemDataBase` (an `ItemList_DataSO` — briefly, a flat array of every `Item_DataSO` asset plus a `GetItemData(saveID)` lookup, full detail in the `Data` doc) is what every subclass's `LoadData` uses to turn a saved `saveID` string back into a real `Item_DataSO` reference, and from there a fresh `Inventory_Item`.
 
@@ -155,7 +159,12 @@ public virtual void AddItem(Inventory_Item itemToAdd)
 public Inventory_Item FindItem(Inventory_Item itemToFind) => itemList.Find(item => item == itemToFind);
 public Inventory_Item FindSameItem(Inventory_Item itemToFind) => itemList.Find(item => item.itemData == itemToFind.itemData);
 ```
-These two look almost identical and are easy to confuse — the difference matters: **`FindItem` asks "does this *exact* `Inventory_Item` object still exist in the list?"** (reference equality — is it literally the same instance), while **`FindSameItem` asks "is there *any* item of this same type currently in the list?"** (matches by `itemData`, could be a completely different `Inventory_Item` instance). `Inventory_Player.TryUseQuickItem` (below) is the clearest place this distinction actually matters in practice.
+These two look almost identical and are easy to confuse — the difference matters:
+
+- **`FindItem`** asks "does this *exact* `Inventory_Item` object still exist in the list?" (reference equality — is it literally the same instance).
+- **`FindSameItem`** asks "is there *any* item of this same type currently in the list?" (matches by `itemData`, could be a completely different `Inventory_Item` instance).
+
+`Inventory_Player.TryUseQuickItem` (below) is the clearest place this distinction actually matters in practice.
 
 ```csharp
 public void TryUseItem(Inventory_Item itemToUse)
@@ -261,7 +270,7 @@ public override void SaveData(ref GameData data)
             data.equippedItems[slot.equippedItem.itemData.saveID] = slot.slotType;
 }
 ```
-Notice what's genuinely saved: just `saveID → total stack count` (`SerializableDictionary<string, int>`) and `saveID → which slot type` for equipment — never a full `Inventory_Item` object, never its `modifiers`/`itemEffect`/prices. That's deliberate: all of that other data is fully determined by `itemData` alone, so there's nothing to gain (and real fragility to risk) from serializing it — `LoadData` just walks the saved dictionaries, looks each `saveID` up in `itemDataBase`, and calls `new Inventory_Item(itemData)` fresh for each one, which naturally regenerates everything correctly from the shared design asset. This is the same "don't save what you can recompute" instinct worth remembering generally.
+Notice what's genuinely saved: just `saveID → total stack count` (`SerializableDictionary<string, int>`) and `saveID → which slot type` for equipment — never a full `Inventory_Item` object, never its `modifiers`/`itemEffect`/prices. That's deliberate: all of that other data is fully determined by `itemData` alone, so there's nothing to gain (and real fragility to risk) from serializing it. `LoadData` just walks the saved dictionaries, looks each `saveID` up in `itemDataBase`, and calls `new Inventory_Item(itemData)` fresh for each one, which naturally regenerates everything correctly from the shared design asset. This is the same "don't save what you can recompute" instinct worth remembering generally.
 
 ---
 
@@ -377,7 +386,7 @@ Re-sorts the **entire** `materialStorage` list alphabetically by item name after
 
 `FromPlayerToStorage`/`FromStorageToPlayer` (transfer methods) both deliberately construct a **fresh** `new Inventory_Item(item.itemData)` for the destination rather than moving the literal source object — simpler than writing custom "move and merge stacks" logic, since creating a plain new instance and handing it to the destination's own `AddItem` lets that method's existing stack-or-append logic handle merging correctly on its own.
 
-`Inventory_Storage.SaveData` is the one override in this whole system that actually calls `base.SaveData(ref data)` first (even though the base implementation is empty) before adding its own two dictionaries (`storageItems`, `storageMaterials`) — a small but genuinely more defensive habit than `Inventory_Player.SaveData`, which skips the `base.` call entirely; harmless today since the base does nothing, but calling it is the safer pattern in case that ever changes.
+`Inventory_Storage.SaveData` is the one override in this whole system that actually calls `base.SaveData(ref data)` first (even though the base implementation is empty) before adding its own two dictionaries (`storageItems`, `storageMaterials`) — a small but genuinely more defensive habit than `Inventory_Player.SaveData`, which skips the `base.` call entirely. Harmless today since the base does nothing, but calling it is the safer pattern in case that ever changes.
 
 ---
 

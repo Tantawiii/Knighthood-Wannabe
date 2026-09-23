@@ -2,9 +2,9 @@
 
 ## Overview
 
-`Player` and `Enemy` are both, fundamentally, "a thing that moves, has health, can attack, can be hurt, and reacts to elemental effects." Rather than write all of that twice, this codebase pulls the **shared 90%** into a base class, `Entity`, plus a family of small companion components (`Entity_Health`, `Entity_Combat`, `Entity_Stats`, `Entity_StatusHandler`, `Entity_VFX`, `Entity_SFX`, `Entity_DropManager`, `Entity_AnimationTriggers`) that sit alongside it on the same GameObject.
+`Player` and `Enemy` are both, fundamentally, "a thing that moves, has health, can attack, can be hurt, and reacts to elemental effects." Rather than write all of that twice, this codebase pulls the **shared 90%** into a base class, `Entity`, plus a family of small companion components that sit alongside it on the same GameObject: `Entity_Health`, `Entity_Combat`, `Entity_Stats`, `Entity_StatusHandler`, `Entity_VFX`, `Entity_SFX`, `Entity_DropManager`, `Entity_AnimationTriggers`.
 
-**Why split into so many small components instead of one big `Entity` class with everything in it?** This is Unity's component model working as intended: each `Entity_*` script does *one* job (health, combat, stats...) and finds its siblings via `GetComponent<T>()` in `Awake()`. This keeps each file small and readable, lets you reason about "how does health work" without also reading combat code, and — practically — lets `Player` and `Enemy` each add their *own* extra layer on top of just the pieces they need (e.g. `Player_Health` extends `Entity_Health`, but not every `Entity_*` component necessarily gets a Player-specific subclass). This "one concern per component" style is the same idea behind why `Entity_AnimationTriggers` is separate from `Entity_Combat` even though the trigger's whole job is to call into combat — see its section below for why.
+**Why split into so many small components instead of one big `Entity` class with everything in it?** This is Unity's component model working as intended: each `Entity_*` script does *one* job (health, combat, stats...) and finds its siblings via `GetComponent<T>()` in `Awake()`. This keeps each file small and readable, lets you reason about "how does health work" without also reading combat code, and — practically — lets `Player` and `Enemy` each add their *own* extra layer on top of just the pieces they need (`Player_Health` extends `Entity_Health`, but not every `Entity_*` component necessarily gets a Player-specific subclass). This "one concern per component" style is also why `Entity_AnimationTriggers` is separate from `Entity_Combat`, even though the trigger's whole job is to call into combat — see its section below for why.
 
 If you haven't read `01-Foundations.md` yet, some references here (`StateMachine`, `IDamagable`) will make more sense if you do — this doc builds directly on it.
 
@@ -35,7 +35,7 @@ Note this is **not** `abstract` — unlike `EntityState`, `Entity` could technic
 - **`onFlipped`** — an event (see [Concepts-Glossary: Events](Concepts-Glossary.md#events--delegates-event-action)) fired whenever the entity turns around to face the other direction. Anything that needs to know "did this character just flip" (certain VFX positioning, for instance) subscribes to this instead of polling `facingDir` every frame.
 - **`animator`, `rb`, `sfx`** — auto-properties with `private set`, meaning any script can *read* `somePlayer.animator`, but only `Entity` itself can *assign* it. These get filled in once, in `Awake()`, and never change afterward.
 - **`stateMachine`** — `protected`, not `public`: only `Entity` and its subclasses (`Player`, `Enemy`) need direct access to swap states; outside scripts have no business reaching into another object's state machine directly.
-- **`facingRight` / `facingDir`** — two representations of the same idea, kept for different audiences: `facingRight` is a private bool used internally by the flip logic, `facingDir` is a public `int` (`1` or `-1`) meant for *math* — e.g. multiplying a knockback force or a wall-check raycast direction by `facingDir` naturally points it whichever way the entity is facing, without an `if (facingRight) ... else ...` at every call site.
+- **`facingRight` / `facingDir`** — two representations of the same idea, kept for different audiences: `facingRight` is a private bool used internally by the flip logic, `facingDir` is a public `int` (`1` or `-1`) meant for *math* — multiplying a knockback force or a wall-check raycast direction by `facingDir` naturally points it whichever way the entity is facing, without an `if (facingRight) ... else ...` at every call site.
 - **Collision detection fields** (`groundCheckDistance`, `wallCheckDistance`, `whatIsGround`, `groundCheck`, `primaryWallCheck`, `secondaryWallCheck`) — see the raycast concept note below; these are the tunable distances and the `Transform` markers raycasts fire from.
 - **`isKnocked`, `knockbackCoroutine`, `slowdownCouroutine`** — private state for the knockback/slowdown systems below (note the file's own typo, `slowdownCouroutine` — flagged here only so you don't think it's a different variable if you search for it).
 
@@ -57,9 +57,9 @@ protected virtual void Update()
 }
 ```
 
-Both are `virtual` — `Player.Awake()`/`Player.Update()` and `Enemy.Awake()`/`Enemy.Update()` override these, and (by convention throughout this codebase) call `base.Awake()`/`base.Update()` first to get this shared setup, then add their own extra work. `animator` is fetched with `GetComponentInChildren` specifically because the Animator often lives on a child sprite GameObject, not the root — while `Rigidbody2D` is fetched with plain `GetComponent` because physics components live on the root object that actually moves.
+Both are `virtual` — `Player.Awake()`/`Player.Update()` and `Enemy.Awake()`/`Enemy.Update()` override these and, by convention throughout this codebase, call `base.Awake()`/`base.Update()` first to get this shared setup, then add their own extra work. `animator` is fetched with `GetComponentInChildren` specifically because the Animator often lives on a child sprite GameObject, not the root — while `Rigidbody2D` is fetched with plain `GetComponent` because physics components live on the root object that actually moves.
 
-`Update()` is short on purpose: every frame, refresh "am I touching ground/a wall right now," then let whichever state is currently active do its own thing. This is the literal line that makes the state machine described in `01-Foundations.md` actually run every frame.
+`Update()` is short on purpose: every frame, refresh "am I touching ground/a wall right now," then let whichever state is currently active do its own thing. This one line is what makes the state machine described in `01-Foundations.md` actually run every frame.
 
 ### Movement helpers: `SetVelocity`, `HandleFlip`, `Flip`
 
@@ -86,7 +86,7 @@ public void Flip()
 }
 ```
 
-`SetVelocity` is the **single chokepoint** every state uses to actually move the character (rather than states setting `rb.linearVelocity` directly) — which is exactly why the knockback guard (`if (isKnocked) return;`) only has to exist in one place: while knocked back, *any* state trying to move the character is silently ignored until the knockback coroutine finishes and clears `isKnocked`.
+`SetVelocity` is the **single chokepoint** every state uses to actually move the character, rather than states setting `rb.linearVelocity` directly — which is exactly why the knockback guard (`if (isKnocked) return;`) only has to exist in one place. While knocked back, *any* state trying to move the character is silently ignored until the knockback coroutine finishes and clears `isKnocked`.
 
 `Flip()` is a classic 2D sprite-flip trick: rather than mirroring the sprite image itself, it rotates the whole Transform 180° around the Y axis, which visually mirrors *everything* attached to it (sprite, hitbox children, VFX spawn points) in one operation. `facingDir *= -1` keeps the numeric direction in sync with the rotation.
 
@@ -107,9 +107,9 @@ private void HandleCollisionDetection()
 
 See [Concepts-Glossary: Raycasts](Concepts-Glossary.md#raycasts--overlap-checks-physics2d) for what a raycast is. `groundCheck`/`primaryWallCheck`/`secondaryWallCheck` are empty child Transforms positioned at the character's feet and sides in the prefab — this method fires an invisible line down from the feet (ground) and sideways from the body (wall), both filtered to the `whatIsGround` layer.
 
-The wall check has a subtle detail worth understanding: `secondaryWallCheck` is **optional** (checked for `null`). When it *is* assigned, wall detection requires **both** raycasts to hit — this is presumably to avoid a false "wall detected" from a single raycast clipping a small ledge or corner, requiring two points along the body to agree there's a solid wall there. `Vector2.right * facingDir` is a good example of the `facingDir` int pulling its weight: the exact same line works whether the character faces left or right, because multiplying by `-1` flips the direction automatically.
+The wall check has a subtle detail worth understanding: `secondaryWallCheck` is **optional** (checked for `null`). When it *is* assigned, wall detection requires **both** raycasts to hit — presumably to avoid a false "wall detected" from a single raycast clipping a small ledge or corner, requiring two points along the body to agree there's a solid wall there. `Vector2.right * facingDir` is a good example of the `facingDir` int pulling its weight: the exact same line works whether the character faces left or right, since multiplying by `-1` flips the direction automatically.
 
-`OnDrawGizmos()` draws these same checks as lines in the Scene view (Editor-only, see [Concepts-Glossary: MonoBehaviour lifecycle](Concepts-Glossary.md#monobehaviour--the-unity-lifecycle)) so you can visually confirm the check points are positioned correctly while tweaking a prefab, instead of guessing blind.
+`OnDrawGizmos()` draws these same checks as lines in the Scene view (Editor-only, see [Concepts-Glossary: MonoBehaviour lifecycle](Concepts-Glossary.md#monobehaviour--the-unity-lifecycle)), so you can visually confirm the check points are positioned correctly while tweaking a prefab, instead of guessing blind.
 
 ### Knockback: `RecieveKnockBack`, `KnockbackCo`
 
@@ -129,7 +129,9 @@ private IEnumerator KnockbackCo(Vector2 knockback, float duration)
 }
 ```
 
-See [Concepts-Glossary: Coroutines](Concepts-Glossary.md#coroutines-ienumerator-yield-return-startcoroutine) and [`??=`](Concepts-Glossary.md#-null-coalescing-assignment) if unfamiliar. The `??=` guard means a knockback that's already in progress won't be restarted/stacked by another knockback call arriving mid-flight — only a genuinely *new* knockback (once `knockbackCoroutine` has been cleared, implicitly, when the coroutine finishes... though note this codebase never explicitly nulls `knockbackCoroutine` back out after it completes, so a careful read shows this guard only prevents overlap *while the coroutine reference is still considered non-null by Unity's coroutine handle semantics* — worth keeping an eye on if you ever see back-to-back knockbacks behaving oddly). The important behavioral takeaway either way: `SetVelocity` (above) refuses to move the character while `isKnocked` is `true`, so knockback always wins over normal movement input for its duration.
+See [Concepts-Glossary: Coroutines](Concepts-Glossary.md#coroutines-ienumerator-yield-return-startcoroutine) and [`??=`](Concepts-Glossary.md#-null-coalescing-assignment) if unfamiliar. The `??=` guard means a knockback already in progress won't be restarted/stacked by another knockback call arriving mid-flight — only a genuinely *new* knockback (once `knockbackCoroutine` is cleared) starts fresh.
+
+One thing worth flagging: this codebase never explicitly nulls `knockbackCoroutine` back out after the coroutine finishes, so a careful read shows this guard only prevents overlap while the coroutine reference is still considered non-null by Unity's coroutine handle semantics — worth keeping an eye on if back-to-back knockbacks ever behave oddly. Either way, the important behavioral takeaway holds: `SetVelocity` (above) refuses to move the character while `isKnocked` is `true`, so knockback always wins over normal movement input for its duration.
 
 ### Slowdown: a template method for subclasses
 
@@ -150,7 +152,7 @@ protected virtual IEnumerator SlowDownEntityCo(float duration, float slowMultipl
 }
 ```
 
-This pair is worth calling out because `SlowDownEntityCo` is deliberately a **no-op stub** here — it just waits one frame and does nothing. `Entity` defines *when* a slowdown should start/be guarded against overlapping (the surrounding `SlowDownEntity` logic), but leaves *what slowing down actually means* to whichever subclass overrides `SlowDownEntityCo` (presumably `Player`/`Enemy` reduce a move-speed stat for the duration). This is a common pattern: the base class owns the reusable "don't let a new slowdown interrupt a stronger existing one unless told to" bookkeeping, while delegating the actual effect to subclasses that know their own movement system. `Entity_StatusHandler.ApplyChillEffect` (below) is what calls `entity.SlowDownEntity(...)` when an Ice status effect lands.
+`SlowDownEntityCo` is deliberately a **no-op stub** here — it just waits one frame and does nothing. `Entity` defines *when* a slowdown should start, and guards against overlapping ones, in the surrounding `SlowDownEntity` logic, but leaves *what slowing down actually means* to whichever subclass overrides `SlowDownEntityCo` (presumably `Player`/`Enemy` reduce a move-speed stat for the duration). This is a common pattern: the base class owns the reusable "don't let a new slowdown interrupt a stronger existing one unless told to" bookkeeping, while delegating the actual effect to subclasses that know their own movement system. `Entity_StatusHandler.ApplyChillEffect` (below) is what calls `entity.SlowDownEntity(...)` when an Ice status effect lands.
 
 ### `EntityDeath()`, `CurrentStateAnimationTrigger()`, `GetWhatIsGround()`
 
@@ -160,7 +162,7 @@ public void CurrentStateAnimationTrigger() => stateMachine.currentState.Animatio
 public LayerMask GetWhatIsGround() => whatIsGround;
 ```
 
-`EntityDeath()` is another empty `virtual` stub — `Entity_Health.Die()` calls `entity?.EntityDeath()` on death, and `Player`/`Enemy` override it with their own actual death handling (switching to a dead state, disabling input, dropping loot triggers, etc. — covered in `03-Player.md`/`04-Enemy.md`). `CurrentStateAnimationTrigger()` is the forwarding link mentioned in `01-Foundations.md`'s explanation of `triggerCalled` — this is the method that gets called from `Entity_AnimationTriggers` (below), which itself gets called by a Unity Animation Event. `GetWhatIsGround()` is a simple accessor exposing the private `whatIsGround` LayerMask to other scripts that need to run their own ground-layer checks (e.g. a skill object checking what it's allowed to land on).
+`EntityDeath()` is another empty `virtual` stub — `Entity_Health.Die()` calls `entity?.EntityDeath()` on death, and `Player`/`Enemy` override it with their own actual death handling (switching to a dead state, disabling input, dropping loot triggers, etc. — covered in `03-Player.md`/`04-Enemy.md`). `CurrentStateAnimationTrigger()` is the forwarding link mentioned in `01-Foundations.md`'s explanation of `triggerCalled` — this is the method that gets called from `Entity_AnimationTriggers` (below), which itself gets called by a Unity Animation Event. `GetWhatIsGround()` exposes the private `whatIsGround` LayerMask to other scripts that need to run their own ground-layer checks (e.g. a skill object checking what it's allowed to land on).
 
 ---
 
@@ -174,7 +176,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
     ...
 ```
 
-Implements `IDamagable` (see `01-Foundations.md`), which is *the* reason combat code can damage Player and Enemy through one shared code path.
+Implements `IDamagable` (see `01-Foundations.md`) — the reason combat code can damage Player and Enemy through one shared code path.
 
 ### Setup
 
@@ -201,7 +203,7 @@ private void SetupHealth()
 
 Notice `OnHealthUpdate += UpdateHealthBar;` — this class **subscribes to its own event**. That looks redundant at first (why not just call `UpdateHealthBar()` directly wherever health changes?) but it means the health-bar-updating logic is decoupled the exact same way an *external* listener would be: `UpdateHealthBar` doesn't need special-case treatment, it's just one more thing that happens to care when `OnHealthUpdate` fires, alongside whatever the UI later subscribes for its own health display.
 
-`InvokeRepeating(nameof(RegenerateHealth), 0, regenInterval)` is a built-in Unity MonoBehaviour method that calls `RegenerateHealth()` on a repeating timer (starting immediately, then every `regenInterval` seconds) without needing a coroutine — a simpler tool for "just call this method on a fixed schedule forever," as opposed to coroutines which are better suited to a *finite*, sequenced series of steps.
+`InvokeRepeating(nameof(RegenerateHealth), 0, regenInterval)` is a built-in Unity MonoBehaviour method that calls `RegenerateHealth()` on a repeating timer — starting immediately, then every `regenInterval` seconds — without needing a coroutine. A simpler tool for "just call this method on a fixed schedule forever," compared to coroutines, which are better suited to a *finite*, sequenced series of steps.
 
 ### `TakeDamage` — the core combat math
 
@@ -230,9 +232,10 @@ public virtual bool TakeDamage(float damage, float elementalDamage, ElementType 
 ```
 
 Read this top to bottom as a pipeline:
+
 1. **Early outs** — already dead, or temporarily invulnerable (`canTakeDamage`, toggled via `SetCanTakeDamage` — useful for i-frames or scripted invulnerability windows), or the defender rolled an evade. Any of these return `false` immediately and *nothing else in this method runs* — no knockback, no health loss, no event.
 2. **Read the attacker's armor-piercing stat** (`GetArmorReduction`) — note the `attackerStats != null ?` guard: `damageDealer` might not have an `Entity_Stats` at all (e.g. damage from a scripted trap or hazard rather than a stat-driven character), so this treats "no stats" as "0% armor reduction" rather than crashing.
-3. **Apply the defender's mitigation to physical damage, and resistance to elemental damage separately** — these are two independent damage-reduction pipelines, which is why `Entity_Stats` (below) has two distinct calculation methods for them.
+3. **Apply the defender's mitigation to physical damage, and resistance to elemental damage separately** — two independent damage-reduction pipelines, which is why `Entity_Stats` (below) has two distinct calculation methods for them.
 4. **Trigger knockback based on the *post-mitigation* damage** — meaning a heavily-armored character not only takes less damage but also gets knocked back based on that already-reduced number, not the attack's raw damage.
 5. **Apply the total to health, remember it as `lastDamageTaken`** (used elsewhere, e.g. for damage-number UI popups), **and fire the event.**
 
@@ -259,7 +262,7 @@ private Vector2 CalculateKnockback(float damage, Transform damageDealer)
 private bool IsHeavyDamage(float damage) =>
     entityStats != null && damage / entityStats.GetMaxHealth() > heavyDamageThreshold;
 ```
-Two knockback presets (`knockbackPower` vs `heavyKnockbackPower`, each with its own duration) rather than a smoothly scaling force — `IsHeavyDamage` just asks "did this single hit cost more than `heavyDamageThreshold` (default 30%) of my max health?" to decide which preset applies. `direction` is computed by comparing X positions (not using the attacker's own `facingDir`) — always pushes the defender *away from* the attacker's position, regardless of which way the attacker happens to be facing.
+Two knockback presets (`knockbackPower` vs `heavyKnockbackPower`, each with its own duration) rather than a smoothly scaling force — `IsHeavyDamage` just asks "did this single hit cost more than `heavyDamageThreshold` (default 30%) of my max health?" to decide which preset applies. `direction` is computed by comparing X positions, not using the attacker's own `facingDir` — it always pushes the defender *away from* the attacker's position, regardless of which way the attacker happens to be facing.
 
 ```csharp
 public void ReduceHealth(float damage)
@@ -277,7 +280,7 @@ protected virtual void Die()
     dropManager?.DropItems();
 }
 ```
-`ReduceHealth` is `public` (not called only from `TakeDamage`) — notice `Entity_StatusHandler`'s burn-tick and lightning-strike effects call it directly too, since damage-over-time isn't really "an attack" in the `TakeDamage` sense (no attacker Transform, no evasion roll — a burn tick shouldn't be dodgeable after the fact). `Die()` is where the death "fan-out" happens: flip `isDead` (which locks out all future damage via `TakeDamage`'s early-out and — combined with `Entity`'s `SwitchOffStateMachine`, called elsewhere in a subclass's own death handling — locks out further state changes), tell the `Entity` subclass to run its own death behavior, and tell the drop manager to roll loot. Both calls use `?.` since not every `Entity_Health` owner necessarily has a `dropManager` (an object that dies but never drops loot, for instance).
+`ReduceHealth` is `public`, not called only from `TakeDamage` — `Entity_StatusHandler`'s burn-tick and lightning-strike effects call it directly too, since damage-over-time isn't really "an attack" in the `TakeDamage` sense (no attacker Transform, no evasion roll — a burn tick shouldn't be dodgeable after the fact). `Die()` is where the death "fan-out" happens: flip `isDead` (which locks out all future damage via `TakeDamage`'s early-out, and — combined with `Entity`'s `SwitchOffStateMachine`, called elsewhere in a subclass's own death handling — locks out further state changes), tell the `Entity` subclass to run its own death behavior, and tell the drop manager to roll loot. Both calls use `?.` since not every `Entity_Health` owner necessarily has a `dropManager` (an object that dies but never drops loot, for instance).
 
 ### Reading/exposing health elsewhere
 
@@ -287,7 +290,7 @@ public void SetHealthPercent(float health) { currentHealth = entityStats.GetMaxH
 public float GetCurrentHealthValue() => currentHealth;
 public void EnableHealthBar(bool enable) => healthBar?.transform.parent.gameObject.SetActive(enable);
 ```
-A small public API for anything that needs to read or restore health as a 0–1 percentage (UI bars, save/load restoring exact HP, a full-heal item effect) without reaching into `currentHealth` directly (which stays `[SerializeField] protected`, visible in the Inspector for debugging but not freely writable from outside code). `Mathf.Clamp01` in `SetHealthPercent` is a safety net ensuring a bad input value (e.g. `1.4f` from a buggy caller) can't set health above max or below zero.
+A small public API for anything that needs to read or restore health as a 0–1 percentage (UI bars, save/load restoring exact HP, a full-heal item effect) without reaching into `currentHealth` directly — that field stays `[SerializeField] protected`, visible in the Inspector for debugging but not freely writable from outside code. `Mathf.Clamp01` in `SetHealthPercent` is a safety net ensuring a bad input value (e.g. `1.4f` from a buggy caller) can't set health above max or below zero.
 
 ---
 
@@ -335,9 +338,11 @@ public class Entity_Combat : MonoBehaviour
 
 `PreformAttack()` (the method name has this spelling throughout the actual code — noted so you recognize it rather than assume a typo when searching) is called once per attack **from an Animation Event**, not from `Update()` — see `Entity_AnimationTriggers` below for that wiring, and `01-Foundations.md`'s `triggerCalled` explanation for why attacks are timed off the animation rather than the button press.
 
-Walking through the loop: it grabs every collider inside the overlap circle (see [Concepts-Glossary: overlap checks](Concepts-Glossary.md#raycasts--overlap-checks-physics2d)), skips anything that isn't `IDamagable` (`continue` moves to the next collider), then for each valid target: builds a **fresh** `AttackData` — meaning **damage is rolled independently per target hit in a single swing** (so a crit against one enemy in a multi-hit swing doesn't force a crit against another), applies it via the `IDamagable` interface, and — *only if the element isn't `None` and only if the hit actually landed* — applies the matching status effect. `statusHandler.ApplyStatusEffect` is called even for a target whose `TakeDamage` returned `false` due to evasion... actually look closer: it's called regardless of `targetGotHit`, right after the `TakeDamage` call — worth noting as a subtlety: an evaded hit still applies a status effect in the current code, since the element check happens independently of whether damage landed. This is the kind of detail line callouts are for: it's easy to read this method and assume "no hit = no effects," but the code as written doesn't quite guarantee that.
+Walking through the loop: it grabs every collider inside the overlap circle (see [Concepts-Glossary: overlap checks](Concepts-Glossary.md#raycasts--overlap-checks-physics2d)), skips anything that isn't `IDamagable` (`continue` moves to the next collider), then for each valid target builds a **fresh** `AttackData` — meaning **damage is rolled independently per target hit in a single swing**, so a crit against one enemy in a multi-hit swing doesn't force a crit against another. It applies the attack via the `IDamagable` interface, then — *only if the element isn't `None`* — applies the matching status effect.
 
-`OnDoingPhysicalDamage` is an `Action<float>` (carries the damage dealt as a parameter) — this is what lifesteal-style item effects (`ItemEffect_HealOnDoingDamage`, documented later) subscribe to: heal the attacker by some fraction of whatever damage this event reports. The miss/hit SFX split (`PlayAttackMissSFX` only if the loop never set `targetGotHit` to `true`) gives audio feedback even for whiffed attacks.
+Worth a careful read: `statusHandler.ApplyStatusEffect` is called regardless of `targetGotHit`, right after the `TakeDamage` call. So an evaded hit still applies a status effect in the current code, since the element check runs independently of whether damage landed — it's easy to assume "no hit = no effects," but the code as written doesn't quite guarantee that.
+
+`OnDoingPhysicalDamage` is an `Action<float>` (carries the damage dealt as a parameter) — this is what lifesteal-style item effects (`ItemEffect_HealOnDoingDamage`, documented later) subscribe to, to heal the attacker by some fraction of whatever damage this event reports. The miss/hit SFX split (`PlayAttackMissSFX` only if the loop never set `targetGotHit` to `true`) gives audio feedback even for whiffed attacks.
 
 ---
 
@@ -354,7 +359,7 @@ public class Entity_Stats : MonoBehaviour
     ...
 ```
 
-This is the component every other `Entity_*` script leans on for numbers. The four `Stat_*Group` fields are covered fully in a later `StatSystem` doc, but briefly: each is a small container grouping related `Stat` objects (e.g. `offenseGroup.damage`, `offenseGroup.critChance`). A `Stat` (from `Scripts/StatSystem/Stat.cs`) isn't just a raw number — it's a **base value plus a list of modifiers** (from equipment, buffs, etc.), and calling `.GetValue()` on it returns the base value with all current modifiers summed in, cached until something calls `.AddModifier`/`.RemoveModifier` again (`needToRecalculate` flag) so it doesn't re-sum the whole list every single frame it's read. You'll see `SomeGroup.someStat.GetValue()` throughout this file — that's always this pattern.
+This is the component every other `Entity_*` script leans on for numbers. The four `Stat_*Group` fields are covered fully in a later `StatSystem` doc, but briefly: each is a small container grouping related `Stat` objects (e.g. `offenseGroup.damage`, `offenseGroup.critChance`). A `Stat` (from `Scripts/StatSystem/Stat.cs`) isn't just a raw number — it's a **base value plus a list of modifiers** (from equipment, buffs, etc.), and calling `.GetValue()` on it returns the base value with all current modifiers summed in, cached until something calls `.AddModifier`/`.RemoveModifier` again (a `needToRecalculate` flag), so it doesn't re-sum the whole list every single frame it's read. You'll see `SomeGroup.someStat.GetValue()` throughout this file — that's always this pattern.
 
 ### Elemental damage — "highest element wins, others count half"
 
@@ -386,7 +391,7 @@ public float GetElementalDamage(out ElementType element, float scaleFactor = 1)
 
 The `out ElementType element` parameter is worth pausing on if you haven't seen `out` before: it lets a method return **two** pieces of information at once — the normal `return`ed `float` (the damage amount) *and* the `element` that damage counts as, written back into whatever variable the caller passed in. `AttackData`'s constructor is the caller (see below) and needs both.
 
-The actual rule this method encodes: an entity might have some Fire damage, some Ice damage, and some Lightning damage stat all at once (from mixed equipment, say). Rather than dealing three separate hits, the game picks whichever is *highest* as "the" element for this attack (for status-effect purposes — a burn, chill, or shock), but the other two elements aren't wasted: each contributes **half** its value as flat bonus damage on top. `bonusElementalDamage` (from Intelligence) always applies regardless of which element wins. If all three elemental stats are `0`, there's no elemental component at all (`ElementType.None`, `0` damage) — this is the branch that makes a purely-physical attacker correctly deal zero elemental damage rather than some leftover garbage value.
+The actual rule this method encodes: an entity might have some Fire damage, some Ice damage, and some Lightning damage stat all at once (from mixed equipment, say). Rather than dealing three separate hits, the game picks whichever is *highest* as "the" element for this attack — for status-effect purposes, a burn, chill, or shock — but the other two elements aren't wasted: each contributes **half** its value as flat bonus damage on top. `bonusElementalDamage` (from Intelligence) always applies regardless of which element wins. If all three elemental stats are `0`, there's no elemental component at all (`ElementType.None`, `0` damage) — this is the branch that makes a purely-physical attacker correctly deal zero elemental damage rather than some leftover garbage value.
 
 ### Mitigation, evasion, crit — each a small formula
 
@@ -400,7 +405,7 @@ public float GetArmorMitigation(float armorReduction)
     return Mathf.Clamp(mitigation, 0, .85f);
 }
 ```
-This is a common "diminishing returns" armor formula (`armor / (armor + 100)`) — as armor grows, mitigation approaches but never reaches 100%, capped explicitly at 85% here so a character can never become fully unhittable no matter how much armor they stack. `armorReduction` (the attacker's own armor-piercing stat) first reduces the *effective* armor being mitigated against, before that formula runs.
+A common "diminishing returns" armor formula (`armor / (armor + 100)`) — as armor grows, mitigation approaches but never reaches 100%, capped explicitly at 85% here so a character can never become fully unhittable no matter how much armor they stack. `armorReduction` (the attacker's own armor-piercing stat) first reduces the *effective* armor being mitigated against, before that formula runs.
 
 ```csharp
 public float GetEvasion()
@@ -445,7 +450,7 @@ public float GetElementalResistance(ElementType element)
     return Mathf.Clamp(resistance, 0, 75f) / 100;
 }
 ```
-Same "primary stat feeds a secondary stat" idea (Intelligence → all three elemental resistances at once), capped at 75%, then divided by 100 to convert a percentage into the 0–1 multiplier that `Entity_Health.TakeDamage` multiplies damage by directly (`elementalDamage * (1 - resistance)`).
+Same "primary stat feeds a secondary stat" idea — Intelligence feeds all three elemental resistances at once — capped at 75%, then divided by 100 to convert a percentage into the 0–1 multiplier that `Entity_Health.TakeDamage` multiplies damage by directly (`elementalDamage * (1 - resistance)`).
 
 ```csharp
 public Stat GetStatByType(StatType type)
@@ -460,7 +465,7 @@ public Stat GetStatByType(StatType type)
     }
 }
 ```
-This is the lookup table mentioned in `01-Foundations.md`'s `StatType` section — it exists so **generic** code (a stat panel UI that loops over every `StatType` to display it, a tooltip system) doesn't need a hardcoded `if/else` per stat; it just asks "give me the `Stat` object for `StatType.CritChance`" and this method resolves which field that actually is. The `default` case logging a warning rather than crashing is a deliberate soft-failure: if `StatType` ever gets a new enum value that isn't wired up here yet, the game keeps running (just without that stat displaying), and the warning tells you exactly what to go fix.
+This is the lookup table mentioned in `01-Foundations.md`'s `StatType` section — it exists so **generic** code (a stat panel UI that loops over every `StatType` to display it, a tooltip system) doesn't need a hardcoded `if/else` per stat; it just asks "give me the `Stat` object for `StatType.CritChance`" and this method resolves which field that actually is. The `default` case logging a warning rather than crashing is a deliberate soft-failure: if `StatType` ever gets a new enum value that isn't wired up here yet, the game keeps running — just without that stat displaying — and the warning tells you exactly what to go fix.
 
 ```csharp
 [ContextMenu("Update Default Stat Setup")]
@@ -500,7 +505,7 @@ public class Entity_StatusHandler : MonoBehaviour
 }
 ```
 
-`currentEffect` tracks **at most one active status effect at a time** — `CanBeApplied` is the gatekeeper, and its logic is worth reading carefully because it has a deliberate exception: normally a new status can only start if nothing else is active (`currentEffect == ElementType.None`). But **Lightning is allowed to reapply onto itself** even while already active — this is what makes the "charge and burst" mechanic below work at all (each Lightning hit needs to be able to add *more* charge even while a shock effect is already ticking), whereas a Fire attack landing on an already-Chilled target does nothing (no stacking status effects of different types).
+`currentEffect` tracks **at most one active status effect at a time** — `CanBeApplied` is the gatekeeper, and its logic has a deliberate exception worth reading carefully: normally a new status can only start if nothing else is active (`currentEffect == ElementType.None`). But **Lightning is allowed to reapply onto itself** even while already active — this is what makes the "charge and burst" mechanic below work at all, since each Lightning hit needs to add *more* charge even while a shock effect is already ticking. A Fire attack landing on an already-Chilled target, meanwhile, does nothing — no stacking status effects of different types.
 
 ### Chill (Ice) — a slow
 
@@ -551,7 +556,7 @@ IEnumerator BurnEffectCo(float duration, float totalDamage)
     currentEffect = ElementType.None;
 }
 ```
-Here resistance reduces the *total damage pool* rather than the duration (a different design choice from Chill — worth noticing that each element's resistance interacts with its effect differently, there's no single unified "resistance always does X" rule). The `totalDamage` is then split evenly across a fixed number of ticks (2 per second) — this is why `Entity_Health.ReduceHealth` is called directly here rather than going through `TakeDamage`: a burn tick isn't a discrete "attack" with an attacker, an evasion roll, or its own knockback, it's a guaranteed drip of damage already calculated once up front.
+Here resistance reduces the *total damage pool* rather than the duration — a different design choice from Chill, worth noticing: each element's resistance interacts with its effect differently, there's no single unified "resistance always does X" rule. The `totalDamage` is split evenly across a fixed number of ticks (2 per second) — this is why `Entity_Health.ReduceHealth` is called directly here rather than going through `TakeDamage`: a burn tick isn't a discrete "attack" with an attacker, an evasion roll, or its own knockback, it's a guaranteed drip of damage already calculated once up front.
 
 ### Shock (Lightning) — charge and burst, the odd one out
 
@@ -621,14 +626,15 @@ public virtual void DropItems()
 }
 ```
 
-`RollDrops()` is a clean three-step algorithm worth tracing through explicitly since it uses LINQ (see [Concepts-Glossary](Concepts-Glossary.md#generic-collections-listt-and-linq)):
-1. **Filter** — roll each possible drop item's own drop chance independently; anything that "hits" goes into `possibleDrops`. This means the number of items that pass this step is random and unbounded — could be zero, could be all of them.
+`RollDrops()` is a clean three-step algorithm worth tracing through explicitly, since it uses LINQ (see [Concepts-Glossary](Concepts-Glossary.md#generic-collections-listt-and-linq)):
+
+1. **Filter** — roll each possible drop item's own drop chance independently; anything that "hits" goes into `possibleDrops`. The number of items that pass this step is random and unbounded — could be zero, could be all of them.
 2. **Sort** — `OrderByDescending(item => item.itemRarity)` reorders `possibleDrops` so the *rarest* (highest-rarity-number) items come first.
-3. **Budget-limited greedy fill** — walk the sorted list rarest-first, and as long as there's still room in the `maxRarityAmount` "budget," add the item and subtract its rarity cost from the remaining budget. Since it's processing rarest-first, this naturally prioritizes giving the player the most valuable drops the budget can afford, rather than random ones.
+3. **Budget-limited greedy fill** — walk the sorted list rarest-first, and as long as there's still room in the `maxRarityAmount` "budget," add the item and subtract its rarity cost from the remaining budget. Processing rarest-first means this naturally prioritizes giving the player the most valuable drops the budget can afford, rather than random ones.
 
 `DropItems()` then caps the *count* of items actually spawned separately, via `maxItemsToDrop` — so there are two independent limits at play: a "value budget" (`maxRarityAmount`) and a "how many objects to physically spawn" cap (`maxItemsToDrop`), taking whichever is more restrictive (`Mathf.Min`). `CreateItemDrop` instantiates the pickup prefab and calls `SetupItem` on its `Object_ItemPickup` component (covered in a later doc) to tell it which item it represents.
 
-You may notice a commented-out `Update()` block in this file (`// if (Input.GetKeyDown(KeyCode.X)) { DropItems(); }`) — that's leftover debug code for manually testing drops during development, not something in use; safe to ignore if you spot it browsing the file yourself, mentioned here only so you recognize it rather than wonder if it's load-bearing.
+You may notice a commented-out `Update()` block in this file (`// if (Input.GetKeyDown(KeyCode.X)) { DropItems(); }`) — that's leftover debug code for manually testing drops during development, not something in use. Safe to ignore if you spot it browsing the file yourself; mentioned here only so you recognize it rather than wonder if it's load-bearing.
 
 ---
 
@@ -648,7 +654,7 @@ private IEnumerator OnDamageVFXCo()
     spriteRenderer.material = originalMaterial;
 }
 ```
-The "flash white/red on hit" effect: temporarily swap the sprite's material, wait a fraction of a second, swap it back. Restarting the coroutine on every new hit (instead of letting an old one finish first) is why rapid repeated hits keep the flash looking continuous rather than flickering off between hits.
+The "flash white/red on hit" effect: temporarily swap the sprite's material, wait a fraction of a second, swap it back. Restarting the coroutine on every new hit, instead of letting an old one finish first, is why rapid repeated hits keep the flash looking continuous rather than flickering off between hits.
 
 ```csharp
 IEnumerator PlayStatusVfxCo(float duration, Color effectColor)
@@ -669,7 +675,7 @@ IEnumerator PlayStatusVfxCo(float duration, Color effectColor)
     spriteRenderer.color = Color.white;
 }
 ```
-The status-effect tint (called by `Entity_StatusHandler` for Chill/Burn/Shock) alternates the sprite's color tint between a slightly lighter and slightly darker version of the effect's color every quarter-second, for a subtle pulsing look, rather than a flat static tint — `effectColor * 1.2f` and `* .95f` work because Unity's `Color` supports scalar multiplication (scaling each of its R/G/B channels).
+The status-effect tint (called by `Entity_StatusHandler` for Chill/Burn/Shock) alternates the sprite's color tint between a slightly lighter and slightly darker version of the effect's color every quarter-second, for a subtle pulsing look, rather than a flat static tint — `effectColor * 1.2f` and `* .95f` work because Unity's `Color` supports scalar multiplication, scaling each of its R/G/B channels.
 
 ```csharp
 public void CreateOnHitVFX(Transform target, bool isCrit, ElementType element)
@@ -712,15 +718,16 @@ public class Entity_AnimationTriggers : MonoBehaviour
 }
 ```
 
-This entire class exists for one reason: Unity's **Animation Event** system can only call methods on a component that lives on the *same GameObject as the Animator* (which, per `Entity.Awake()`'s `GetComponentInChildren<Animator>()`, is often a child sprite object — not the root `Entity`/`Player`/`Enemy` object). So this small component sits on that child, and its job is purely to receive the animation-triggered call and forward it up to the real logic via `GetComponentInParent`.
+This entire class exists for one reason: Unity's **Animation Event** system can only call methods on a component that lives on the *same GameObject as the Animator* — which, per `Entity.Awake()`'s `GetComponentInChildren<Animator>()`, is often a child sprite object, not the root `Entity`/`Player`/`Enemy` object. So this small component sits on that child, and its job is purely to receive the animation-triggered call and forward it up to the real logic via `GetComponentInParent`.
 
-**Why this matters for reading the code:** both `CurrentStateTrigger()` and `AttackTrigger()` are `private` and have **no C# callers anywhere in the codebase** — if you `grep` for `CurrentStateTrigger()` you will only find its own definition. That's not dead code; it's called from *inside the Unity Editor*, by name, from a keyframe on an animation clip (a non-code, Editor-only configuration you'd only see by opening the Animation window on a specific clip). This is the single most important "gotcha" pattern to internalize from this whole component family: **animation-driven trigger methods are invisible to a pure code search**, and `CurrentStateTrigger`/`AttackTrigger` are the two currently in use. `CurrentStateTrigger` is the generic one — it fires `triggerCalled = true` on whatever state is currently active (used by states like a dash or a skill cast that need "the animation reached its key moment" timing but aren't specifically a melee attack); `AttackTrigger` is specifically wired to `Entity_Combat.PreformAttack()` for basic melee swings.
+**Why this matters for reading the code:** both `CurrentStateTrigger()` and `AttackTrigger()` are `private` and have **no C# callers anywhere in the codebase** — if you `grep` for `CurrentStateTrigger()` you will only find its own definition. That's not dead code; it's called from *inside the Unity Editor*, by name, from a keyframe on an animation clip — a non-code, Editor-only configuration you'd only see by opening the Animation window on a specific clip. This is the single most important "gotcha" pattern to internalize from this whole component family: **animation-driven trigger methods are invisible to a pure code search**, and `CurrentStateTrigger`/`AttackTrigger` are the two currently in use. `CurrentStateTrigger` is the generic one — it fires `triggerCalled = true` on whatever state is currently active (used by states like a dash or a skill cast that need "the animation reached its key moment" timing but aren't specifically a melee attack); `AttackTrigger` is specifically wired to `Entity_Combat.PreformAttack()` for basic melee swings.
 
 ---
 
 ## How Entity's components connect (the full picture)
 
 A typical hit, traced end to end:
+
 1. An attack animation reaches its "hit frame" → Unity fires an Animation Event → `Entity_AnimationTriggers.AttackTrigger()` → `Entity_Combat.PreformAttack()`.
 2. `PreformAttack()` overlap-checks for targets, and for each `IDamagable` found, builds an `AttackData` from the attacker's `Entity_Stats` and calls `TakeDamage` on the target's `Entity_Health`.
 3. `Entity_Health.TakeDamage` runs the defender's own `Entity_Stats` mitigation/resistance math, reduces health, triggers `Entity.RecieveKnockBack`, and fires `OnHealthUpdate`/`OnTakingDamage` events.
@@ -732,7 +739,7 @@ Every arrow in that chain is either a direct method call between sibling compone
 
 ## Where this pattern could be reused later
 
-The "one base class (`Entity`) for truly universal behavior, plus a family of single-purpose sibling components wired together via `GetComponent` and events" structure here is a strong general template for *any* game with multiple character types sharing core mechanics (health, combat, status effects) but differing in control scheme or AI. The specific formulas (armor mitigation curve, elemental "highest wins, others half" rule, charge-based Lightning) are this game's own design and worth remembering as *examples* of RPG damage-formula design more than as universal rules — but the underlying techniques (diminishing-returns mitigation, primary stats feeding multiple secondary stats, template methods like `SlowDownEntityCo` for subclasses to fill in) are all patterns worth reaching for again in future projects with similar stat-driven combat.
+The "one base class (`Entity`) for truly universal behavior, plus a family of single-purpose sibling components wired together via `GetComponent` and events" structure is a strong general template for *any* game with multiple character types sharing core mechanics (health, combat, status effects) but differing in control scheme or AI. The specific formulas — armor mitigation curve, elemental "highest wins, others half" rule, charge-based Lightning — are this game's own design, worth remembering as *examples* of RPG damage-formula design more than as universal rules. But the underlying techniques (diminishing-returns mitigation, primary stats feeding multiple secondary stats, template methods like `SlowDownEntityCo` for subclasses to fill in) are all patterns worth reaching for again in future projects with similar stat-driven combat.
 
 ---
 

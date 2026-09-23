@@ -34,7 +34,7 @@ This folder is a beginner-friendly, human-written walkthrough of the actual code
 
 **The full set is done.** Every system in `Assets/Scripts/` (166 files) is covered by one of the 14 chapters above. New scripts added after this was written obviously won't be reflected here — treat this as a snapshot of the codebase as of when it was written, not a living doc that updates itself.
 
-Each chapter ends with a short "where this pattern could be reused later" note — the idea being that once the course is finished, this folder doubles as a personal reference for *your own* future projects, not just an explanation of this one. A few threads worth following across chapters rather than reading each in isolation:
+Each chapter ends with a short "where this pattern could be reused later" note. The idea: once the course is finished, this folder doubles as a personal reference for *your own* future projects, not just an explanation of this one. A few threads worth following across chapters rather than reading each in isolation:
 
 - The **"enum in, matching object out via a lookup"** shape appears independently at least five times (`Entity_Stats.GetStatByType`, `Player_SkillManager.GetSkillByType`, `UI_InGame.GetSkillSlot`, and others) — once you spot it once, you'll recognize it everywhere.
 - The **"coroutine, `Time.deltaTime`-accumulated Lerp over a known duration"** template shows up in screen fades, audio fades, and status-effect VFX — genuinely the standard "smooth transition" tool in this codebase.

@@ -4,7 +4,7 @@
 
 Nine files covering everything in the world the player can touch, trigger, or hit that isn't Player/Enemy/UI: `Object_Checkpoint` and `Object_Waypoint` (previewed briefly in `05-GameManager-and-Scenes.md`, given their full treatment here), `Object_Portal` (the richest of the three "world state" objects), `Object_NPC` (base for the two shop-keeper types), `Object_Merchant`/`Object_Blacksmith`, and three standalone pieces — `Object_ItemPickup`, `Object_Buff`, `Object_Chest`.
 
-None of these extend `Entity` — this whole folder is a good study in **composition over inheritance**: several of them (`Object_Chest` especially) reach for `Entity_VFX`/`Entity_DropManager`/`IDamagable` via plain `GetComponent`/interface implementation rather than inheriting the full `Entity` state-machine/movement/collision-detection machinery that would be complete overkill for something that never moves.
+None of these extend `Entity` — this whole folder is a good study in **composition over inheritance**: several of them (`Object_Chest` especially) reach for `Entity_VFX`/`Entity_DropManager`/`IDamagable` via plain `GetComponent`/interface implementation rather than inheriting the full `Entity` state-machine/movement/collision-detection machinery, which would be complete overkill for something that never moves.
 
 ---
 
@@ -216,7 +216,7 @@ private void HandleNpcFlip()
     else if (npc.position.x > player.position.x && facingRight) { npc.Rotate(0f, 180f, 0f); facingRight = !facingRight; }
 }
 ```
-Faces the NPC toward whichever side the player is standing on, every frame while a player reference exists. This is conceptually the same flip trick as `Entity.Flip()`/`HandleFlip()` (`02-Entity.md`) — but reimplemented independently here with its own `facingRight` bool, since `Object_NPC` doesn't extend `Entity` at all and so can't reuse that code. A reasonable design choice (an NPC doesn't need combat/health/a state machine), but worth noticing as duplicated *logic* across otherwise-unrelated class hierarchies.
+Faces the NPC toward whichever side the player is standing on, every frame while a player reference exists. This is conceptually the same flip trick as `Entity.Flip()`/`HandleFlip()` (`02-Entity.md`), but reimplemented independently here with its own `facingRight` bool, since `Object_NPC` doesn't extend `Entity` at all and so can't reuse that code. A reasonable design choice (an NPC doesn't need combat/health/a state machine), but worth noticing as duplicated *logic* across otherwise-unrelated class hierarchies.
 
 ```csharp
 protected virtual void OnTriggerEnter2D(Collider2D collision)
@@ -365,7 +365,9 @@ public class Object_Chest : MonoBehaviour, IDamagable
     Entity_VFX entityVFX => GetComponent<Entity_VFX>();
     Entity_DropManager dropManager => GetComponent<Entity_DropManager>();
 ```
-Two things worth understanding here. First, the design: `Object_Chest` doesn't extend `Entity` at all — it just implements `IDamagable` directly and reaches for `Entity_VFX`/`Entity_DropManager` via plain `GetComponent`, borrowing exactly the two pieces of `Entity`'s component family it actually needs (`02-Entity.md`) without any of the state-machine/movement/collision-detection machinery a chest has no use for — a clean example of favoring composition over inheritance when a full `Entity` would be overkill for something that never moves.
+Two things worth understanding here.
+
+First, the design: `Object_Chest` doesn't extend `Entity` at all — it just implements `IDamagable` directly and reaches for `Entity_VFX`/`Entity_DropManager` via plain `GetComponent`, borrowing exactly the two pieces of `Entity`'s component family it actually needs (`02-Entity.md`) without any of the state-machine/movement/collision-detection machinery a chest has no use for — a clean example of favoring composition over inheritance when a full `Entity` would be overkill for something that never moves.
 
 Second, worth flagging directly: **these four properties use `=>` (expression-bodied) rather than being fields set once in `Awake()`.** That means every single reference to `rb`, `animator`, `entityVFX`, or `dropManager` anywhere in this class triggers a **fresh `GetComponent` call at that exact moment**, rather than reading an already-cached reference. Every other class documented so far caches these in `Awake()` (see `02-Entity.md`'s `Entity.Awake()` for the pattern this deviates from) — `GetComponent` is measurably more expensive than reading a field, and for a chest (interacted with rarely, typically once) the actual cost here is negligible, but it's a genuine, spottable inconsistency with the caching habit used everywhere else in the codebase, worth recognizing for what it is rather than assuming it's intentional.
 

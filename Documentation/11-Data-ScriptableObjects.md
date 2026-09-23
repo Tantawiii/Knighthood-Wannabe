@@ -24,7 +24,12 @@ public float GetDropChance()
     return Mathf.Min(chance, maxDropChance);
 }
 ```
-`02-Entity.md` covered *how* `Entity_DropManager.RollDrops()` uses this value, but not the formula itself — worth closing that loop. `itemRarity` (0–1000) does **double duty** across the drop system: here, it's inversely proportional to drop chance — an item with `itemRarity` near `0` rolls a chance near 100% (very common), while one near `1000` rolls a chance near `0.1%` (very rare) — but it's the *same* number `Entity_DropManager.RollDrops()` later treats as a **rarity budget cost** once an item *does* roll successfully (the greedy "spend from `maxRarityAmount`, rarest-first" fill described in `02-Entity.md`). So one field controls both "how likely is this to be offered at all" and "how much of the loot budget it eats once it's picked" — a genuinely dual-purpose value worth being clear-eyed about rather than assuming it only does one job. `maxDropChance` (default 65%) is a hard ceiling — even an `itemRarity` of `1` never guarantees a 100% drop.
+`02-Entity.md` covered *how* `Entity_DropManager.RollDrops()` uses this value, but not the formula itself — worth closing that loop. `itemRarity` (0–1000) does **double duty** across the drop system:
+
+- Here, it's inversely proportional to drop chance — an item with `itemRarity` near `0` rolls a chance near 100% (very common), while one near `1000` rolls a chance near `0.1%` (very rare).
+- But it's the *same* number `Entity_DropManager.RollDrops()` later treats as a **rarity budget cost** once an item *does* roll successfully — the greedy "spend from `maxRarityAmount`, rarest-first" fill described in `02-Entity.md`.
+
+So one field controls both "how likely is this to be offered at all" and "how much of the loot budget it eats once it's picked" — a genuinely dual-purpose value worth being clear-eyed about rather than assuming it only does one job. `maxDropChance` (default 65%) is a hard ceiling — even an `itemRarity` of `1` never guarantees a 100% drop.
 
 ### `Item_DataSO`'s `saveID` — a different "stable ID" technique than you might expect
 
@@ -38,7 +43,7 @@ private void OnValidate()
     #endif
 }
 ```
-Worth contrasting directly with `Object_Checkpoint.checkpointID` from `10-InteractiveObjects.md`, which generates a **random** GUID (`System.Guid.NewGuid()`) *once*, gated by "only if currently blank." `saveID` here does something different: it re-derives itself from `AssetDatabase.AssetPathToGUID(path)` **every single time** `OnValidate` runs, with no blank-check at all. This ties the ID to Unity's own internal per-asset GUID (the same one tracked in the asset's `.meta` file) rather than a value this script invents — which means it survives the asset being **renamed or moved** within the project (Unity's AssetDatabase GUID is attached to the asset itself, not its path or name, which is the entire reason to use this approach over a random GUID or the file path directly) — a meaningfully different, and for this specific purpose more robust, technique for the same underlying problem ("give this asset a stable identity to save/load by"). `Quest_DataSO.questSaveID` (below) uses the exact same `AssetPathToGUID` technique.
+Worth contrasting directly with `Object_Checkpoint.checkpointID` from `10-InteractiveObjects.md`, which generates a **random** GUID (`System.Guid.NewGuid()`) *once*, gated by "only if currently blank." `saveID` here does something different: it re-derives itself from `AssetDatabase.AssetPathToGUID(path)` **every single time** `OnValidate` runs, with no blank-check at all. This ties the ID to Unity's own internal per-asset GUID (the same one tracked in the asset's `.meta` file) rather than a value this script invents — which means it survives the asset being **renamed or moved** within the project, since Unity's AssetDatabase GUID is attached to the asset itself, not its path or name. That's the entire reason to use this approach over a random GUID or the file path directly — a meaningfully different, and for this specific purpose more robust, technique for the same underlying problem: give this asset a stable identity to save/load by. `Quest_DataSO.questSaveID` (below) uses the exact same `AssetPathToGUID` technique.
 
 ---
 
@@ -97,9 +102,11 @@ public override void ExecuteEffect()
     player = null;
 }
 ```
-Two details worth understanding. First, `buffName`'s **field initializer** — `= Guid.NewGuid().ToString()` — runs once, when this ScriptableObject asset is first created, baking in a random default name so a freshly-created "buff potion" asset doesn't accidentally collide with some *other* buff's name (recall `06-StatSystem.md`/`03-Player.md`: `buffName` doubles as the `Stat.AddModifier` `source` tag, so uniqueness matters). It's still a `[SerializeField]`, so it can be — and, for a meaningful design, probably should be — overwritten by hand in the Inspector to something readable.
+Two details worth understanding.
 
-Second: the base `ExecuteEffect()` contract takes **no parameters** (`07-InventorySystem.md`), so how does it know *which player* to apply the buff to? `CanBeUsed(Player player)` — called immediately beforehand by `Inventory_Base.TryUseItem` — quietly stashes `this.player = player` as a side effect of the check itself, and the later parameterless `ExecuteEffect()` reads that stashed reference. A clever (if slightly indirect) way to route data through a fixed interface shape. `player = null;` at the end is a small cleanup habit, guarding against a stale reference lingering on the shared asset after use.
+First, `buffName`'s **field initializer** — `= Guid.NewGuid().ToString()` — runs once, when this ScriptableObject asset is first created, baking in a random default name so a freshly-created "buff potion" asset doesn't accidentally collide with some *other* buff's name (recall `06-StatSystem.md`/`03-Player.md`: `buffName` doubles as the `Stat.AddModifier` `source` tag, so uniqueness matters). It's still a `[SerializeField]`, so it can be — and, for a meaningful design, probably should be — overwritten by hand in the Inspector to something readable.
+
+Second, the base `ExecuteEffect()` contract takes **no parameters** (`07-InventorySystem.md`), so how does it know *which player* to apply the buff to? `CanBeUsed(Player player)` — called immediately beforehand by `Inventory_Base.TryUseItem` — quietly stashes `this.player = player` as a side effect of the check itself, and the later parameterless `ExecuteEffect()` reads that stashed reference. A clever (if slightly indirect) way to route data through a fixed interface shape. `player = null;` at the end is a small cleanup habit, guarding against a stale reference lingering on the shared asset after use.
 
 ### `ItemEffect_HealOnDoingDamage` — the lifesteal prediction from `07-InventorySystem.md`, confirmed
 
@@ -212,7 +219,9 @@ public class Quest_DataSO : ScriptableObject
 
 `questRewards` being typed `Inventory_Item[]` is the **second** appearance of the same reuse trick already seen with `Item_DataSO.craftRecipe` (`07-InventorySystem.md`): the runtime "owned item" class doing double duty purely as a `{item, amount}` data descriptor, never actually representing something anyone owns yet.
 
-`RewardGiver` is worth a small, honest note: it's defined directly in this file rather than living under `Scripts/Enums/` with every other enum in the project (`01-Foundations.md`) — a minor organizational inconsistency, most likely because it was added later in development without circling back to relocate it, rather than a deliberate choice. Functionally it works exactly the same either way. Also worth being candid about: based on every `InteractiveObjects` script actually read (`10-InteractiveObjects.md`), only `Object_Merchant` currently offers quests (`questsToOffer`) — `Object_Blacksmith.Interact()` opens Storage/Craft UI and never references quests at all — so a quest configured with `rewardGiver = Blacksmith` doesn't have an obvious current effect visible in the code covered so far. It's plausible this field is consumed purely by the Quest UI for display purposes ("turn this in to the Blacksmith") rather than by any NPC's own interact logic — that would only be confirmed by the later `UI` doc.
+`RewardGiver` is worth a small, honest note: it's defined directly in this file rather than living under `Scripts/Enums/` with every other enum in the project (`01-Foundations.md`) — a minor organizational inconsistency, most likely because it was added later in development without circling back to relocate it, rather than a deliberate choice. Functionally it works exactly the same either way.
+
+Also worth being candid about: based on every `InteractiveObjects` script actually read (`10-InteractiveObjects.md`), only `Object_Merchant` currently offers quests (`questsToOffer`) — `Object_Blacksmith.Interact()` opens Storage/Craft UI and never references quests at all — so a quest configured with `rewardGiver = Blacksmith` doesn't have an obvious current effect visible in the code covered so far. It's plausible this field is consumed purely by the Quest UI for display purposes ("turn this in to the Blacksmith") rather than by any NPC's own interact logic — that would only be confirmed by the later `UI` doc.
 
 ### `QuestDatabase_DataSO` — the same lookup-list template as `ItemList_DataSO`
 
