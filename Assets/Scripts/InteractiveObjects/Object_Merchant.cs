@@ -30,11 +30,11 @@ public class Object_Merchant : Object_NPC, IInteractable
         base.Interact();
         if (!EnsurePlayerInventory()) return;
 
-        // ui.merchantUI.SetUpMerchantUI(merchant, inventory);
+        ui.merchantUI.SetUpMerchantUI(merchant, inventory);
 
-        // ui.OpenMerchantUI(true);
+        ui.OpenMerchantUI(true);
 
-        ui.OpenQuestUI(questsToOffer);
+        // ui.OpenQuestUI(questsToOffer); // This will be used in future to open quests from a certain dispatcher NPC of quests till we expand on it.
     }
 
     private bool EnsurePlayerInventory()

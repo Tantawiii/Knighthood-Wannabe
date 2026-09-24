@@ -22,7 +22,7 @@ public class UI_QuestPreview : MonoBehaviour
 
         questName.text = questDataSO.questName;
         questDescription.text = questDataSO.questDescription;
-        questGoal.text = questDataSO.questObjective;
+        questGoal.text = questDataSO.questObjective + " " + questDataSO.requiredAmount;
         questRewardGold.text = questDataSO.goldReward.ToString() + "G.";
 
         EnableQuestRewardObj(false);

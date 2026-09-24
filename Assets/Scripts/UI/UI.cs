@@ -21,6 +21,7 @@ public class UI : MonoBehaviour
     public UI_DeathScreen deathScreenUI { get; private set; }
     public UI_FadeScreen fadeUI { get; private set; }
     public UI_Quest questUI { get; private set; }
+    public UI_ActiveQuest activeQuestUI { get; private set; }
     #endregion
     private bool skillTreeEnabled;
     private bool inventoryEnabled;
@@ -43,6 +44,7 @@ public class UI : MonoBehaviour
         deathScreenUI = GetComponentInChildren<UI_DeathScreen>(true); // This line is can find death screen if it is inactive
         fadeUI = GetComponentInChildren<UI_FadeScreen>(true); // This line is can find fade screen if it is inactive
         questUI = GetComponentInChildren<UI_Quest>(true); // This line is can find quest UI if it is inactive
+        activeQuestUI = GetComponentInChildren<UI_ActiveQuest>(true); // This line is can find active quest UI if it is inactive
 
         skillTreeEnabled = skillTreeUI.gameObject.activeSelf;
         inventoryEnabled = inventoryUI.gameObject.activeSelf;
@@ -59,6 +61,7 @@ public class UI : MonoBehaviour
 
         input.UI.SkillTree.performed += ctx => ToggleSkillTreeUI();
         input.UI.Inventory.performed += ctx => ToggleInventoryUI();
+        input.UI.Journal.performed += ctx => ToggleQuestUI();
 
         input.UI.AlternativeInput.performed += ctx => alternativeInput = true;
         input.UI.AlternativeInput.canceled += ctx => alternativeInput = false;
@@ -143,6 +146,19 @@ public class UI : MonoBehaviour
 
         inventoryEnabled = !inventoryEnabled;
         inventoryUI.gameObject.SetActive(inventoryEnabled);
+        HideToolTips();
+
+        StopPlayerControlsIfNeeded();
+    }
+
+    public void ToggleQuestUI()
+    {
+        activeQuestUI.transform.SetAsLastSibling();
+
+        SetToolTipsAboveUIElements();
+        fadeUI.transform.SetAsLastSibling();
+
+        activeQuestUI.gameObject.SetActive(!activeQuestUI.gameObject.activeSelf);
         HideToolTips();
 
         StopPlayerControlsIfNeeded();
