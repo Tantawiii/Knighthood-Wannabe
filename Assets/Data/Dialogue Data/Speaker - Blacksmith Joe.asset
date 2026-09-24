@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1650926ae82cbb4b85551f1e93cf2de, type: 3}
+  m_Name: Speaker - Blacksmith Joe
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue_SpeakerSO
+  speakerName: Joe
+  speakerPortrait: {fileID: -1991876309862939562, guid: 56bd30ec69482c54da54b542e07cbc8e, type: 3}
