@@ -315,8 +315,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 311.5, y: -171.005}
-  m_SizeDelta: {x: 623, y: 342.01}
+  m_AnchoredPosition: {x: 311.5, y: -0}
+  m_SizeDelta: {x: 623, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8076563012766876095
 CanvasRenderer:
@@ -346,11 +346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Before you head off on your grand adventure, you should probably have a
-    proper weapon. Luckily, I happen to have just the thing! There's only one little
-    problem... I seem to have left my sword at the blacksmith's shop. Go find the
-    blacksmith and tell him I sent you. He should have the sword waiting for you.
-    Take it, and then you'll be ready to face whatever dangers lie ahead.
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -1273,7 +1269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &245594711099251413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10501,7 +10497,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 342.01}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6316904971078570815
 MonoBehaviour:
@@ -38200,7 +38196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4969132439406808550
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38531,8 +38527,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6339890957697781404}
   m_HandleRect: {fileID: 3205681090304260127}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.73097277
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -43864,7 +43860,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 678622597012205320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.26902723}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -59987,7 +59983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6331766121473199868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -85800,7 +85796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2565907162615718255
 RectTransform:
   m_ObjectHideFlags: 0
@@ -137250,7 +137246,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Kill 2 Skeletons'
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -137340,7 +137338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4664133396123201992
 RectTransform:
   m_ObjectHideFlags: 0

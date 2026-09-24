@@ -98,6 +98,53 @@ public class Inventory_Base : MonoBehaviour, ISaveable
         }
     }
 
+    public void RemoveItemAmount(Item_DataSO itemToRemove, int amount)
+    {
+
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            Inventory_Item item = itemList[i];
+
+            if (item.itemData != itemToRemove)
+            {
+                continue;
+            }
+
+            int removeCount = Mathf.Min(amount, item.stackSize);
+
+            for(int j = 0; j < removeCount; j++)
+            {
+                RemoveOneItem(item);
+                amount--;
+
+                if(amount <= 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    public bool HasItemAmount(Item_DataSO itemToCheck, int amount)
+    {
+        int totalAmount = 0;
+
+        foreach (var item in itemList)
+        {
+            if (item.itemData == itemToCheck)
+            {
+                totalAmount += item.stackSize;
+            }
+
+            if (totalAmount >= amount)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Inventory_Item FindItem(Inventory_Item itemToFind)
     {
         return itemList.Find(item => item == itemToFind);

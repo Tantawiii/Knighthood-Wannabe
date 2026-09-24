@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Quest - It's Dangerous To Go Alone
   m_EditorClassIdentifier: Assembly-CSharp::Quest_DataSO
   questSaveID: a286fc0bc03f0ed4b85af6fa6b138336
+  questType: 2
   questName: It's Dangerous To Go Alone
   questDescription: Before you head off on your grand adventure, you should probably
     have a proper weapon. Luckily, I happen to have just the thing! There's only
@@ -22,6 +23,7 @@ MonoBehaviour:
   questObjective: '- Talk to Blacksmith'
   questTargetID: blacksmith
   requiredAmount: 1
+  itemToDeliver: {fileID: 0}
   rewardGiver: 2
   questRewards:
   - itemData: {fileID: 11400000, guid: 9e579e77cc20e444ebb49e61ed5130cc, type: 2}

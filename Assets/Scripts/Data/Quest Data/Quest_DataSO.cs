@@ -8,17 +8,27 @@ public enum RewardGiver
     None
 }
 
+public enum QuestType
+{
+    Kill,
+    Collect,
+    Talk,
+    Deliver
+}
+
 [CreateAssetMenu(menuName = "RPG Setup/Quest Data/New Quest", fileName = "Quest - ")]
 public class Quest_DataSO : ScriptableObject
 {
     public string questSaveID;
     [Space]
+    public QuestType questType;
     public string questName;
     [TextArea] public string questDescription;
     [TextArea] public string questObjective;
 
     public string questTargetID; // Enemy name, NPC name, Item name, etc.
     public int requiredAmount; // How many of the target is required to complete the quest
+    public Item_DataSO itemToDeliver; // For delivery quests, the item to deliver
 
     [Header("Quest Rewards")]
     public RewardGiver rewardGiver;

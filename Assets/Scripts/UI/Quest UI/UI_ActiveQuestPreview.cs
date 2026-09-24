@@ -30,11 +30,6 @@ public class UI_ActiveQuestPreview : MonoBehaviour
 
         for(int i = 0; i < questDataSO.questRewards.Length; i++)
         {
-            if(questDataSO.questRewards[i] == null)
-            {
-                continue;
-            }
-
             questRewardSlots[i].gameObject.SetActive(true);
             questRewardSlots[i].UpdateSlot(questDataSO.questRewards[i]);
         }
