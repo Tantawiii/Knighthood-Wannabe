@@ -10,10 +10,10 @@ public class Dialogue_LineSO : ScriptableObject
     [Header("Dialogue Text")]
     [TextArea] public string[] textLine;
 
-    [Header("Answer Setup")]
-    public bool playerCanAnswer; // If true, the player can answer this line with a response
-    public Dialogue_LineSO[] playerResponses; // The lines that the player can respond with
-
+    [Header("Dialogue Action")]
+    [TextArea] public string actionLine;
+    public DialogueActionType actionType;
+    public Dialogue_LineSO[] choiceLines; 
 
     public string GetRandomLine()
     {
