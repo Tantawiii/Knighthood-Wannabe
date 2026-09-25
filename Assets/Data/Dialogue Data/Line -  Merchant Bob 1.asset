@@ -15,7 +15,8 @@ MonoBehaviour:
   dialogueGroupName: Merchant Bob
   speaker: {fileID: 11400000, guid: 25f4ffb67ad70234ab934827f9efb097, type: 2}
   textLine:
-  - In it for a trade, I see.
-  actionLine: Abracadabra
-  actionType: 3
+  - 
+  playerChoiceAnswer: In it for a trade.
   choiceLines: []
+  actionLine: Okie Dokie.
+  actionType: 3

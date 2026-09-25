@@ -10,10 +10,13 @@ public class Dialogue_LineSO : ScriptableObject
     [Header("Dialogue Text")]
     [TextArea] public string[] textLine;
 
+    [Header("Dialogue Choices")]
+    [TextArea] public string playerChoiceAnswer;
+    public Dialogue_LineSO[] choiceLines; 
+
     [Header("Dialogue Action")]
     [TextArea] public string actionLine;
     public DialogueActionType actionType;
-    public Dialogue_LineSO[] choiceLines; 
 
     public string GetFirstLine() => textLine[0];
 

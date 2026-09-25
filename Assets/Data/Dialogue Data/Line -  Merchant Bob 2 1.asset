@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf0d0c564d3b1a468a7869207cc2550, type: 3}
-  m_Name: Line -  Merchant Bob 2
+  m_Name: Line -  Merchant Bob 2 1
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue_LineSO
   dialogueGroupName: Merchant Bob
   speaker: {fileID: 11400000, guid: 25f4ffb67ad70234ab934827f9efb097, type: 2}
   textLine:
-  - About what kind of job?
-  playerChoiceAnswer: Aye, let's talk errands.
-  choiceLines:
-  - {fileID: 11400000, guid: 9cae38d4f9bf4754bb47d07fa45d8035, type: 2}
-  - {fileID: 11400000, guid: 1e6468d5d7fa7c741949ae14d9e30374, type: 2}
-  actionLine: 
-  actionType: 6
+  - 
+  playerChoiceAnswer: You got a new job?
+  choiceLines: []
+  actionLine: Ehm..
+  actionType: 1

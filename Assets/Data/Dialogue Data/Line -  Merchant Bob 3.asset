@@ -15,7 +15,8 @@ MonoBehaviour:
   dialogueGroupName: Merchant Bob
   speaker: {fileID: 11400000, guid: 25f4ffb67ad70234ab934827f9efb097, type: 2}
   textLine:
-  - Alright then, see you around.
-  actionLine: 
-  actionType: 7
+  - 
+  playerChoiceAnswer: Alright then, see you around.
   choiceLines: []
+  actionLine: Alright, see ya!
+  actionType: 7

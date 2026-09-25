@@ -35,7 +35,7 @@ public class Object_Merchant : Object_NPC, IInteractable
         // ui.OpenMerchantUI(true);
 
         ui.merchantUI.SetUpMerchantUI(merchant, inventory);
-        ui.OpenDialogueUI(firstDialogueLine); // This will be used in future to open dialogue from a certain dispatcher NPC of quests till we expand on it.
+        ui.OpenDialogueUI(firstDialogueLine, new DialogueNpcData(npcType, questsToOffer)); // This will be used in future to open dialogue from a certain dispatcher NPC of quests till we expand on it.
 
         // ui.OpenQuestUI(questsToOffer); // This will be used in future to open quests from a certain dispatcher NPC of quests till we expand on it.
     }

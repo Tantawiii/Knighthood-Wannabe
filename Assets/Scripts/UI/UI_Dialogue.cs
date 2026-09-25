@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UI_Dialogue : MonoBehaviour
 {
     private UI ui;
+    private DialogueNpcData currentNpcData;
+    private Player_QuestManager questManager;
 
     [SerializeField] private Image speakerPortrait;
     [SerializeField] private TextMeshProUGUI speakerName;
@@ -27,6 +29,7 @@ public class UI_Dialogue : MonoBehaviour
     void Awake()
     {
         ui = GetComponentInParent<UI>();
+        questManager = Player.Instance.questManager;
 
         for (int i = 0; i < dialogueChoicesText.Length; i++)
         {
@@ -43,6 +46,8 @@ public class UI_Dialogue : MonoBehaviour
             };
         }
     }
+
+    public void SetupNpcData(DialogueNpcData npcData) => currentNpcData = npcData;
 
     public void PlayDialogueLine(Dialogue_LineSO line)
     {
@@ -78,6 +83,28 @@ public class UI_Dialogue : MonoBehaviour
                 {
                     PlayDialogueLine(currentChoices[selectedChoiceIndex]);
                 }
+                break;
+            case DialogueActionType.OpenQuest:
+                // Open quest UI
+                ui.SwitchToInGameUI();
+                ui.OpenQuestUI(currentNpcData.quests);
+                break;
+            case DialogueActionType.GetQuestReward:
+                ui.SwitchToInGameUI();
+                questManager.TryGiveRewardFrom(currentNpcData.rewardGiver);
+                break;
+            case DialogueActionType.OpenCraft:
+                // Open craft UI
+                ui.SwitchToInGameUI();
+                ui.OpenCraftUI(true);
+                break;
+            case DialogueActionType.OpenStorage:
+                // Open storage UI
+                ui.SwitchToInGameUI();
+                ui.OpenStorageUI(true);
+                break;
+            case DialogueActionType.CloseDialogue:
+                ui.SwitchToInGameUI();
                 break;
         }
     }
@@ -135,10 +162,16 @@ public class UI_Dialogue : MonoBehaviour
             if(i < currentChoices.Length)
             {
                 Dialogue_LineSO choice = currentChoices[i];
-                string choiceText = choice.GetFirstLine();
+                string choiceText = choice.playerChoiceAnswer;
 
                 dialogueChoicesText[i].gameObject.SetActive(true);
                 dialogueChoicesText[i].text = selectedChoiceIndex == i ? $"<color=yellow> {i + 1}) {choiceText}" : $"{i + 1}) {choiceText}";
+
+
+                if(choice.actionType == DialogueActionType.GetQuestReward && !questManager.HasCompletedQuest())
+                {
+                    dialogueChoicesText[i].gameObject.SetActive(false); // Hide the choice if the player hasn't completed the quest
+                }
             }
             // else
             // {

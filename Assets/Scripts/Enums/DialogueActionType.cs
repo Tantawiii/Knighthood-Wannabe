@@ -7,5 +7,6 @@ public enum DialogueActionType
     OpenStash,
     GetQuestReward,
     PlayerMakeChoice,
-    CloseDialogue
+    CloseDialogue,
+    OpenStorage
 }
