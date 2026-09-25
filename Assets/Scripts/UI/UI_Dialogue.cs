@@ -48,6 +48,7 @@ public class UI_Dialogue : MonoBehaviour
     {
         currentLine = line;
         currentChoices = line.choiceLines;
+        selectedChoice = null; // Reset any previous choice
 
         HideAllChoices(); // Hide all choices initially
 
@@ -75,9 +76,7 @@ public class UI_Dialogue : MonoBehaviour
                 }
                 else
                 {
-                    Dialogue_LineSO selectedChoice = currentChoices[selectedChoiceIndex];
-                    PlayDialogueLine(selectedChoice);
-                    selectedChoice = null; // Reset after making a choice
+                    PlayDialogueLine(currentChoices[selectedChoiceIndex]);
                 }
                 break;
         }
@@ -88,7 +87,6 @@ public class UI_Dialogue : MonoBehaviour
         if(typingCoroutine != null)
         {
             CompleteTyping();
-            waitingToConfirm = true;
             return;
         }
 
@@ -106,6 +104,25 @@ public class UI_Dialogue : MonoBehaviour
             StopCoroutine(typingCoroutine);
             dialogueText.text = fullTextToShow; // Show the full text immediately
             typingCoroutine = null; // Reset the coroutine reference
+            OnTypingFinished();
+        }
+    }
+
+    private void OnTypingFinished()
+    {
+        waitingToConfirm = true; // Now waiting for player confirmation to proceed
+
+        // Show choices right away instead of waiting for another input
+        if (currentLine.actionType == DialogueActionType.PlayerMakeChoice)
+        {
+            selectedChoiceIndex = 0;
+            ShowChoices();
+        }
+        // Open the shop right after its action line finishes
+        else if (currentLine.actionType == DialogueActionType.OpenShop)
+        {
+            waitingToConfirm = false;
+            HandleNextAction();
         }
     }
 
@@ -158,9 +175,8 @@ public class UI_Dialogue : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        waitingToConfirm = true; // Now waiting for player confirmation to proceed
-
         typingCoroutine = null; // Reset the coroutine reference
+        OnTypingFinished();
     }
 
     private void SelectChoice(int index)

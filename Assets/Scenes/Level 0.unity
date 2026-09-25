@@ -14832,7 +14832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8378691468866332921, guid: e5aa818b01ccc55428e463f957c3aff3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8507074447201944955, guid: e5aa818b01ccc55428e463f957c3aff3, type: 3}
       propertyPath: dialogueChoices.Array.size
