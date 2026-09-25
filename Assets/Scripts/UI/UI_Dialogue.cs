@@ -145,8 +145,10 @@ public class UI_Dialogue : MonoBehaviour
             selectedChoiceIndex = 0;
             ShowChoices();
         }
-        // Open the shop right after its action line finishes
-        else if (currentLine.actionType == DialogueActionType.OpenShop)
+        // Open the shop/craft/storage right after its action line finishes
+        else if (currentLine.actionType == DialogueActionType.OpenShop
+              || currentLine.actionType == DialogueActionType.OpenCraft
+              || currentLine.actionType == DialogueActionType.OpenStorage)
         {
             waitingToConfirm = false;
             HandleNextAction();

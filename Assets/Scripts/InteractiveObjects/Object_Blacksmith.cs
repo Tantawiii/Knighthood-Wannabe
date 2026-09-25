@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Object_Blacksmith : Object_NPC, IInteractable
 {
+    [Header("Quest & Dialogue")]
+    [SerializeField] private Dialogue_LineSO firstDialogueLine;
+    [SerializeField] private Quest_DataSO[] questsToOffer;
+
     private Animator anim;
     private Inventory_Player playerInventory;
     private Inventory_Storage storage;
@@ -22,7 +26,7 @@ public class Object_Blacksmith : Object_NPC, IInteractable
         ui.storageUI.SetUpStorageUI(storage);
         ui.craftUI.SetUpCraftUI(storage);
 
-        ui.OpenStorageUI(true);
+        ui.OpenDialogueUI(firstDialogueLine, new DialogueNpcData(npcType, questsToOffer));
     }
 
     private bool EnsurePlayerInventory()

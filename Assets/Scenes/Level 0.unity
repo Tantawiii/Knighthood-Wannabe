@@ -12567,6 +12567,8 @@ MonoBehaviour:
   interactTooltip: {fileID: 65255051}
   floatSpeed: 8
   floatRange: 0.1
+  firstDialogueLine: {fileID: 11400000, guid: 381ed50f597948828514aaf780de5f3d, type: 2}
+  questsToOffer: []
 --- !u!114 &1060446537
 MonoBehaviour:
   m_ObjectHideFlags: 0
