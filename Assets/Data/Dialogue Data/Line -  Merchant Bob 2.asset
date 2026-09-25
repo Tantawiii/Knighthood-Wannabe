@@ -10,17 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf0d0c564d3b1a468a7869207cc2550, type: 3}
-  m_Name: Line -  Merchant Bob
+  m_Name: Line -  Merchant Bob 2
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue_LineSO
   dialogueGroupName: Merchant Bob
   speaker: {fileID: 11400000, guid: 25f4ffb67ad70234ab934827f9efb097, type: 2}
   textLine:
-  - Hey there buddy!
-  - Sup there.
-  - Huh!?
+  - Aye, let's see what we can deal with
   actionLine: 
-  actionType: 6
-  choiceLines:
-  - {fileID: 11400000, guid: 8b0495765beef634c8a15ca945d22125, type: 2}
-  - {fileID: 11400000, guid: 8a1f2bc0a9be35c4c858aa10bcd4982d, type: 2}
-  - {fileID: 11400000, guid: 635acbe6d861de14d87430ee848fcfcd, type: 2}
+  actionType: 1
+  choiceLines: []

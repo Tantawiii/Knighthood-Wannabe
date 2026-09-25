@@ -92,6 +92,16 @@ public class UI : MonoBehaviour
                 dialogueUI.DialogueInteraction();
             }
         };
+
+        input.UI.DialogueNavigation.performed += ctx => 
+        {
+            int direction = Mathf.RoundToInt(ctx.ReadValue<float>());
+
+            if(dialogueUI.gameObject.activeInHierarchy)
+            {
+                dialogueUI.NavigateChoices(direction);
+            }
+        };
     }
 
     private void StopPlayerControls(bool stopControls)

@@ -10,7 +10,7 @@ public class UI_Dialogue : MonoBehaviour
     [SerializeField] private Image speakerPortrait;
     [SerializeField] private TextMeshProUGUI speakerName;
     [SerializeField] private TextMeshProUGUI dialogueText;
-    [SerializeField] private TextMeshProUGUI[] dialogueChoices;
+    [SerializeField] private TextMeshProUGUI[] dialogueChoicesText;
 
     [Space]
     [SerializeField] private float typingSpeed = 0.05f; // Time delay between each letter
@@ -27,6 +27,21 @@ public class UI_Dialogue : MonoBehaviour
     void Awake()
     {
         ui = GetComponentInParent<UI>();
+
+        for (int i = 0; i < dialogueChoicesText.Length; i++)
+        {
+            DialogueChoiceHandler handler = dialogueChoicesText[i].GetComponent<DialogueChoiceHandler>();
+            handler.Setup(i);
+            handler.OnHover += selectedIndex => {
+                selectedChoiceIndex = selectedIndex;
+                ShowChoices(); // Refresh the choices display to reflect the new selection
+            };
+            handler.OnClick += choiceIndex => {
+                selectedChoiceIndex = choiceIndex;
+                selectedChoice = currentChoices[selectedChoiceIndex];
+                PlayDialogueLine(selectedChoice);
+            };
+        }
     }
 
     public void PlayDialogueLine(Dialogue_LineSO line)
@@ -34,10 +49,12 @@ public class UI_Dialogue : MonoBehaviour
         currentLine = line;
         currentChoices = line.choiceLines;
 
+        HideAllChoices(); // Hide all choices initially
+
         speakerPortrait.sprite = line.speaker.speakerPortrait;
         speakerName.text = line.speaker.speakerName;
 
-        fullTextToShow = line.GetRandomLine();
+        fullTextToShow = line.actionType == DialogueActionType.None || line.actionType == DialogueActionType.PlayerMakeChoice ? line.GetRandomLine() : line.actionLine;
         typingCoroutine = StartCoroutine(TypeTextCo(fullTextToShow)); 
     }
 
@@ -49,6 +66,19 @@ public class UI_Dialogue : MonoBehaviour
                 // Open merchant UI
                 ui.SwitchToInGameUI();
                 ui.OpenMerchantUI(true);
+                break;
+            case DialogueActionType.PlayerMakeChoice:
+                if(selectedChoice == null)
+                {
+                    selectedChoiceIndex = 0; // Default to the first choice
+                    ShowChoices();
+                }
+                else
+                {
+                    Dialogue_LineSO selectedChoice = currentChoices[selectedChoiceIndex];
+                    PlayDialogueLine(selectedChoice);
+                    selectedChoice = null; // Reset after making a choice
+                }
                 break;
         }
     }
@@ -79,6 +109,45 @@ public class UI_Dialogue : MonoBehaviour
         }
     }
 
+    private void ShowChoices()
+    {
+        HideAllChoices();
+
+        for(int i = 0; i < dialogueChoicesText.Length; i++)
+        {
+            if(i < currentChoices.Length)
+            {
+                Dialogue_LineSO choice = currentChoices[i];
+                string choiceText = choice.GetFirstLine();
+
+                dialogueChoicesText[i].gameObject.SetActive(true);
+                dialogueChoicesText[i].text = selectedChoiceIndex == i ? $"<color=yellow> {i + 1}) {choiceText}" : $"{i + 1}) {choiceText}";
+            }
+            // else
+            // {
+            //     dialogueChoicesText[i].gameObject.SetActive(false);
+            // }
+        }
+
+        selectedChoice = currentChoices[selectedChoiceIndex];
+    }
+
+    private void HideAllChoices(){
+        foreach(var obj in dialogueChoicesText){
+            obj.gameObject.SetActive(false);
+        }
+    }
+
+    public void NavigateChoices(int direction)
+    {
+        if(currentChoices == null || currentChoices.Length <= 1) return;
+
+        selectedChoiceIndex += direction;
+        selectedChoiceIndex = Mathf.Clamp(selectedChoiceIndex, 0, currentChoices.Length - 1);
+
+        ShowChoices(); // Refresh the choices display to reflect the new selection
+    }
+
     private IEnumerator TypeTextCo(string text)
     {
         dialogueText.text = "";
@@ -92,5 +161,17 @@ public class UI_Dialogue : MonoBehaviour
         waitingToConfirm = true; // Now waiting for player confirmation to proceed
 
         typingCoroutine = null; // Reset the coroutine reference
+    }
+
+    private void SelectChoice(int index)
+    {
+        selectedChoiceIndex = index;
+        ShowChoices();
+    }
+ 
+    private void ConfirmChoice(int index)
+    {
+        SelectChoice(index);
+        DialogueInteraction();
     }
 }

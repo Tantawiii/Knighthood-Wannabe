@@ -15,6 +15,8 @@ public class Dialogue_LineSO : ScriptableObject
     public DialogueActionType actionType;
     public Dialogue_LineSO[] choiceLines; 
 
+    public string GetFirstLine() => textLine[0];
+
     public string GetRandomLine()
     {
         return textLine[Random.Range(0, textLine.Length)];

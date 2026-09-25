@@ -133302,7 +133302,7 @@ MonoBehaviour:
   speakerPortrait: {fileID: 4627584030964214755}
   speakerName: {fileID: 3283187652223527020}
   dialogueText: {fileID: 2849585922551898864}
-  dialogueChoices: {fileID: 4571461129435475146}
+  dialogueChoicesText: []
   typingSpeed: 0.05
 --- !u!1 &8379462297421663789
 GameObject:
