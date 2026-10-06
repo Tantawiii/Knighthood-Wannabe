@@ -39,11 +39,11 @@ public class Entity_Health : MonoBehaviour, IDamagable
         entity = GetComponent<Entity>();
         dropManager = GetComponent<Entity_DropManager>();   
 
-        SetupHealth();
     }
 
     protected virtual void Start()
     {
+        SetupHealth();
     }
 
     private void SetupHealth()

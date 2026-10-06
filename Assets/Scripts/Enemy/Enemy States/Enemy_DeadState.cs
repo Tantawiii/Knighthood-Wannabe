@@ -15,5 +15,7 @@ public class Enemy_DeadState : EnemyState
 
         enemy.GetComponent<Collider2D>().enabled = false;
         stateMachine.SwitchOffStateMachine();
+
+        enemy.DestroyGameObjectWithDelay();
     }
 }
