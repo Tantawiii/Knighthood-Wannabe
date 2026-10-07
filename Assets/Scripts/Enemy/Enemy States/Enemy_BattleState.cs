@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Enemy_BattleState : EnemyState
 {
-    Transform player;
-    Transform lastTarget;
-    float lastTimeWasInBattle;
+    protected Transform player;
+    protected Transform lastTarget;
+    protected float lastTimeWasInBattle;
+    protected float lastTimeAttacked;
     public Enemy_BattleState(Enemy enemy, StateMachine stateMachine, string animBoolName) : base(enemy, stateMachine, animBoolName)
     {
     }
@@ -43,14 +44,22 @@ public class Enemy_BattleState : EnemyState
         if (BattleTimeIsOver())
             stateMachine.ChangeState(enemy.idleState);
 
-        if (WithinAttackRange() && enemy.PlayerDetection())
+        if (WithinAttackRange() && enemy.PlayerDetection() && CanAttack())
+        {
+            lastTimeAttacked = Time.time;
             stateMachine.ChangeState(enemy.attackState);
+        }
         else
-            enemy.SetVelocity(enemy.GetBattleMoveSpeed() * DirectionToPlayer(), rb.linearVelocity.y);
+        {
+            float xVelocity = enemy.chasePlayer ? enemy.GetBattleMoveSpeed(): 0.001f;
+            enemy.SetVelocity(xVelocity * DirectionToPlayer() , rb.linearVelocity.y);
+        }
 
     }
 
-    private void UpdateTargetIfNeeded()
+    protected bool CanAttack() => Time.time > lastTimeAttacked + enemy.attackCooldown;
+
+    protected void UpdateTargetIfNeeded()
     {
         if(enemy.PlayerDetection() == false)
             return;
@@ -62,15 +71,15 @@ public class Enemy_BattleState : EnemyState
         }
     }
 
-    private void UpdateBattleTimer() => lastTimeWasInBattle = Time.time;
+    protected void UpdateBattleTimer() => lastTimeWasInBattle = Time.time;
 
-    private bool BattleTimeIsOver() => Time.time > lastTimeWasInBattle + enemy.battleTimeDuration;
+    protected bool BattleTimeIsOver() => Time.time > lastTimeWasInBattle + enemy.battleTimeDuration;
 
-    private bool WithinAttackRange() => DistanceToPlayer() < enemy.attackDistance;
+    protected bool WithinAttackRange() => DistanceToPlayer() < enemy.attackDistance;
 
     private bool ShouldRetreat() => DistanceToPlayer() < enemy.minRetreatDistance;
 
-    private float DistanceToPlayer()
+    protected float DistanceToPlayer()
     {
         if(player == null)
             return float.MaxValue;

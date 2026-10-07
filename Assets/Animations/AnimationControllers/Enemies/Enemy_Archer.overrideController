@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Enemy_Archer
+  m_Controller: {fileID: 9100000, guid: 023654c6cf564d74880ec0578df04008, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: a5cf10806057be842a22b74f8c517bce, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 79f1e7e5dcd41e646a7da4c8bbf1459d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e6a24328211b938499bfa075b8cb80a8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7aca2f0882b6a2849b885afe2199f53e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b4fd9fafe58231841806ef0c1e2a6e0d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0cc87fe0e87eb5043b053f9ae4d63909, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 63fa651b36ad1564f96036c5d7898f73, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 686d5b3f3fecbf14d85213c333ee8f07, type: 2}
